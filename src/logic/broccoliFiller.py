@@ -1,5 +1,6 @@
 import random
 
+#Calculates a valid random position for a broccoli
 def defineBroccoliPositions(board, boardObject):
   pos = [0,0]
   invalidPosition = True

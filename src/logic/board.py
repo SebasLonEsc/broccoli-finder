@@ -2,6 +2,7 @@ import numpy as np
 from .boardShaper import BoardShaper
 from .broccoliFiller import BoardBroccoliFiller
 
+#Generates the Board Object
 def BoardGenerator(rows, columns, broccoliAmount):
   emptyBoard = np.zeros(shape=[rows,columns],dtype=np.int8)
   
