@@ -22,26 +22,31 @@ def cutCornersShaper(boardObject, random=False):
 
 #Return the board in a cross-shape pattern
 def crossShaper(boardObject):
-  #if(boardObject["totalRows"] == boardObject["totalColumns"] and boardObject["totalRows"] % 2 == 0):
   if(boardObject["totalRows"] == boardObject["totalColumns"] and boardObject["totalRows"] == 2):
     return boardObject
   
-  if(boardObject["totalRows"] == 0 or boardObject["totalColumns"] == 2):
+  if(boardObject["totalRows"] == 2 or boardObject["totalColumns"] == 2):
     return boardObject
 
   crossRow = random.randint(1, boardObject["totalRows"]-2)
-  print(boardObject["totalRows"]-2)
   crossColumn = random.randint(1, boardObject["totalColumns"]-2)
-  print(boardObject["totalColumns"]-2)
   board = boardObject["board"]
+  nullSpaceNumber = 0
 
   for column in range(boardObject["totalColumns"]):
     board[crossRow, column] = -2
+    nullSpaceNumber += 1
 
   for row in range(boardObject["totalRows"]):
+    if board[row, crossColumn] == -2:
+      continue
+
     board[row, crossColumn] = -2
+    nullSpaceNumber += 1
 
   boardObject["board"] = board
+  boardObject["nullSpaceNumber"] = nullSpaceNumber
+  boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
 
   return boardObject
 
