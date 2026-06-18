@@ -1,11 +1,8 @@
 import numpy as np
 from .boardShaper import BoardShaper
+from .broccoliFiller import BoardBroccoliFiller
 
-#Fills a board with an specific number of broccolis
-def BoardBroccoliFiller(board, broccolisAmount):
-  return 0
-
-def BoardGenerator(rows, columns):
+def BoardGenerator(rows, columns, broccoliAmount):
   emptyBoard = np.zeros(shape=[rows,columns],dtype=np.int8)
   
   boardObject = {
@@ -13,9 +10,12 @@ def BoardGenerator(rows, columns):
     "totalRows": rows,
     "totalColumns": columns,
     "boardSize": rows * columns,
-    "numberBroccolis": 0,
+    "broccoliAmount": 0,
     "availableSpace": rows * columns,
+    "nullSpaceNumber": 0
   }
+
   shapedBoardObject = BoardShaper(boardObject)
+  shapedBoardObject = BoardBroccoliFiller(shapedBoardObject, broccoliAmount)
 
   return shapedBoardObject
