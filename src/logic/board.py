@@ -8,6 +8,7 @@ def BoardGenerator(rows, columns, broccoliAmount):
   
   boardObject = {
     "board": emptyBoard,
+    "viewedBoard": emptyBoard,
     "totalRows": rows,
     "totalColumns": columns,
     "boardSize": rows * columns,
@@ -16,7 +17,7 @@ def BoardGenerator(rows, columns, broccoliAmount):
     "nullSpaceNumber": 0
   }
 
-  shapedBoardObject = BoardShaper(boardObject)
-  shapedBoardObject = BoardBroccoliFiller(shapedBoardObject, broccoliAmount)
+  boardObject = BoardShaper(boardObject)
+  boardObject = BoardBroccoliFiller(boardObject, broccoliAmount)
 
-  return shapedBoardObject
+  return boardObject

@@ -90,6 +90,7 @@ def cutCornersShaper(boardObject, randomCorners=False):
       board[cornerGuide[i][0], j] = -2
     
   boardObject["board"] = board
+  boardObject["viewedBoard"] = board
 
   return boardObject
 
@@ -119,6 +120,7 @@ def crossShaper(boardObject):
     nullSpaceNumber += 1
 
   boardObject["board"] = board
+  boardObject["viewedBoard"] = board
   boardObject["nullSpaceNumber"] = nullSpaceNumber
   boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
 
@@ -127,8 +129,7 @@ def crossShaper(boardObject):
 #Returns a board in one of the shapes
 def BoardShaper(boardObject):
   boardShapesWeight = ShapeWeigher(boardObject)
-  boardshape = "cutCorners"#random.choices(boardShapes, boardShapesWeight)[0]
-  print(boardshape)
+  boardshape = random.choices(boardShapes, boardShapesWeight)[0]
   shapedBoard = boardObject
 
   match boardshape:

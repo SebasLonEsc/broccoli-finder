@@ -10,7 +10,7 @@ boardValuesGuide = {
 # cutCorners: Cut the corners of the board
 # cross: Cut the board in a cross shape
 # randomCutCorners: Cut the corners of the board, but every corner is randomized
-boardShapes = ["square","cutCorners","cross", "randomCutcorners"]
+boardShapes = ["square","cutCorners","cross","randomCutcorners"]
 
 # Indicates if the row or column of each corner starts from 0 or negative
 # For corners on row 0 the increment is positive in row direction
