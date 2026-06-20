@@ -64,7 +64,7 @@ def defineCornerSizes(boardObject, randomCorners):
 #Each position is an array of two values [r,c]
 #r:row or horizontal
 #c:column or vertical
-def cutCornersShaper(boardObject, randomCorners=False):
+def CutCornersShaper(boardObject, randomCorners=False):
   board = boardObject["board"]
   cornerSizes = defineCornerSizes(boardObject, randomCorners)
 
@@ -96,7 +96,7 @@ def cutCornersShaper(boardObject, randomCorners=False):
 
 
 #Return the board in a cross-shape pattern
-def crossShaper(boardObject):
+def CrossShaper(boardObject):
   if(boardObject["totalRows"] == boardObject["totalColumns"] and boardObject["totalRows"] == 2):
     return boardObject
   
@@ -134,10 +134,10 @@ def BoardShaper(boardObject):
 
   match boardshape:
     case "cutCorners":
-      shapedBoard = cutCornersShaper(shapedBoard)
+      shapedBoard = CutCornersShaper(shapedBoard)
     case "cross":
-      shapedBoard = crossShaper(shapedBoard)
+      shapedBoard = CrossShaper(shapedBoard)
     case "randomCutcorners":
-      shapedBoard = cutCornersShaper(shapedBoard, True)
+      shapedBoard = CutCornersShaper(shapedBoard, True)
 
   return shapedBoard
