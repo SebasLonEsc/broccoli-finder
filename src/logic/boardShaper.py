@@ -66,7 +66,11 @@ def defineCornerSizes(boardObject, randomCorners):
 #c:column or vertical
 def CutCornersShaper(boardObject, randomCorners=False):
   board = boardObject["board"]
+  tilesBoard = boardObject["tilesBoard"]
   cornerSizes = defineCornerSizes(boardObject, randomCorners)
+
+  tile = {}
+  nullSpaceNumber = 0  
 
   for i in range(len(cornerSizes)):
     startPoint = 0
@@ -77,7 +81,12 @@ def CutCornersShaper(boardObject, randomCorners=False):
       endPoint = 0
 
     for j in range(startPoint, endPoint):
+      tile = tilesBoard[j, cornerGuide[i][1]]
+      tile["tileValue"] = "*"
+
       board[j, cornerGuide[i][1]] = -2
+      tilesBoard[j, cornerGuide[i][1]] = tile
+      nullSpaceNumber += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
@@ -87,10 +96,17 @@ def CutCornersShaper(boardObject, randomCorners=False):
       endPoint = 0
 
     for j in range(startPoint, endPoint):
+      tile = tilesBoard[cornerGuide[i][0], j]
+      tile["tileValue"] = "*"
+
       board[cornerGuide[i][0], j] = -2
+      tilesBoard[cornerGuide[i][0], j] = tile
+      nullSpaceNumber += 1
     
   boardObject["board"] = board
-  boardObject["viewedBoard"] = board
+  boardObject["tilesBoard"] = tilesBoard
+  boardObject["nullSpaceNumber"] = nullSpaceNumber
+  boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
 
   return boardObject
 
@@ -106,21 +122,32 @@ def CrossShaper(boardObject):
   crossRow = random.randint(1, boardObject["totalRows"]-2)
   crossColumn = random.randint(1, boardObject["totalColumns"]-2)
   board = boardObject["board"]
+  tilesBoard = boardObject["tilesBoard"]
+
+  tile = {}
   nullSpaceNumber = 0
 
   for column in range(boardObject["totalColumns"]):
+    tile = tilesBoard[crossRow, column]
+    tile["tileValue"] = "*"
+    
     board[crossRow, column] = -2
+    tilesBoard[crossRow, column] = tile
     nullSpaceNumber += 1
 
   for row in range(boardObject["totalRows"]):
     if board[row, crossColumn] == -2:
       continue
 
+    tile = tilesBoard[row, crossColumn]
+    tile["tileValue"] = "*"
+
     board[row, crossColumn] = -2
+    tilesBoard[row, crossColumn] = tile
     nullSpaceNumber += 1
 
   boardObject["board"] = board
-  boardObject["viewedBoard"] = board
+  boardObject["tilesBoard"] = tilesBoard
   boardObject["nullSpaceNumber"] = nullSpaceNumber
   boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
 
