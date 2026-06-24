@@ -7,7 +7,7 @@ def DefineBroccoliPositions(board, boardObject):
   invalidPosition = True
 
   while invalidPosition:
-    pos = [random.randrange(0, boardObject["totalRows"]), random.randrange(0, boardObject["totalColumns"])]
+    pos = [random.randrange(0, boardObject.totalRows), random.randrange(0, boardObject.totalColumns)]
     if board[pos[0], pos[1]] >= 0:
       invalidPosition = False
   
@@ -15,19 +15,19 @@ def DefineBroccoliPositions(board, boardObject):
 
 #Fills a board with an specific number of broccolis
 def BoardBroccoliFiller(boardObject, broccoliAmount = 1):
-  board = boardObject["board"]
-  totalRows = boardObject["totalRows"]
-  totalColumns = boardObject["totalColumns"]
+  board = boardObject.board
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
 
-  if broccoliAmount >= boardObject["availableSpace"]:
-    broccoliAmount = boardObject["availableSpace"] - 1
+  if broccoliAmount >= boardObject.availableSpace:
+    broccoliAmount = boardObject.availableSpace - 1
 
   for i in range(broccoliAmount):
     pos = DefineBroccoliPositions(board, boardObject)
     board[pos[0], pos[1]] = -1
     board = broccoliProximity(board, pos, totalRows, totalColumns)
 
-  boardObject["board"] = board
-  boardObject["broccoliAmount"] = broccoliAmount
+  boardObject.ChangeBoard(board)
+  boardObject.ChangeBroccoliAmount(broccoliAmount)
 
   return boardObject

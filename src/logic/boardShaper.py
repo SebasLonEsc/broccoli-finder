@@ -13,7 +13,7 @@ def ShapeWeigher(boardObject):
       i += 1
       continue
 
-    if (boardObject["totalRows"] == 2 or boardObject["totalRows"] == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
+    if (boardObject.totalRows == 2 or boardObject.totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
       boardShapesWeight[i] = 2
       i += 1
       continue
@@ -25,13 +25,13 @@ def ShapeWeigher(boardObject):
 
 def defineCornerSizes(boardObject, randomCorners):
   cornerSizes = np.zeros((4,2), dtype=np.int_)
-  horizontalCornerSizeLimit = math.floor(boardObject["totalRows"] / 2)
-  verticalCornerSizeLimit = math.floor(boardObject["totalColumns"] / 2)
+  horizontalCornerSizeLimit = math.floor(boardObject.totalRows / 2)
+  verticalCornerSizeLimit = math.floor(boardObject.totalColumns / 2)
 
-  if boardObject["totalRows"] % 2 == 0:
+  if boardObject.totalRows % 2 == 0:
     horizontalCornerSizeLimit -= 1
 
-  if boardObject["totalColumns"] % 2 == 0:
+  if boardObject.totalColumns % 2 == 0:
     verticalCornerSizeLimit -= 1
 
   if randomCorners:
@@ -65,8 +65,8 @@ def defineCornerSizes(boardObject, randomCorners):
 #r:row or horizontal
 #c:column or vertical
 def CutCornersShaper(boardObject, randomCorners=False):
-  board = boardObject["board"]
-  tilesBoard = boardObject["tilesBoard"]
+  board = boardObject.board
+  tilesBoard = boardObject.tilesBoard
   cornerSizes = defineCornerSizes(boardObject, randomCorners)
 
   tile = {}
@@ -103,31 +103,31 @@ def CutCornersShaper(boardObject, randomCorners=False):
       tilesBoard[cornerGuide[i][0], j] = tile
       nullSpaceNumber += 1
     
-  boardObject["board"] = board
-  boardObject["tilesBoard"] = tilesBoard
-  boardObject["nullSpaceNumber"] = nullSpaceNumber
-  boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
+  boardObject.ChangeBoard(board)
+  boardObject.ChangeTilesBoard(tilesBoard)
+  boardObject.ChangeNullSpaceAmount(nullSpaceNumber)
+  boardObject.ChangeAvaliableSpace(boardObject.BoardSize() - nullSpaceNumber)
 
   return boardObject
 
 
 #Return the board in a cross-shape pattern
 def CrossShaper(boardObject):
-  if(boardObject["totalRows"] == boardObject["totalColumns"] and boardObject["totalRows"] == 2):
+  if(boardObject.totalRows == boardObject.totalColumns and boardObject.totalRows == 2):
     return boardObject
   
-  if(boardObject["totalRows"] == 2 or boardObject["totalColumns"] == 2):
+  if(boardObject.totalRows == 2 or boardObject.totalColumns == 2):
     return boardObject
 
-  crossRow = random.randint(1, boardObject["totalRows"]-2)
-  crossColumn = random.randint(1, boardObject["totalColumns"]-2)
-  board = boardObject["board"]
-  tilesBoard = boardObject["tilesBoard"]
+  crossRow = random.randint(1, boardObject.totalRows-2)
+  crossColumn = random.randint(1, boardObject.totalColumns-2)
+  board = boardObject.board
+  tilesBoard = boardObject.tilesBoard
 
   tile = {}
   nullSpaceNumber = 0
 
-  for column in range(boardObject["totalColumns"]):
+  for column in range(boardObject.totalColumns):
     tile = tilesBoard[crossRow, column]
     tile["tileValue"] = "*"
     
@@ -135,7 +135,7 @@ def CrossShaper(boardObject):
     tilesBoard[crossRow, column] = tile
     nullSpaceNumber += 1
 
-  for row in range(boardObject["totalRows"]):
+  for row in range(boardObject.totalRows):
     if board[row, crossColumn] == -2:
       continue
 
@@ -146,10 +146,10 @@ def CrossShaper(boardObject):
     tilesBoard[row, crossColumn] = tile
     nullSpaceNumber += 1
 
-  boardObject["board"] = board
-  boardObject["tilesBoard"] = tilesBoard
-  boardObject["nullSpaceNumber"] = nullSpaceNumber
-  boardObject["availableSpace"] = boardObject["boardSize"] - nullSpaceNumber
+  boardObject.ChangeBoard(board)
+  boardObject.ChangeTilesBoard(tilesBoard)
+  boardObject.ChangeNullSpaceAmount(nullSpaceNumber)
+  boardObject.ChangeAvaliableSpace(boardObject.BoardSize() - nullSpaceNumber)
 
   return boardObject
 
