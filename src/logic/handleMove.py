@@ -62,12 +62,7 @@ def handleMove(boardObject, movePosition):
   tilesBoard = boardObject.tilesBoard
 
   if board[movePosition[0], movePosition[1]] == -2:
-    return False
-  
-  gameStatus = checkWinStatus(board, tilesBoard, movePosition, boardObject.broccoliAmount)
-
-  if gameStatus != 0:
-    return boardObject, gameStatus
+    return boardObject, 0
   
   boardRowLimit = boardObject.totalRows
   boardColumnLimit = boardObject.totalColumns
