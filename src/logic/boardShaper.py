@@ -83,6 +83,7 @@ def CutCornersShaper(boardObject, randomCorners=False):
     for j in range(startPoint, endPoint):
       tile = tilesBoard[j, cornerGuide[i][1]]
       tile["tileValue"] = "*"
+      tile["checked"] = True
 
       board[j, cornerGuide[i][1]] = -2
       tilesBoard[j, cornerGuide[i][1]] = tile
@@ -98,6 +99,7 @@ def CutCornersShaper(boardObject, randomCorners=False):
     for j in range(startPoint, endPoint):
       tile = tilesBoard[cornerGuide[i][0], j]
       tile["tileValue"] = "*"
+      tile["checked"] = True
 
       board[cornerGuide[i][0], j] = -2
       tilesBoard[cornerGuide[i][0], j] = tile
@@ -130,6 +132,7 @@ def CrossShaper(boardObject):
   for column in range(boardObject.totalColumns):
     tile = tilesBoard[crossRow, column]
     tile["tileValue"] = "*"
+    tile["checked"] = True
     
     board[crossRow, column] = -2
     tilesBoard[crossRow, column] = tile
@@ -141,6 +144,7 @@ def CrossShaper(boardObject):
 
     tile = tilesBoard[row, crossColumn]
     tile["tileValue"] = "*"
+    tile["checked"] = True
 
     board[row, crossColumn] = -2
     tilesBoard[row, crossColumn] = tile
