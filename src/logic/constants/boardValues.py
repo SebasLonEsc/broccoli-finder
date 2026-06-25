@@ -5,6 +5,8 @@ boardValuesGuide = {
   -2: "nullSpace",
 }
 
+boardTileValue = {"checked": False, "tileValue": " "}
+
 # The available board shapes
 # square: No changes
 # cutCorners: Cut the corners of the board
