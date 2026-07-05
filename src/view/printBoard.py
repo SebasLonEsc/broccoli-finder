@@ -1,4 +1,5 @@
 from src.logic.handleMove import handleMove
+from src.logic.constants.gameValues import *
 
 def printing(boardObject):
   guideRow = "     "
@@ -47,9 +48,9 @@ def printBoardOnConsole(boardObject):
     printing(boardObject)
 
   if gameStatus == 1:
-    print("CONGRATULATIONS")
+    print(WINNINGTEXT)
     return 0
   
   if gameStatus == -1:
-    print("Sorry you lost")
+    print(LOSINGTEXT)
     return 0
