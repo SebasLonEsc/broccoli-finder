@@ -69,22 +69,25 @@ def createInterface(boardObject):
   columns = boardObject.totalColumns
   buttons = np.empty(shape=[rows,columns],dtype="object")
   tilesBoard = boardObject.tilesBoard
-  labelColumnPosition = math.floor(columns/2)-2
-
-  if labelColumnPosition < 0:
-    labelColumnPosition = 0
 
   root = tk.Tk()
   root.title("Broccoli")
-  tk.Label(
-    root,
-    text="Broccoli Seeker",
-    anchor="center").grid(row=0, column=labelColumnPosition, columnspan=columns)
-  
-  label = tk.Label(root, text="", anchor="center")
-  
+  root.grid_columnconfigure(0, weight=1)
+  pane = tk.Frame(root)
+  pane.grid(row=0, columnspan=columns)
 
+  tk.Label(
+    pane,
+    text="Broccoli Seeker",
+    anchor="center").grid(row=0, columnspan=columns)
+  
+  lastPane= tk.Frame(root)
+  label = tk.Label(lastPane, text="", anchor="center")
+  
   for row in range(0, rows):
+    pane = tk.Frame(root, bg="lightgray", background="lightgray")
+    pane.grid(row=row+1, column=0, columnspan=columns)
+
     for column in range(0, columns):
       buttonText = ""
       isNullSpace = tilesBoard[row, column]["checked"]
@@ -94,7 +97,7 @@ def createInterface(boardObject):
         buttonText = " "
         backgroundColor = "gray60"
 
-      button = tk.Button(root,
+      button = tk.Button(pane,
                         activebackground="white",
                         anchor="center",
                         bd=1,
@@ -111,10 +114,12 @@ def createInterface(boardObject):
       
       if isNullSpace:
         button.config(state=tk.DISABLED)
+      
       buttons[row, column] = button
-      button.grid(row=row+1, column=column)
+      button.grid(row=0, column=column)
       button = None
 
-  label.grid(row=rows+2, column=labelColumnPosition, columnspan=columns)
+  lastPane.grid(row=rows+2, columnspan=columns)
+  label.grid(row=0, column=0, columnspan=columns)
   
   root.mainloop()
