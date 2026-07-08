@@ -69,13 +69,17 @@ def createInterface(boardObject):
   columns = boardObject.totalColumns
   buttons = np.empty(shape=[rows,columns],dtype="object")
   tilesBoard = boardObject.tilesBoard
+  labelColumnPosition = math.floor(columns/2)-2
+
+  if labelColumnPosition < 0:
+    labelColumnPosition = 0
 
   root = tk.Tk()
   root.title("Broccoli")
   tk.Label(
     root,
     text="Broccoli Seeker",
-    anchor="center").grid(row=0, column=math.floor(columns/2)-2, columnspan=4)
+    anchor="center").grid(row=0, column=labelColumnPosition, columnspan=columns)
   
   label = tk.Label(root, text="", anchor="center")
   
@@ -111,6 +115,6 @@ def createInterface(boardObject):
       button.grid(row=row+1, column=column)
       button = None
 
-  label.grid(row=rows+2, column=math.floor(columns/2)-2, columnspan=4)
+  label.grid(row=rows+2, column=labelColumnPosition, columnspan=columns)
   
   root.mainloop()
