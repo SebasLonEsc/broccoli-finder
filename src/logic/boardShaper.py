@@ -34,6 +34,9 @@ def defineCornerSizes(boardObject, randomCorners):
   if boardObject.totalColumns % 2 == 0:
     verticalCornerSizeLimit -= 1
 
+  if boardObject.totalRows <= 2 or boardObject.totalColumns <= 2:
+    return cornerSizes
+
   if randomCorners:
     for i in range(len(cornerSizes)):
       horizontalSize = random.randint(1,horizontalCornerSizeLimit)
