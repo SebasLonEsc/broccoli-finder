@@ -1,4 +1,4 @@
-#Validates if the current position is out of bounds
+# Validates if the current position is out of bounds
 def outOfBoundsValidation(currentPos, pos, limit = 0):
   if limit == 0 and currentPos < limit:
     return pos
@@ -32,6 +32,8 @@ def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit = 0, vLimit = 0):
   
   return [hPosition, vPosition]
 
+# Checks and registers the proximity values of the broccolis on the board matrix
+# The numbers indicate how many broccolis are around that specific tile of the board
 def broccoliProximity(board, pos, totalRows, totalColumns):
   horizontalStart = checkNullSpaces(board, pos, -1, 0)[0]
   horizontalEnd = checkNullSpaces(board, pos, 1, 0, totalRows)[0]

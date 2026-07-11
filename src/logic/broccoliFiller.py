@@ -1,7 +1,7 @@
 import random
 from .broccoliProximity import broccoliProximity
 
-#Calculates a valid random position for a broccoli
+# Calculates a valid random position for a broccoli
 def DefineBroccoliPositions(board, boardObject):
   pos = [0,0]
   invalidPosition = True
@@ -13,7 +13,7 @@ def DefineBroccoliPositions(board, boardObject):
   
   return pos
 
-#Fills a board with an specific number of broccolis
+# Fills a board with a specific number of broccolis
 def BoardBroccoliFiller(boardObject, broccoliAmount = 1):
   board = boardObject.board
   totalRows = boardObject.totalRows
