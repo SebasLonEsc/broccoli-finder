@@ -1,12 +1,12 @@
 import numpy as np
 from .boardShaper import BoardShaper
 from .broccoliFiller import BoardBroccoliFiller
-from .constants.boardValues import boardTileValue
+from .constants.boardValues import BOARDTILEVALUE
 
 def FillTilesBoard(tilesBoard):
   for i in range(0, tilesBoard.shape[0]):
     for j in range(0, tilesBoard.shape[1]):
-      tilesBoard[i,j] = boardTileValue.copy()
+      tilesBoard[i,j] = BOARDTILEVALUE.copy()
 
   return tilesBoard
 

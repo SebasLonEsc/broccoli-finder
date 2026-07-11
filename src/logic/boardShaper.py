@@ -1,14 +1,14 @@
 import random
 import numpy as np
 import math
-from .constants.boardValues import boardShapes, cornerGuide
+from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 
 def ShapeWeigher(boardObject):
-  boardShapesWeight = np.zeros(shape=[len(boardShapes)])
+  boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
   i = 0
 
-  for shape in boardShapes:
+  for shape in BOARDSHAPES:
     if i == 0:
       i += 1
       continue
@@ -33,6 +33,9 @@ def defineCornerSizes(boardObject, randomCorners):
 
   if boardObject.totalColumns % 2 == 0:
     verticalCornerSizeLimit -= 1
+
+  if boardObject.totalRows <= 2 or boardObject.totalColumns <= 2:
+    return cornerSizes
 
   if randomCorners:
     for i in range(len(cornerSizes)):
@@ -76,33 +79,33 @@ def CutCornersShaper(boardObject, randomCorners=False):
     startPoint = 0
     endPoint = cornerSizes[i,0]
 
-    if cornerGuide[i][0] == -1:
+    if CORNERGUIDE[i][0] == -1:
       startPoint = 0 - cornerSizes[i,0]
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tilesBoard[j, cornerGuide[i][1]]
+      tile = tilesBoard[j, CORNERGUIDE[i][1]]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[j, cornerGuide[i][1]] = -2
-      tilesBoard[j, cornerGuide[i][1]] = tile
+      board[j, CORNERGUIDE[i][1]] = -2
+      tilesBoard[j, CORNERGUIDE[i][1]] = tile
       nullSpaceNumber += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
 
-    if cornerGuide[i][1] == -1:
+    if CORNERGUIDE[i][1] == -1:
       startPoint = 0 - cornerSizes[i,1]
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tilesBoard[cornerGuide[i][0], j]
+      tile = tilesBoard[CORNERGUIDE[i][0], j]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[cornerGuide[i][0], j] = -2
-      tilesBoard[cornerGuide[i][0], j] = tile
+      board[CORNERGUIDE[i][0], j] = -2
+      tilesBoard[CORNERGUIDE[i][0], j] = tile
       nullSpaceNumber += 1
     
   boardObject.ChangeBoard(board)
@@ -160,7 +163,7 @@ def CrossShaper(boardObject):
 #Returns a board in one of the shapes
 def BoardShaper(boardObject):
   boardShapesWeight = ShapeWeigher(boardObject)
-  boardshape = random.choices(boardShapes, boardShapesWeight)[0]
+  boardshape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
   shapedBoard = boardObject
 
   match boardshape:

@@ -1,3 +1,18 @@
+def revealAllBroccolis(board, tilesBoard, broccoliAmount):
+  countedBroccolis = 0
+
+  for row in range(0, tilesBoard.shape[0]):
+    for column in range(0, tilesBoard.shape[1]):
+      if board[row, column] == -1:
+        tilesBoard[row, column]["checked"] = True
+        tilesBoard[row, column]["tileValue"] = str(board[row, column])
+        countedBroccolis += 1
+
+      if countedBroccolis == broccoliAmount:
+        break
+  
+  return tilesBoard
+
 def checkWinStatus(board, tilesBoard, movePosition, broccoliAmount):
   if board[movePosition[0], movePosition[1]] == -1:
     return -1
@@ -60,6 +75,7 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 def handleMove(boardObject, movePosition):
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
+  broccoliAmount = boardObject.broccoliAmount
 
   if board[movePosition[0], movePosition[1]] == -2:
     return boardObject, 0
@@ -69,6 +85,10 @@ def handleMove(boardObject, movePosition):
   tilesBoard = makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit)
   boardObject.ChangeTilesBoard(tilesBoard)
 
-  gameStatus = checkWinStatus(board, tilesBoard, movePosition, boardObject.broccoliAmount)
+  gameStatus = checkWinStatus(board, tilesBoard, movePosition, broccoliAmount)
+
+  if gameStatus < 0: 
+    tilesBoard = revealAllBroccolis(board, tilesBoard, broccoliAmount)
+    boardObject.ChangeTilesBoard(tilesBoard)
   
   return boardObject, gameStatus
