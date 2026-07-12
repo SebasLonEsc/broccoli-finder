@@ -2,6 +2,10 @@ from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 
 # Handles the printing of the board on console
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Nothing
 def printing(boardObject):
   guideRow = "     "
   separationRow = "   --"
@@ -34,6 +38,10 @@ def printing(boardObject):
 
 # Prints the board on the console and request the player to make the moves on the game
 # Upon losing or wining the game prints the corresponding message
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Nothing
 def printBoardOnConsole(boardObject):
   gameStatus = 0
   rowLimit = boardObject.totalRows

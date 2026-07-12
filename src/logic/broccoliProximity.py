@@ -1,4 +1,10 @@
 # Validates if the current position is out of bounds
+# Input:
+#   currentPos: the new position that is being evaluated
+#   pos: the previous position
+#   limit: the limit value that the position can have
+# Output:
+#   Returns the currentPos if the position is not out of bounds, teturn pos otherwise
 def outOfBoundsValidation(currentPos, pos, limit = 0):
   if limit == 0 and currentPos < limit:
     return pos
@@ -16,6 +22,17 @@ def outOfBoundsValidation(currentPos, pos, limit = 0):
 # vIncrement: vertical increment
 # hLimit: horizontal limit of the board
 # vLimit: vertical limit of the board
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   pos: the current evaluated position
+#   hIncrement: the horizontal increment to select the next position
+#   vIncrement: the vertical increment to select the next position
+#   hLimit (optional): the horizontal limit that the row position value can take (default value is 0)
+#   hLimit (optional): the vertical limit that the column position value can take (default value is 0)
+# Output:
+#   Returns an array of [newRow, newColumn] position if the position is a nullSpace
+#     this [newRow, newColumn] position is a position beyond the null space (if possible)
+#     if is not a nullSpace, return the [row, position] of the next position (position with the increment)
 def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit = 0, vLimit = 0):
   hPosition = outOfBoundsValidation(pos[0] + hIncrement, pos[0], hLimit)
   vPosition = outOfBoundsValidation(pos[1] + vIncrement, pos[1], vLimit)
@@ -34,6 +51,13 @@ def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit = 0, vLimit = 0):
 
 # Checks and registers the proximity values of the broccolis on the board matrix
 # The numbers indicate how many broccolis are around that specific tile of the board
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   pos: the current evaluated position
+#   totalRows: the amount of rows on the board
+#   totalColumns: the amount of columns on the board
+# Output:
+#   Returns the board matrix with the proximity numbers that indicate the amount of broccolis next to each tile
 def broccoliProximity(board, pos, totalRows, totalColumns):
   horizontalStart = checkNullSpaces(board, pos, -1, 0)[0]
   horizontalEnd = checkNullSpaces(board, pos, 1, 0, totalRows)[0]

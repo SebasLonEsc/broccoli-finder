@@ -1,5 +1,10 @@
 # Reveals all of the broccolis of the board when LOSING the game
-# Returns the tilesBoard matrix with the revealed borccolis
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   tilesBoard: matrix containing each tiles of the board
+#   broccoliAmount: the amount of broccolis on the board
+# Output:
+#   Returns the tilesBoard matrix with the revealed borccolis
 def revealAllBroccolis(board, tilesBoard, broccoliAmount):
   countedBroccolis = 0
 
@@ -16,10 +21,16 @@ def revealAllBroccolis(board, tilesBoard, broccoliAmount):
   return tilesBoard
 
 # Checks the current game status after a move was done
-# Returns the current game status
-#   -1: Indicate a lost game
-#    0: Indicate the game is still on
-#    1: Indicates a won game
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   tilesBoard: matrix containing each tiles of the board
+#   movePosition: an array containg the [row, column] of the current move made by the player
+#   broccoliAmount: the amount of broccolis on the board
+# Output:
+#   Returns the current game status
+#     -1: Indicate a lost game
+#      0: Indicate the game is still on
+#      1: Indicates a won game
 def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
   if board[movePosition[0], movePosition[1]] == -1:
     return -1
@@ -39,7 +50,14 @@ def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
   return 1
 
 # Checks if the current move made by the player is a valid one
-# Returns True if the move is valid, False otherwise
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   tilesBoard: matrix containing each tiles of the board
+#   movePosition: an array containg the [row, column] of the current move made by the player
+#   boardRowLimit: the amount of rows on the board
+#   boardColumnLimit: the amount of columns on the board
+# Output:
+#   Returns True if the move is valid, False otherwise
 def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
   positionX = movePosition[0]
   positionY = movePosition[1]
@@ -56,7 +74,14 @@ def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLi
   return True
 
 # Makes the move made by the player
-# Returns the tileBoard matrix with the move registered if valid, just returns the unchanged matrix otherwise
+# Input:
+#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
+#   tilesBoard: matrix containing each tiles of the board
+#   movePosition: an array containg the [row, column] of the current move made by the player
+#   boardRowLimit: the amount of rows on the board
+#   boardColumnLimit: the amount of columns on the board
+# Output:
+#   Returns the tileBoard matrix with the move registered if valid, just returns the unchanged matrix otherwise
 def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
   validMove = checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit)
   positionX = movePosition[0]
@@ -85,7 +110,11 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 
 # Handles the move made by the player. Check if the move if valid, updates the tilesBoard marix if so,
 #   and validate the game status after the move
-# Returns the updated boardObject (if the move is valid or a game condition is met) and the status of the game
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   movePosition: an array containg the [row, column] of the current move made by the player
+# Output:
+#   Returns the updated boardObject (if the move is valid or a game condition is met) and the status of the game
 def handleMove(boardObject, movePosition):
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard

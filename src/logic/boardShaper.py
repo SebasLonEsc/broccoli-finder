@@ -5,6 +5,10 @@ from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 
 # Defines the weight of each avaiable board shape for the randomize
 # No-shaped board has a default weight of 2 for all iterations
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Returns an array of the weights for each available baord shape
 def ShapeWeigher(boardObject):
   boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
@@ -29,6 +33,11 @@ def ShapeWeigher(boardObject):
 # In a normal cut corner shape all corner sizes are the same
 # For the random version shape, each corner has it own size
 #   that doesn't go beyond the half of the board horizontally or vertically
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   randomCorners: boolean indicating if each corner size is randomized
+# Output:
+#   Returns a matrix containg the sizes for each corner in a [horizontalSize, verticalSize] pattern
 def defineCornerSizes(boardObject, randomCorners):
   cornerSizes = np.zeros((4,2), dtype=np.int_)
   horizontalCornerSizeLimit = math.floor(boardObject.totalRows / 2)
@@ -64,7 +73,7 @@ def defineCornerSizes(boardObject, randomCorners):
   
   return cornerSizes
 
-# Return the board with the corners cut pattern
+# Shapes the board in a with its corners cut
 # Random values defines if the size of the cut is random or not
 # Position of each corner size c:corner #:Corner position
 # c0 0 c1
@@ -73,6 +82,11 @@ def defineCornerSizes(boardObject, randomCorners):
 # Each position is an array of two values [r,c]
 # r:row or horizontal
 # c:column or vertical
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   randomCorners (optional): boolean indicating if each corner size is randomized (default value is False)
+# Output:
+#   Returns the board object with the updated information of the cutCorner shape
 def CutCornersShaper(boardObject, randomCorners=False):
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
@@ -122,8 +136,12 @@ def CutCornersShaper(boardObject, randomCorners=False):
   return boardObject
 
 
-# Return the board in a cross-shape pattern
+# Shapes the board in a cross-like shape
 # The row and column of the cross are selected randomly without including the first and last row/column
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Returns the board object with the updated information of the cross shape
 def CrossShaper(boardObject):
   if(boardObject.totalRows == boardObject.totalColumns and boardObject.totalRows == 2):
     return boardObject
@@ -167,7 +185,11 @@ def CrossShaper(boardObject):
 
   return boardObject
 
-# Returns a board in one of the predefined shapes
+# Handles the shaping of the board
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Returns the board object in a randomly selected shape
 def BoardShaper(boardObject):
   boardShapesWeight = ShapeWeigher(boardObject)
   boardshape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
