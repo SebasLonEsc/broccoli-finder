@@ -7,7 +7,7 @@ from .broccoliProximity import broccoliProximity
 #   boardObject: the object containing all of the information about the board
 # Output:
 #   Returns an array of [row, column] position of a broccoli
-def DefineBroccoliPositions(board, boardObject):
+def defineBroccoliPositions(board, boardObject):
   pos = [0,0]
   invalidPosition = True
 
@@ -24,7 +24,7 @@ def DefineBroccoliPositions(board, boardObject):
 #   broccoliAmount (optional): the number of broccolis on the board (default value is 1)
 # Output:
 #   Returns the boardObject with the board matrix filled with the specified amount of broccolis
-def BoardBroccoliFiller(boardObject, broccoliAmount = 1):
+def boardBroccoliFiller(boardObject, broccoliAmount = 1):
   board = boardObject.board
   totalRows = boardObject.totalRows
   totalColumns = boardObject.totalColumns
@@ -33,11 +33,11 @@ def BoardBroccoliFiller(boardObject, broccoliAmount = 1):
     broccoliAmount = boardObject.availableSpace - 1
 
   for i in range(broccoliAmount):
-    pos = DefineBroccoliPositions(board, boardObject)
+    pos = defineBroccoliPositions(board, boardObject)
     board[pos[0], pos[1]] = -1
     board = broccoliProximity(board, pos, totalRows, totalColumns)
 
-  boardObject.ChangeBoard(board)
-  boardObject.ChangeBroccoliAmount(broccoliAmount)
+  boardObject.changeBoard(board)
+  boardObject.changeBroccoliAmount(broccoliAmount)
 
   return boardObject

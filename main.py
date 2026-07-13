@@ -1,10 +1,9 @@
-from src.logic.board import BoardGenerator
+from src.logic.board import boardGenerator
 
 def main():
   rows = int(input("Enter the rows:"))
   columns = int(input("Enter the columns:"))
   broccoliAmount = int(input("Enter the number of broccolis:"))
-  board = BoardGenerator(rows,columns,broccoliAmount)
-  print(board["board"])
+  board = boardGenerator(rows, columns, broccoliAmount)
 
 main()

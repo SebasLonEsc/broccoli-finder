@@ -9,7 +9,7 @@ from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 #   boardObject: the object containing all of the information about the board
 # Output:
 #   Returns an array of the weights for each available baord shape
-def ShapeWeigher(boardObject):
+def shapeWeigher(boardObject):
   boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
   i = 0
@@ -87,7 +87,7 @@ def defineCornerSizes(boardObject, randomCorners):
 #   randomCorners (optional): boolean indicating if each corner size is randomized (default value is False)
 # Output:
 #   Returns the board object with the updated information of the cutCorner shape
-def CutCornersShaper(boardObject, randomCorners=False):
+def cutCornersShaper(boardObject, randomCorners=False):
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
   cornerSizes = defineCornerSizes(boardObject, randomCorners)
@@ -128,10 +128,10 @@ def CutCornersShaper(boardObject, randomCorners=False):
       tilesBoard[CORNERGUIDE[i][0], j] = tile
       nullSpaceNumber += 1
     
-  boardObject.ChangeBoard(board)
-  boardObject.ChangeTilesBoard(tilesBoard)
-  boardObject.ChangeNullSpaceAmount(nullSpaceNumber)
-  boardObject.ChangeAvaliableSpace(boardObject.BoardSize() - nullSpaceNumber)
+  boardObject.changeBoard(board)
+  boardObject.changeTilesBoard(tilesBoard)
+  boardObject.changeNullSpacesAmount(nullSpaceNumber)
+  boardObject.changeAvaliableSpaces(boardObject.boardSize() - nullSpaceNumber)
 
   return boardObject
 
@@ -142,7 +142,7 @@ def CutCornersShaper(boardObject, randomCorners=False):
 #   boardObject: the object containing all of the information about the board
 # Output:
 #   Returns the board object with the updated information of the cross shape
-def CrossShaper(boardObject):
+def crossShaper(boardObject):
   if(boardObject.totalRows == boardObject.totalColumns and boardObject.totalRows == 2):
     return boardObject
   
@@ -178,10 +178,10 @@ def CrossShaper(boardObject):
     tilesBoard[row, crossColumn] = tile
     nullSpaceNumber += 1
 
-  boardObject.ChangeBoard(board)
-  boardObject.ChangeTilesBoard(tilesBoard)
-  boardObject.ChangeNullSpaceAmount(nullSpaceNumber)
-  boardObject.ChangeAvaliableSpace(boardObject.BoardSize() - nullSpaceNumber)
+  boardObject.changeBoard(board)
+  boardObject.changeTilesBoard(tilesBoard)
+  boardObject.changeNullSpacesAmount(nullSpaceNumber)
+  boardObject.changeAvaliableSpaces(boardObject.boardSize() - nullSpaceNumber)
 
   return boardObject
 
@@ -190,17 +190,17 @@ def CrossShaper(boardObject):
 #   boardObject: the object containing all of the information about the board
 # Output:
 #   Returns the board object in a randomly selected shape
-def BoardShaper(boardObject):
-  boardShapesWeight = ShapeWeigher(boardObject)
+def boardShaper(boardObject):
+  boardShapesWeight = shapeWeigher(boardObject)
   boardshape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
   shapedBoard = boardObject
 
   match boardshape:
     case "cutCorners":
-      shapedBoard = CutCornersShaper(shapedBoard)
+      shapedBoard = cutCornersShaper(shapedBoard)
     case "cross":
-      shapedBoard = CrossShaper(shapedBoard)
+      shapedBoard = crossShaper(shapedBoard)
     case "randomCutcorners":
-      shapedBoard = CutCornersShaper(shapedBoard, True)
+      shapedBoard = cutCornersShaper(shapedBoard, True)
 
   return shapedBoard

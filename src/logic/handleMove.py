@@ -126,12 +126,12 @@ def handleMove(boardObject, movePosition):
   boardRowLimit = boardObject.totalRows
   boardColumnLimit = boardObject.totalColumns
   tilesBoard = makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit)
-  boardObject.ChangeTilesBoard(tilesBoard)
+  boardObject.changeTilesBoard(tilesBoard)
 
   gameStatus = checkGameStatus(board, tilesBoard, movePosition, broccoliAmount)
 
   if gameStatus < 0: 
     tilesBoard = revealAllBroccolis(board, tilesBoard, broccoliAmount)
-    boardObject.ChangeTilesBoard(tilesBoard)
+    boardObject.changeTilesBoard(tilesBoard)
   
   return boardObject, gameStatus
