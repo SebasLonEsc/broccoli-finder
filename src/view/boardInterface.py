@@ -1,12 +1,20 @@
 import tkinter as tk
 import numpy as np
-import math
 from functools import partial
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 
+# Updates the interface when winning or losing the game
+# Disables all buttons and reveal all broccolis if is a lost game
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
+#   movePosition: an array containg the [row, column] of the current move made by the player
+# Output:
+#   Nothing
 def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
+
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
       checked = tilesBoard[row, column]["checked"]
@@ -28,7 +36,12 @@ def handleGameStatus(boardObject, buttons, movePosition):
         buttons[row, column].config(disabledforeground=fontColor)
         buttons[row, column].config(text="-1")
 
-
+# Updates the tiles of the board to show the value (empty, proximity number or broccoli) of each affected tile by the player move
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
+# Output:
+#   Nothing
 def handleText(boardObject, buttons):
   tilesBoard = boardObject.tilesBoard
 
@@ -51,6 +64,14 @@ def handleText(boardObject, buttons):
         buttons[row, column].config(bg="gray70")
         buttons[row, column].config(text=text)
 
+# Handles the click of the player on a tile of the board
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
+#   movePosition: an array containg the [row, column] of the current move made by the player
+#   winLabel: the label widget that shows the lose or win text
+# Output:
+#   Nothing
 def handleClick(boardObject, buttons, movePosition, winLabel):
   boardObject, gameStatus = handleMove(boardObject, movePosition)
   handleText(boardObject, buttons)
@@ -64,7 +85,12 @@ def handleClick(boardObject, buttons, movePosition, winLabel):
     winLabel.config(text=gameStatusText)
     handleGameStatus(boardObject, buttons, movePosition)
 
-def createInterface(boardObject):
+# Creates the interface of the board
+# Input:
+#   boardObject: the object containing all of the information about the board
+# Output:
+#   Nothing
+def createBoardInterface(boardObject):
   rows = boardObject.totalRows
   columns = boardObject.totalColumns
   buttons = np.empty(shape=[rows,columns],dtype="object")
