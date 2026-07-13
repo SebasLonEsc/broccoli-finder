@@ -58,7 +58,7 @@ class Board:
 #   broccoliAmount: the amount of broccolis on the board
 # Output:
 #   Returns the generated board object
-def BoardGenerator(rows, columns, broccoliAmount):
+def boardGenerator(rows, columns, broccoliAmount):
   emptyBoard = np.zeros(shape=[rows,columns],dtype=np.int8)
   tilesBoard = np.ndarray(shape=[rows,columns],dtype=np.object_)
   tilesBoard = FillTilesBoard(tilesBoard)
@@ -82,11 +82,11 @@ def BoardGenerator(rows, columns, broccoliAmount):
 #     2: Play the game in an interface
 # Output:
 #   Nothing
-def HandleBoardGeneration(gameType):
+def handleBoardGeneration(gameType):
   rows = int(input("Enter the rows:"))
   columns = int(input("Enter the columns:"))
   broccoliAmount = int(input("Enter the number of broccolis:"))
-  boardObject = BoardGenerator(rows,columns,broccoliAmount)
+  boardObject = boardGenerator(rows, columns, broccoliAmount)
   print(boardObject.board) #TEMP
 
   if gameType == 1:

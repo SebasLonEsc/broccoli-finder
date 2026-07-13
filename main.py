@@ -1,4 +1,4 @@
-from src.logic.board import HandleBoardGeneration
+from src.logic.board import handleBoardGeneration
 
 def main():
   invalidGameType = True
@@ -17,6 +17,6 @@ def main():
     else:
       print("\nInvalid game type")
 
-  HandleBoardGeneration(gameType)
+  handleBoardGeneration(gameType)
 
 main()
