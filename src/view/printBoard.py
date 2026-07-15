@@ -46,6 +46,7 @@ def printBoardOnConsole(boardObject):
   gameStatus = 0
   rowLimit = boardObject.totalRows
   columnLimit = boardObject.totalColumns
+  printing(boardObject)
 
   while gameStatus == 0:
     row = int(input("Enter the row:")) - 1
