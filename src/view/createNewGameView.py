@@ -51,20 +51,20 @@ def createNewGameView():
   tk.Label(
     root,
     text="New Game",
-    anchor="center").grid(row=0)
+    anchor="center").grid(row=0, columnspan=4)
   
-  tk.Label(root, text="# Rows").grid(row=2, column=0)
-  tk.Label(root, text="# Columns").grid(row=3, column=0)
-  tk.Label(root, text="# Broccolis").grid(row=4, column=0)
+  tk.Label(root, text="# Rows").grid(row=2, column=1, columnspan=1)
+  tk.Label(root, text="# Columns").grid(row=3, column=1, columnspan=1)
+  tk.Label(root, text="# Broccolis").grid(row=4, column=1, columnspan=1)
   errorLabel = tk.Label(root, text="", anchor="center")
 
   rows = tk.Spinbox(root, from_=2, to=30)
   columns = tk.Spinbox(root, from_=2, to=30)
   broccoliAmount = tk.Spinbox(root, from_=1, to=40)
 
-  rows.grid(row=2, column=1)
-  columns.grid(row=3, column=1)
-  broccoliAmount.grid(row=4, column=1)
+  rows.grid(row=2, column=2, columnspan=1, pady=2)
+  columns.grid(row=3, column=2, columnspan=1, pady=2)
+  broccoliAmount.grid(row=4, column=2, columnspan=1, pady=2)
 
   tk.Button(root,
             activebackground="white",
@@ -75,11 +75,10 @@ def createNewGameView():
             disabledforeground="white",
             justify="center",
             height=1,
-            width=3,
-            padx=0,
+            padx=4,
             pady=0,
             text= "Play",
-            ).grid(row=5)
+            ).grid(row=5, column=1, columnspan=2, pady=[4,2])
   
-  errorLabel.grid(row=6)
+  errorLabel.grid(row=6, columnspan=4)
   root.mainloop()

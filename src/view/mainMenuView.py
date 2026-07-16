@@ -4,10 +4,10 @@ from src.view.createNewGameView import createNewGameView
 
 def closeInterface(root):
   root.destroy()
-  createNewGameView()
 
 def handleNewGame(root):
   closeInterface(root)
+  createNewGameView()
 
 
 def createMainMenuView():
@@ -16,7 +16,7 @@ def createMainMenuView():
   tk.Label(
     root,
     text="Broccoli Seeker",
-    anchor="center").grid(row=0, column=1, columnspan=3)
+    anchor="center").pack(pady=2)
   
   tk.Button(root,
             activebackground="white",
@@ -30,7 +30,7 @@ def createMainMenuView():
             padx=0,
             pady=0,
             text= "New Game",
-            ).grid(row=1, column=1, columnspan=3)
+            ).pack(pady=2)
   
   tk.Button(root,
             activebackground="white",
@@ -44,6 +44,6 @@ def createMainMenuView():
             padx=0,
             pady=0,
             text= "Exit",
-            ).grid(row=2, column=1, columnspan=3)
+            ).pack(pady=[4,8])
   
   root.mainloop()
