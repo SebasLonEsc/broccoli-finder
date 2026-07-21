@@ -2,6 +2,7 @@ import tkinter as tk
 from functools import partial
 import math
 from src.logic.board import boardGenerator
+from src.logic.interfaceTools import centerWindow
 from src.view.boardInterface import createBoardInterface
 
 def validateInputs(rows, columns, broccoliAmount):
@@ -46,8 +47,15 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel):
   createBoardInterface(boardObject)
 
 def createNewGameView():
+  windowWidth = 210
+  windowHeight = 140
+
   root = tk.Tk()
-  root.title("Broccolis")
+  root.title("Game")
+  root.minsize(windowWidth,windowHeight)
+  root.maxsize(windowWidth,windowHeight)
+  centerWindow(root, windowWidth, windowHeight)
+
   tk.Label(
     root,
     text="New Game",
