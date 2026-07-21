@@ -3,18 +3,28 @@ from functools import partial
 from src.view.createNewGameView import createNewGameView
 from src.logic.interfaceTools import centerWindow, closeInterface
 
+# Closes the current window and creates the new game menu window
+# Input:
+#   root: the root windget, the current window that is being displayed
+# Output:
+#   Nothing
 def handleNewGame(root):
   closeInterface(root)
   createNewGameView(createMainMenuView)
 
+# Creates the main menu window
+# Input:
+#   Nothing
+# Output:
+#   Nothing
 def createMainMenuView():
   windowWidth = 220
   windowHeight = 80
 
   root = tk.Tk()
   root.title("Broccolis")
-  root.minsize(windowWidth,windowHeight)
-  root.maxsize(windowWidth,windowHeight)
+  root.minsize(windowWidth, windowHeight)
+  root.maxsize(windowWidth, windowHeight)
   centerWindow(root, windowWidth, windowHeight)
 
   tk.Label(

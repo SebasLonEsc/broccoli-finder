@@ -5,6 +5,16 @@ from src.logic.board import boardGenerator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack
 from src.view.boardInterface import createBoardInterface
 
+# Validates if the input values are valid values
+# Input:
+#   rows: number of rows on the board
+#   columns: number of columns on the board
+#   broccoliAmount: number of broccolis on the board
+# Output:
+#   Returns a String depending if the inputs are valid
+#     "The following values are invalid:" if all values are valid
+#     "The following values are invalid:" + InputValue if one/several value is invalid
+#     "Value is not numeric" if there is a non numeric value
 def validateInputs(rows, columns, broccoliAmount):
   try:
     errorText = "The following values are invalid:"
@@ -25,6 +35,17 @@ def validateInputs(rows, columns, broccoliAmount):
   except:
     return "Value is not numeric"
 
+# Closes the current window and creates the new game interface
+# Input:
+#   root: the root windget, the current window that is being displayed
+#   rows: number of rows on the board
+#   columns: number of columns on the board
+#   broccoliAmount: number of broccolis on the board
+#   errorLabel: The label widget to display an error message
+#   createNewGameView: The function that creates the current view/window. Used in the next view for the goBack function
+#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
+# Output:
+#   Nothing
 def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc):
   errorText = validateInputs(rows, columns, broccoliAmount)
 
@@ -46,14 +67,19 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   boardObject = boardGenerator(numberOfRows, numberOfColumns, numberOfBroccolis)
   createBoardInterface(boardObject, createNewGameView, goBackFunc)
 
+# Creates the new game menu interface
+# Input:
+#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
+# Output:
+#   Nothing
 def createNewGameView(goBackFunc):
   windowWidth = 210
   windowHeight = 140
 
   root = tk.Tk()
   root.title("Game")
-  root.minsize(windowWidth,windowHeight)
-  root.maxsize(windowWidth,windowHeight)
+  root.minsize(windowWidth, windowHeight)
+  root.maxsize(windowWidth, windowHeight)
   centerWindow(root, windowWidth, windowHeight)
 
   menu = tk.Menu(root, tearoff=0)
