@@ -1,10 +1,7 @@
 import tkinter as tk
 from functools import partial
 from src.view.createNewGameView import createNewGameView
-from src.logic.interfaceTools import centerWindow
-
-def closeInterface(root):
-  root.destroy()
+from src.logic.interfaceTools import centerWindow, closeInterface
 
 def handleNewGame(root):
   closeInterface(root)

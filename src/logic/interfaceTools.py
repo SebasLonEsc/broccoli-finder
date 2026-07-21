@@ -4,3 +4,6 @@ def centerWindow(window, windowWidth, windowHeight):
   x = (screenWidth - windowWidth) // 2
   y = (screenHeight - windowHeight) // 2
   window.geometry(f"{windowWidth}x{windowHeight}+{x}+{y}")
+
+def closeInterface(root):
+  root.destroy()
