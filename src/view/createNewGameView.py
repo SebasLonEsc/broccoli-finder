@@ -2,8 +2,12 @@ import tkinter as tk
 from functools import partial
 import math
 from src.logic.board import boardGenerator
-from src.logic.interfaceTools import centerWindow
+from src.logic.interfaceTools import centerWindow, closeInterface
 from src.view.boardInterface import createBoardInterface
+
+def goBack(root, goBackFunc):
+  closeInterface(root)
+  goBackFunc()
 
 def validateInputs(rows, columns, broccoliAmount):
   try:
@@ -25,7 +29,7 @@ def validateInputs(rows, columns, broccoliAmount):
   except:
     return "Value is not numeric"
 
-def createNewGame(root, rows, columns, broccoliAmount, errorLabel):
+def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc):
   errorText = validateInputs(rows, columns, broccoliAmount)
 
   if errorText != "The following values are invalid:":
@@ -42,11 +46,11 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel):
     errorLabel.config(text="Please reduce the amount of Broccolis")
     return
 
-  root.destroy()
+  closeInterface(root)
   boardObject = boardGenerator(numberOfRows, numberOfColumns, numberOfBroccolis)
-  createBoardInterface(boardObject)
+  createBoardInterface(boardObject, createNewGameView, goBackFunc)
 
-def createNewGameView():
+def createNewGameView(goBackFunc):
   windowWidth = 210
   windowHeight = 140
 
@@ -79,7 +83,7 @@ def createNewGameView():
             anchor="center",
             bd=1,
             bg="lightgray",
-            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel),
+            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc),
             disabledforeground="white",
             justify="center",
             height=1,

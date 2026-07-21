@@ -1,8 +1,18 @@
 import tkinter as tk
 import numpy as np
+import math
 from functools import partial
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
+from src.logic.interfaceTools import closeInterface
+
+def goBack(root, goBackFunc):
+  closeInterface(root)
+  goBackFunc()
+
+def changeToMainMenu(root, goToMainMenu):
+  closeInterface(root)
+  goToMainMenu()
 
 # Updates the interface when winning or losing the game
 # Disables all buttons and reveal all broccolis if is a lost game
@@ -90,7 +100,7 @@ def handleClick(boardObject, buttons, movePosition, winLabel):
 #   boardObject: the object containing all of the information about the board
 # Output:
 #   Nothing
-def createBoardInterface(boardObject):
+def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   rows = boardObject.totalRows
   columns = boardObject.totalColumns
   buttons = np.empty(shape=[rows,columns],dtype="object")
@@ -99,20 +109,20 @@ def createBoardInterface(boardObject):
   root = tk.Tk()
   root.title("Broccoli")
   root.grid_columnconfigure(0, weight=1)
-  pane = tk.Frame(root)
-  pane.grid(row=0, columnspan=columns)
+  frame = tk.Frame(root)
+  frame.grid(row=0, columnspan=columns)
 
   tk.Label(
-    pane,
+    frame,
     text="Broccoli Seeker",
     anchor="center").grid(row=0, columnspan=columns)
   
-  lastPane= tk.Frame(root)
-  label = tk.Label(lastPane, text="", anchor="center")
+  lastFrame= tk.Frame(root)
+  label = tk.Label(lastFrame, text="", anchor="center")
   
   for row in range(0, rows):
-    pane = tk.Frame(root, bg="lightgray", background="lightgray")
-    pane.grid(row=row+1, column=0, columnspan=columns)
+    frame = tk.Frame(root, bg="lightgray", background="lightgray")
+    frame.grid(row=row+1, column=0, columnspan=columns)
 
     for column in range(0, columns):
       buttonText = ""
@@ -123,7 +133,7 @@ def createBoardInterface(boardObject):
         buttonText = " "
         backgroundColor = "gray60"
 
-      button = tk.Button(pane,
+      button = tk.Button(frame,
                         activebackground="white",
                         anchor="center",
                         bd=1,
@@ -145,7 +155,37 @@ def createBoardInterface(boardObject):
       button.grid(row=0, column=column)
       button = None
 
-  lastPane.grid(row=rows+2, columnspan=columns)
+  lastFrame.grid(row=rows+2, columnspan=columns)
   label.grid(row=0, column=0, columnspan=columns)
+
+  actionFrame = tk.Frame(root)
+  actionFrame.grid(row=row+4, columnspan=columns)
+  buttonColumns = math.floor(columns/2)
+
+  tk.Button(actionFrame,
+            activebackground="white",
+            anchor="center",
+            bd=1,
+            bg="lightgray",
+            command= partial(changeToMainMenu, root, goToMainMenu),
+            justify="center",
+            height=1,
+            padx=0,
+            pady=0,
+            text= "Main Menu",
+            ).grid(row=0, column=buttonColumns-1, columnspan=1, padx=[2,2])
+  tk.Button(actionFrame,
+            activebackground="white",
+            anchor="center",
+            bd=1,
+            bg="lightgray",
+            command= partial(closeInterface, root),
+            justify="center",
+            height=1,
+            width=8,
+            padx=0,
+            pady=0,
+            text= "Exit",
+            ).grid(row=0, column=buttonColumns, columnspan=1, padx=[2,2])
   
   root.mainloop()

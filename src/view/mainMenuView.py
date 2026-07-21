@@ -5,7 +5,7 @@ from src.logic.interfaceTools import centerWindow, closeInterface
 
 def handleNewGame(root):
   closeInterface(root)
-  createNewGameView()
+  createNewGameView(createMainMenuView)
 
 def createMainMenuView():
   windowWidth = 220
