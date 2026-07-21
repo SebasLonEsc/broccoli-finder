@@ -7,3 +7,11 @@ def centerWindow(window, windowWidth, windowHeight):
 
 def closeInterface(root):
   root.destroy()
+
+def goBack(root, goBackFunc, previousGoBackFunc = None):
+  closeInterface(root)
+
+  if previousGoBackFunc is None:
+    goBackFunc()
+  else:
+    goBackFunc(previousGoBackFunc)

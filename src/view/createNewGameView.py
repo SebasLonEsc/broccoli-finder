@@ -2,12 +2,8 @@ import tkinter as tk
 from functools import partial
 import math
 from src.logic.board import boardGenerator
-from src.logic.interfaceTools import centerWindow, closeInterface
+from src.logic.interfaceTools import centerWindow, closeInterface, goBack
 from src.view.boardInterface import createBoardInterface
-
-def goBack(root, goBackFunc):
-  closeInterface(root)
-  goBackFunc()
 
 def validateInputs(rows, columns, broccoliAmount):
   try:
@@ -59,6 +55,14 @@ def createNewGameView(goBackFunc):
   root.minsize(windowWidth,windowHeight)
   root.maxsize(windowWidth,windowHeight)
   centerWindow(root, windowWidth, windowHeight)
+
+  menu = tk.Menu(root, tearoff=0)
+  root.config(menu=menu)
+  gameMenu = tk.Menu(menu, tearoff=0)
+  menu.add_cascade(label="Game", menu=gameMenu)
+  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goBackFunc))
+  gameMenu.add_separator()
+  gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
 
   tk.Label(
     root,

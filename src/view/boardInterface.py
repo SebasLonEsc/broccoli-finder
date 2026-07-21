@@ -4,15 +4,7 @@ import math
 from functools import partial
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
-from src.logic.interfaceTools import closeInterface
-
-def goBack(root, goBackFunc):
-  closeInterface(root)
-  goBackFunc()
-
-def changeToMainMenu(root, goToMainMenu):
-  closeInterface(root)
-  goToMainMenu()
+from src.logic.interfaceTools import closeInterface, goBack
 
 # Updates the interface when winning or losing the game
 # Disables all buttons and reveal all broccolis if is a lost game
@@ -112,6 +104,15 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   frame = tk.Frame(root)
   frame.grid(row=0, columnspan=columns)
 
+  menu = tk.Menu(root, tearoff=0)
+  root.config(menu=menu)
+  gameMenu = tk.Menu(menu, tearoff=0)
+  menu.add_cascade(label="Game", menu=gameMenu)
+  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
+  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc, goToMainMenu))
+  gameMenu.add_separator()
+  gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
+
   tk.Label(
     frame,
     text="Broccoli Seeker",
@@ -167,7 +168,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg="lightgray",
-            command= partial(changeToMainMenu, root, goToMainMenu),
+            command= partial(goBack, root, goToMainMenu),
             justify="center",
             height=1,
             padx=0,
