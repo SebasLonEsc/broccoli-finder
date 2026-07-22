@@ -77,7 +77,7 @@ def createNewGameView(goBackFunc):
   windowHeight = 140
 
   root = tk.Tk()
-  root.title("Game")
+  root.title("New Game")
   root.minsize(windowWidth, windowHeight)
   root.maxsize(windowWidth, windowHeight)
   centerWindow(root, windowWidth, windowHeight)
