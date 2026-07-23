@@ -59,7 +59,7 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   numberOfColumns = int(columns.get())
   numberOfBroccolis = int(broccoliAmount.get())
 
-  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Hard"][1]
+  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
   broccoliAmountProportion = math.floor(numberOfRows * numberOfColumns * broccoliPercentLimit)
 
   if numberOfBroccolis > broccoliAmountProportion:
@@ -106,7 +106,7 @@ def createNewGameView(goBackFunc):
 
   boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
   boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
-  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Hard"][1]
+  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
   maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit * boardSizeUpperLimit * broccoliPercentLimit)
   rows = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
   columns = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)

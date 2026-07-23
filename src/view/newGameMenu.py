@@ -12,14 +12,16 @@ from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENT
 # Closes the current window and creates the new game window
 # Input:
 #   root: the root windget, the current window that is being displayed
-#   previousGoBackfunc: Function to go back to the previous view
 #   goBackFunc: Function to go back to the current view
-#   gameDifficulty: The selected game difficulty
+#   previousGoBackfunc: Function to go back to the previous view
+#   gameDifficulty: The game difficulty combobox
 #   boardSize: The selected board size
 # Output:
 #   Nothing
-def createGame(root, previousGoBackFunc, goBackFunc, gameDifficulty, boardSize):
-  broccoliPercent = GAMEBROCCOLIPERCENTS[gameDifficulty]
+def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
+  gameDifficulty = difficulty.get()
+
+  broccoliPercent = GAMEBROCCOLIPERCENTS[boardSize][gameDifficulty]
   boardSizes = BOARDSIZEVALUES[boardSize]
 
   rows = random.randint(boardSizes[0], boardSizes[1])
@@ -32,19 +34,29 @@ def createGame(root, previousGoBackFunc, goBackFunc, gameDifficulty, boardSize):
   if broccoliLowerLimit != broccoliUpperLimit and broccoliLowerLimit < broccoliUpperLimit:
     broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
 
+  print(broccoliAmount)
+
   closeInterface(root)
   boardObject = boardGenerator(rows, columns, broccoliAmount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
 
-def createGameSelectorButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
-  gameDifficulty = difficulty.get()
-  
+# Creates a board size button
+# Input:
+#   root: the root windget, the current window that is being displayed
+#   goBackFunc: Function to go back to the current view
+#   previousGoBackfunc: Function to go back to the previous view
+#   masterWidget: The widget where the button is being placed
+#   gameDifficulty: The game difficulty combobox
+#   boardSize: The selected board size
+# Output:
+#   Nothing
+def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
   button = tk.Button(masterWidget,
                       activebackground="white",
                       anchor="center",
                       bd=1,
                       bg="lightgray",
-                      command= partial(createGame, root, previousGoBackFunc, goBackFunc, gameDifficulty, size),
+                      command= partial(createGame, root, goBackFunc, previousGoBackFunc, difficulty, size),
                       disabledforeground="white",
                       justify="center",
                       height=1,
@@ -99,8 +111,8 @@ def newGameMenu(goBackFunc):
 
   frame = tk.Frame(root)
   frame.grid(row=2, pady=[2,2])
-  createGameSelectorButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").grid(row=0, column=0, padx=[4,4])
-  createGameSelectorButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").grid(row=0, column=1, padx=[4,4])
-  createGameSelectorButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").grid(row=0, column=2, padx=[4,4])
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").grid(row=0, column=0, padx=[4,4])
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").grid(row=0, column=1, padx=[4,4])
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").grid(row=0, column=2, padx=[4,4])
 
   root.mainloop()
