@@ -90,6 +90,8 @@ def handleClick(boardObject, buttons, movePosition, winLabel):
 # Creates the interface of the board
 # Input:
 #   boardObject: the object containing all of the information about the board
+#   goBackFunc: Function to go back to the previous view
+#   goToMainMenu: Function to go back to the main menu view
 # Output:
 #   Nothing
 def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
