@@ -10,19 +10,34 @@ from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 # Output:
 #   Returns an array of the weights for each available baord shape
 def shapeWeigher(boardObject):
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+
   boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
   i = 0
 
   for shape in BOARDSHAPES:
-    if i == 0:
+    if i == 0: # Skiped normal board, default weight of 2
       i += 1
       continue
 
-    if (boardObject.totalRows == 2 or boardObject.totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
-      boardShapesWeight[i] = 2
+    if (totalRows == 2 or totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
+      boardShapesWeight[i] = 0
       i += 1
       continue
+
+    if shape == "cross":
+      if totalRows == 2 or totalColumns == 2: # A two lenght side will be reduce to one lenght on cross-shape
+        boardShapesWeight[i] = 0
+        i += 1
+        continue
+
+      boardSize = totalRows * totalColumns
+      if boardSize < 16:  # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
+        boardShapesWeight[i] = 0
+        i += 1
+        continue
 
     boardShapesWeight[i] = random.randint(1,2)
     i += 1
@@ -143,10 +158,7 @@ def cutCornersShaper(boardObject, randomCorners=False):
 # Output:
 #   Returns the board object with the updated information of the cross shape
 def crossShaper(boardObject):
-  if(boardObject.totalRows == boardObject.totalColumns and boardObject.totalRows == 2):
-    return boardObject
-  
-  if(boardObject.totalRows == 2 or boardObject.totalColumns == 2):
+  if(boardObject.totalRows <= 3 or boardObject.totalColumns <= 3):
     return boardObject
 
   crossRow = random.randint(1, boardObject.totalRows-2)
@@ -192,10 +204,10 @@ def crossShaper(boardObject):
 #   Returns the board object in a randomly selected shape
 def boardShaper(boardObject):
   boardShapesWeight = shapeWeigher(boardObject)
-  boardshape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
+  boardShape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
   shapedBoard = boardObject
 
-  match boardshape:
+  match boardShape:
     case "cutCorners":
       shapedBoard = cutCornersShaper(shapedBoard)
     case "cross":
