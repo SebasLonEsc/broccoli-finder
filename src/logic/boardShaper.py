@@ -162,18 +162,24 @@ def cutCornersShaper(boardObject, randomCorners=False):
 # Output:
 #   Returns the board object with the updated information of the cross shape
 def crossShaper(boardObject):
-  if(boardObject.totalRows <= 3 or boardObject.totalColumns <= 3):
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+
+  if(totalRows <= 3 or totalColumns <= 3):  # For side of length 3 the available space it's too little
+    return boardObject
+  
+  if(totalRows * totalColumns <= 16): # Blocks 4x4 boards on having cross shape
     return boardObject
 
-  crossRow = random.randint(1, boardObject.totalRows-2)
-  crossColumn = random.randint(1, boardObject.totalColumns-2)
+  crossRow = random.randint(1, totalRows-2)
+  crossColumn = random.randint(1, totalColumns-2)
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
 
   tile = {}
   nullSpaceNumber = 0
 
-  for column in range(boardObject.totalColumns):
+  for column in range(totalColumns):
     tile = tilesBoard[crossRow, column]
     tile["tileValue"] = "*"
     tile["checked"] = True
@@ -182,7 +188,7 @@ def crossShaper(boardObject):
     tilesBoard[crossRow, column] = tile
     nullSpaceNumber += 1
 
-  for row in range(boardObject.totalRows):
+  for row in range(totalRows):
     if board[row, crossColumn] == -2:
       continue
 
