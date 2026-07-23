@@ -34,7 +34,7 @@ BOARDSIZES = ["Small", "Medium", "Big"]
 # The sizes [min, max] for each board size type
 # The min and max applies for both number of rows and columns
 BOARDSIZEVALUES = {
-  "Small": [3, 10],
+  "Small": [4, 10],
   "Medium": [11, 20],
   "Big": [21, 30]
   }
