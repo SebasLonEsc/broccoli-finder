@@ -55,16 +55,18 @@ def shapeWeigher(boardObject):
 #   Returns a matrix containg the sizes for each corner in a [horizontalSize, verticalSize] pattern
 def defineCornerSizes(boardObject, randomCorners):
   cornerSizes = np.zeros((4,2), dtype=np.int_)
-  horizontalCornerSizeLimit = math.floor(boardObject.totalRows / 2)
-  verticalCornerSizeLimit = math.floor(boardObject.totalColumns / 2)
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+  horizontalCornerSizeLimit = math.floor(totalRows / 2)
+  verticalCornerSizeLimit = math.floor(totalColumns / 2)
 
-  if boardObject.totalRows % 2 == 0:
+  if totalRows % 2 == 0 and totalRows == 4:
     horizontalCornerSizeLimit -= 1
 
-  if boardObject.totalColumns % 2 == 0:
+  if totalColumns % 2 == 0 and totalColumns == 4:
     verticalCornerSizeLimit -= 1
 
-  if boardObject.totalRows <= 2 or boardObject.totalColumns <= 2:
+  if totalRows <= 2 or totalColumns <= 2:
     return cornerSizes
 
   if randomCorners:
@@ -123,9 +125,10 @@ def cutCornersShaper(boardObject, randomCorners=False):
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[j, CORNERGUIDE[i][1]] = -2
-      tilesBoard[j, CORNERGUIDE[i][1]] = tile
-      nullSpaceNumber += 1
+      if board[j, CORNERGUIDE[i][1]] == 0:
+        board[j, CORNERGUIDE[i][1]] = -2
+        tilesBoard[j, CORNERGUIDE[i][1]] = tile
+        nullSpaceNumber += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
@@ -139,9 +142,10 @@ def cutCornersShaper(boardObject, randomCorners=False):
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[CORNERGUIDE[i][0], j] = -2
-      tilesBoard[CORNERGUIDE[i][0], j] = tile
-      nullSpaceNumber += 1
+      if board[CORNERGUIDE[i][0], j] == 0:
+        board[CORNERGUIDE[i][0], j] = -2
+        tilesBoard[CORNERGUIDE[i][0], j] = tile
+        nullSpaceNumber += 1
     
   boardObject.changeBoard(board)
   boardObject.changeTilesBoard(tilesBoard)
