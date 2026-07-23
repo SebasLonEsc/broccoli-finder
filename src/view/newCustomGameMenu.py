@@ -3,6 +3,8 @@ from functools import partial
 import math
 from src.logic.board import boardGenerator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack
+from src.logic.constants.boardValues import BOARDSIZEVALUES
+from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.view.boardInterface import createBoardInterface
 
 # Validates if the input values are valid values
@@ -57,10 +59,12 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   numberOfColumns = int(columns.get())
   numberOfBroccolis = int(broccoliAmount.get())
 
-  broccoliAmountProportion = math.floor(numberOfRows * numberOfColumns * 0.3)
+  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Hard"][1]
+  broccoliAmountProportion = math.floor(numberOfRows * numberOfColumns * broccoliPercentLimit)
 
   if numberOfBroccolis > broccoliAmountProportion:
-    errorLabel.config(text="Please reduce the amount of Broccolis")
+    errorText = "Please reduce the amount of Broccolis to no more than " + str(broccoliAmountProportion)
+    errorLabel.config(text=errorText)
     return
 
   closeInterface(root)
@@ -100,9 +104,13 @@ def createNewGameView(goBackFunc):
   tk.Label(root, text="# Broccolis").grid(row=4, column=1, columnspan=1)
   errorLabel = tk.Label(root, text="", anchor="center")
 
-  rows = tk.Spinbox(root, from_=2, to=30)
-  columns = tk.Spinbox(root, from_=2, to=30)
-  broccoliAmount = tk.Spinbox(root, from_=1, to=40)
+  boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
+  boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
+  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Hard"][1]
+  maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit * boardSizeUpperLimit * broccoliPercentLimit)
+  rows = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  columns = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  broccoliAmount = tk.Spinbox(root, from_=1, to=maximumNumberOfBroccolis)
 
   rows.grid(row=2, column=2, columnspan=1, pady=2)
   columns.grid(row=3, column=2, columnspan=1, pady=2)
