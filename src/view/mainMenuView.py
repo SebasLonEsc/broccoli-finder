@@ -1,6 +1,6 @@
 import tkinter as tk
 from functools import partial
-from src.view.createNewGameView import createNewGameView
+from src.view.newGameMenu import newGameMenu
 from src.logic.interfaceTools import centerWindow, closeInterface
 
 # Closes the current window and creates the new game menu window
@@ -10,7 +10,7 @@ from src.logic.interfaceTools import centerWindow, closeInterface
 #   Nothing
 def handleNewGame(root):
   closeInterface(root)
-  createNewGameView(createMainMenuView)
+  newGameMenu(createMainMenuView)
 
 # Creates the main menu window
 # Input:
