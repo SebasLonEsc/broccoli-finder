@@ -88,6 +88,12 @@ def handleClick(boardObject, buttons, movePosition, winLabel):
     winLabel.config(text=gameStatusText)
     handleGameStatus(boardObject, buttons, movePosition)
 
+# Creates a canvas to display the board on it
+# The canvas add a scrollbar for big sized boards
+# Input:
+#   root: the root windget, the current window that is being displayed
+# Output:
+#   tk.Frame: The frame where the board will be displayed
 def createBoardCanvas(root):
   canvasFrame = tk.Frame(root)
   canvasFrame.pack(expand=True, fill="both")
