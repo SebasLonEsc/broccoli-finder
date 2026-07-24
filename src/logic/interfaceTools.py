@@ -10,7 +10,7 @@ def centerWindow(window, windowWidth, windowHeight):
   screenHeight = window.winfo_screenheight()
   x = (screenWidth - windowWidth) // 2
   y = (screenHeight - windowHeight) // 2
-  window.geometry(f"{windowWidth}x{windowHeight}+{x}+{y}")
+  window.geometry("+%d+%d" % (x, y))
 
 # Closes the current window
 # Input:

@@ -32,7 +32,7 @@ def boardBroccoliFiller(boardObject, broccoliAmount = 1):
   if broccoliAmount >= boardObject.availableSpace:
     broccoliAmount = boardObject.availableSpace - 1
 
-  for i in range(broccoliAmount):
+  for _ in range(broccoliAmount):
     pos = defineBroccoliPositions(board, boardObject)
     board[pos[0], pos[1]] = -1
     board = broccoliProximity(board, pos, totalRows, totalColumns)

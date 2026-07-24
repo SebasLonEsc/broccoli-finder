@@ -10,19 +10,34 @@ from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 # Output:
 #   Returns an array of the weights for each available baord shape
 def shapeWeigher(boardObject):
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+
   boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
   i = 0
 
   for shape in BOARDSHAPES:
-    if i == 0:
+    if i == 0: # Skiped normal board, default weight of 2
       i += 1
       continue
 
-    if (boardObject.totalRows == 2 or boardObject.totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
-      boardShapesWeight[i] = 2
+    if (totalRows == 2 or totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
+      boardShapesWeight[i] = 0
       i += 1
       continue
+
+    if shape == "cross":
+      if totalRows == 2 or totalColumns == 2: # A two lenght side will be reduce to one lenght on cross-shape
+        boardShapesWeight[i] = 0
+        i += 1
+        continue
+
+      boardSize = totalRows * totalColumns
+      if boardSize < 16:  # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
+        boardShapesWeight[i] = 0
+        i += 1
+        continue
 
     boardShapesWeight[i] = random.randint(1,2)
     i += 1
@@ -40,16 +55,18 @@ def shapeWeigher(boardObject):
 #   Returns a matrix containg the sizes for each corner in a [horizontalSize, verticalSize] pattern
 def defineCornerSizes(boardObject, randomCorners):
   cornerSizes = np.zeros((4,2), dtype=np.int_)
-  horizontalCornerSizeLimit = math.floor(boardObject.totalRows / 2)
-  verticalCornerSizeLimit = math.floor(boardObject.totalColumns / 2)
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+  horizontalCornerSizeLimit = math.floor(totalRows / 2)
+  verticalCornerSizeLimit = math.floor(totalColumns / 2)
 
-  if boardObject.totalRows % 2 == 0:
+  if totalRows % 2 == 0 and totalRows == 4:
     horizontalCornerSizeLimit -= 1
 
-  if boardObject.totalColumns % 2 == 0:
+  if totalColumns % 2 == 0 and totalColumns == 4:
     verticalCornerSizeLimit -= 1
 
-  if boardObject.totalRows <= 2 or boardObject.totalColumns <= 2:
+  if totalRows <= 2 or totalColumns <= 2:
     return cornerSizes
 
   if randomCorners:
@@ -108,9 +125,10 @@ def cutCornersShaper(boardObject, randomCorners=False):
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[j, CORNERGUIDE[i][1]] = -2
-      tilesBoard[j, CORNERGUIDE[i][1]] = tile
-      nullSpaceNumber += 1
+      if board[j, CORNERGUIDE[i][1]] == 0:
+        board[j, CORNERGUIDE[i][1]] = -2
+        tilesBoard[j, CORNERGUIDE[i][1]] = tile
+        nullSpaceNumber += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
@@ -124,9 +142,10 @@ def cutCornersShaper(boardObject, randomCorners=False):
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      board[CORNERGUIDE[i][0], j] = -2
-      tilesBoard[CORNERGUIDE[i][0], j] = tile
-      nullSpaceNumber += 1
+      if board[CORNERGUIDE[i][0], j] == 0:
+        board[CORNERGUIDE[i][0], j] = -2
+        tilesBoard[CORNERGUIDE[i][0], j] = tile
+        nullSpaceNumber += 1
     
   boardObject.changeBoard(board)
   boardObject.changeTilesBoard(tilesBoard)
@@ -143,21 +162,24 @@ def cutCornersShaper(boardObject, randomCorners=False):
 # Output:
 #   Returns the board object with the updated information of the cross shape
 def crossShaper(boardObject):
-  if(boardObject.totalRows == boardObject.totalColumns and boardObject.totalRows == 2):
+  totalRows = boardObject.totalRows
+  totalColumns = boardObject.totalColumns
+
+  if(totalRows <= 3 or totalColumns <= 3):  # For side of length 3 the available space it's too little
     return boardObject
   
-  if(boardObject.totalRows == 2 or boardObject.totalColumns == 2):
+  if(totalRows * totalColumns <= 16): # Blocks 4x4 boards on having cross shape
     return boardObject
 
-  crossRow = random.randint(1, boardObject.totalRows-2)
-  crossColumn = random.randint(1, boardObject.totalColumns-2)
+  crossRow = random.randint(1, totalRows-2)
+  crossColumn = random.randint(1, totalColumns-2)
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
 
   tile = {}
   nullSpaceNumber = 0
 
-  for column in range(boardObject.totalColumns):
+  for column in range(totalColumns):
     tile = tilesBoard[crossRow, column]
     tile["tileValue"] = "*"
     tile["checked"] = True
@@ -166,7 +188,7 @@ def crossShaper(boardObject):
     tilesBoard[crossRow, column] = tile
     nullSpaceNumber += 1
 
-  for row in range(boardObject.totalRows):
+  for row in range(totalRows):
     if board[row, crossColumn] == -2:
       continue
 
@@ -192,10 +214,10 @@ def crossShaper(boardObject):
 #   Returns the board object in a randomly selected shape
 def boardShaper(boardObject):
   boardShapesWeight = shapeWeigher(boardObject)
-  boardshape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
+  boardShape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
   shapedBoard = boardObject
 
-  match boardshape:
+  match boardShape:
     case "cutCorners":
       shapedBoard = cutCornersShaper(shapedBoard)
     case "cross":

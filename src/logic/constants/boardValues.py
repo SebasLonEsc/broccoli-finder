@@ -27,3 +27,14 @@ BOARDSHAPES = ["square", "cutCorners", "cross", "randomCutcorners"]
 #   for a 5x5 board with corner size 2 the indexes would be [-2] [-1], where [-1] is the last column and [-2] the previous one
 # The -1 values are used to indicate this behaviour while the 0 values indicate normal increments
 CORNERGUIDE = [[0,0], [0,-1], [-1,0], [-1,-1]]
+
+# Board sizes types
+BOARDSIZES = ["Small", "Medium", "Big"]
+
+# The sizes [min, max] for each board size type
+# The min and max applies for both number of rows and columns
+BOARDSIZEVALUES = {
+  "Small": [4, 10],
+  "Medium": [11, 20],
+  "Big": [21, 30]
+  }
