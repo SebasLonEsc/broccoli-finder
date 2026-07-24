@@ -4,6 +4,7 @@ import math
 from functools import partial
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
+from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELHEIGHT
 from src.logic.interfaceTools import closeInterface, goBack
 
 # Updates the interface when winning or losing the game
@@ -87,6 +88,28 @@ def handleClick(boardObject, buttons, movePosition, winLabel):
     winLabel.config(text=gameStatusText)
     handleGameStatus(boardObject, buttons, movePosition)
 
+# Creates a canvas to display the board on it
+# The canvas add a scrollbar for big sized boards
+# Input:
+#   root: the root windget, the current window that is being displayed
+# Output:
+#   tk.Frame: The frame where the board will be displayed
+def createBoardCanvas(root):
+  canvasFrame = tk.Frame(root)
+  canvasFrame.pack(expand=True, fill="both")
+  boardCanvas = tk.Canvas(canvasFrame)
+  boardCanvas.pack(side="left", fill="both", expand=True, anchor="center")
+  scrollbar = tk.Scrollbar(canvasFrame, orient="vertical", command=boardCanvas.yview)
+  scrollbar.pack(side="right", fill="y")
+  boardCanvas.configure(yscrollcommand=scrollbar.set)
+
+  gameFrame = tk.Frame(boardCanvas)
+  gameFrame.bind("<Configure>", lambda e: boardCanvas.configure(scrollregion=boardCanvas.bbox("all")))
+  canvasWindowId = boardCanvas.create_window((0,0), window=gameFrame, anchor="center")
+  boardCanvas.bind("<Configure>", lambda e: boardCanvas.itemconfig(canvasWindowId, width=canvasFrame.winfo_width()))
+
+  return gameFrame
+
 # Creates the interface of the board
 # Input:
 #   boardObject: the object containing all of the information about the board
@@ -103,8 +126,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   root = tk.Tk()
   root.title("Broccoli")
   root.grid_columnconfigure(0, weight=1)
-  frame = tk.Frame(root)
-  frame.grid(row=0, columnspan=columns)
+  screenWidth = root.winfo_screenwidth()
+  screenHeight = root.winfo_screenheight()
+  root.maxsize(screenWidth, screenHeight)
+  root.geometry("+%d+%d" % ((screenWidth // 4), 0))
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
@@ -115,17 +140,21 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
 
-  tk.Label(
-    frame,
-    text="Broccoli Seeker",
-    anchor="center").grid(row=0, columnspan=columns)
+  frame = tk.Frame(root)
+  frame.pack()
+  tk.Label(frame, text="Broccoli Seeker").pack()
   
   lastFrame= tk.Frame(root)
-  label = tk.Label(lastFrame, text="", anchor="center")
+  gameStatuslabel = tk.Label(lastFrame, text="", anchor="center")
+
+  gameFrame = root
+  createCanvas = (rows * TILEPIXELHEIGHT * 100) / screenHeight > BOARDMAXIMUNSIZEPERCENT  
+  if(createCanvas):
+    gameFrame = createBoardCanvas(root)
   
   for row in range(0, rows):
-    frame = tk.Frame(root, bg="lightgray", background="lightgray")
-    frame.grid(row=row+1, column=0, columnspan=columns)
+    frame = tk.Frame(gameFrame, bg="lightgray", background="lightgray")
+    frame.pack(expand=True)
 
     for column in range(0, columns):
       buttonText = ""
@@ -141,7 +170,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
                         anchor="center",
                         bd=1,
                         bg=backgroundColor,
-                        command= partial(handleClick, boardObject, buttons, [row, column], label),
+                        command= partial(handleClick, boardObject, buttons, [row, column], gameStatuslabel),
                         disabledforeground="white",
                         justify="center",
                         height=1,
@@ -155,16 +184,14 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
         button.config(state=tk.DISABLED)
       
       buttons[row, column] = button
-      button.grid(row=0, column=column)
+      button.pack(side="left")
       button = None
 
-  lastFrame.grid(row=rows+2, columnspan=columns)
-  label.grid(row=0, column=0, columnspan=columns)
+  lastFrame.pack()
+  gameStatuslabel.pack()
 
   actionFrame = tk.Frame(root)
-  actionFrame.grid(row=row+4, columnspan=columns)
-  buttonColumns = math.floor(columns/2)
-
+  actionFrame.pack(pady=[0,2])
   tk.Button(actionFrame,
             activebackground="white",
             anchor="center",
@@ -176,7 +203,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             padx=0,
             pady=0,
             text= "Main Menu",
-            ).grid(row=0, column=buttonColumns-1, columnspan=1, padx=[2,2])
+            ).pack(side="left", padx=[2,4])
   tk.Button(actionFrame,
             activebackground="white",
             anchor="center",
@@ -189,6 +216,6 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             padx=0,
             pady=0,
             text= "Exit",
-            ).grid(row=0, column=buttonColumns, columnspan=1, padx=[2,2])
+            ).pack(side="left", padx=[4,2])
   
   root.mainloop()

@@ -106,7 +106,7 @@ def createNewGameView(goBackFunc, goToMainMenu):
   root.config(menu=menu)
   gameMenu = tk.Menu(menu, tearoff=0)
   menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc))
+  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc, goToMainMenu))
   gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
@@ -152,7 +152,7 @@ def createNewGameView(goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg="lightgray",
-            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goToMainMenu),
+            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, goBackFunc, goToMainMenu),
             disabledforeground="white",
             justify="center",
             height=1,
