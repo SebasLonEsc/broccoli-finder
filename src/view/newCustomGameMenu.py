@@ -23,15 +23,28 @@ def validateInputs(rows, columns, broccoliAmount):
     numberOfRows = int(rows.get())
     numberOfColumns = int(columns.get())
     numberOfBroccolis = int(broccoliAmount.get())
+    boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
+    boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
+    broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
+    broccoliLimit = math.ceil(numberOfRows * numberOfColumns * broccoliPercentLimit)
 
-    if type(numberOfRows) is not int:
-      errorText += "\n# Rows"
+    if numberOfRows < boardSizeLowerLimit:
+      errorText += "\n# Rows can't be less than " + str(boardSizeLowerLimit)
 
-    if type(numberOfColumns) is not int:
-      errorText += "\n# Columns"
+    if numberOfRows > boardSizeUpperLimit:
+      errorText += "\n# Rows can't be more than " + str(boardSizeUpperLimit)
+
+    if numberOfColumns < boardSizeLowerLimit:
+      errorText += "\n# Columns can't be less than " + str(boardSizeLowerLimit)
+
+    if numberOfColumns > boardSizeUpperLimit:
+      errorText += "\n# Columns can't be more than " + str(boardSizeUpperLimit)
       
-    if type(numberOfBroccolis) is not int:
-      errorText += "\n# Broccolis"
+    if numberOfBroccolis < 1:
+      errorText += "\n# Broccolis can't be less than 1"
+
+    if numberOfBroccolis > broccoliLimit and errorText == "The following values are invalid:":
+      errorText = "Number of Broccolis can't be more than " + str(broccoliLimit) + "\nfor the current board size"
     
     return errorText
   except:
@@ -60,7 +73,7 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   numberOfBroccolis = int(broccoliAmount.get())
 
   broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
-  broccoliAmountProportion = math.floor(numberOfRows * numberOfColumns * broccoliPercentLimit)
+  broccoliAmountProportion = math.ceil(numberOfRows * numberOfColumns * broccoliPercentLimit)
 
   if numberOfBroccolis > broccoliAmountProportion:
     errorText = "Please reduce the amount of Broccolis to no more than " + str(broccoliAmountProportion)
@@ -73,62 +86,80 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
 
 # Creates the new game menu interface
 # Input:
-#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
+#   goBackFunc: The current goBack function. Used to go back to the previous view
+#   goToMainMenu: Function to go back to the main menu
 # Output:
 #   Nothing
-def createNewGameView(goBackFunc):
-  windowWidth = 210
-  windowHeight = 140
+def createNewGameView(goBackFunc, goToMainMenu):
+  windowMinWidth = 250
+  windowMinHeight = 150
+  windowMaxWidth = 300
+  windowMaxHeight = 200
 
   root = tk.Tk()
   root.title("New Game")
-  root.minsize(windowWidth, windowHeight)
-  root.maxsize(windowWidth, windowHeight)
-  centerWindow(root, windowWidth, windowHeight)
+  root.minsize(windowMinWidth, windowMinHeight)
+  root.maxsize(windowMaxWidth, windowMaxHeight)
+  centerWindow(root, windowMinWidth, windowMinHeight)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
   gameMenu = tk.Menu(menu, tearoff=0)
   menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goBackFunc))
+  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc))
+  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
 
+  frame = tk.Frame(root)
+  frame.pack(pady=[2,2], expand=True)
   tk.Label(
-    root,
-    text="New Game",
-    anchor="center").grid(row=0, columnspan=4)
-  
-  tk.Label(root, text="# Rows").grid(row=2, column=1, columnspan=1)
-  tk.Label(root, text="# Columns").grid(row=3, column=1, columnspan=1)
-  tk.Label(root, text="# Broccolis").grid(row=4, column=1, columnspan=1)
-  errorLabel = tk.Label(root, text="", anchor="center")
+    frame,
+    text="Customize your Game",
+    anchor="center").pack()
 
   boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
   boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
   broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
   maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit * boardSizeUpperLimit * broccoliPercentLimit)
-  rows = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
-  columns = tk.Spinbox(root, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
-  broccoliAmount = tk.Spinbox(root, from_=1, to=maximumNumberOfBroccolis)
 
-  rows.grid(row=2, column=2, columnspan=1, pady=2)
-  columns.grid(row=3, column=2, columnspan=1, pady=2)
-  broccoliAmount.grid(row=4, column=2, columnspan=1, pady=2)
+  frame = tk.Frame(root)
+  frame.pack(pady=[2,2], expand=True)
+  tk.Label(frame, text="# Rows").pack(side="left", padx=[0,20])
+  rows = tk.Spinbox(frame, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  rows.pack(side="left", pady=2)
 
-  tk.Button(root,
+  frame = tk.Frame(root)
+  frame.pack(pady=[2,2], expand=True)
+  tk.Label(frame, text="# Columns").pack(side="left")
+  columns = tk.Spinbox(frame, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  columns.pack(side="left", pady=2)
+
+  frame = tk.Frame(root)
+  frame.pack(pady=[2,2], expand=True)
+  tk.Label(frame, text="# Broccolis").pack(side="left")
+  broccoliAmount = tk.Spinbox(frame, from_=1, to=maximumNumberOfBroccolis)
+  broccoliAmount.pack(side="left", pady=2)
+
+  buttonFrame = tk.Frame(root)
+  buttonFrame.pack(pady=[2,2], expand=True)
+  errorTextFrame = tk.Frame(root)
+  errorTextFrame.pack(pady=[2,2], expand=True)
+
+  errorLabel = tk.Label(errorTextFrame, text="", anchor="center")
+  tk.Button(buttonFrame,
             activebackground="white",
             anchor="center",
             bd=1,
             bg="lightgray",
-            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc),
+            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goToMainMenu),
             disabledforeground="white",
             justify="center",
             height=1,
             padx=4,
             pady=0,
             text= "Play",
-            ).grid(row=5, column=1, columnspan=2, pady=[4,2])
+            ).pack(pady=[4,2])
   
-  errorLabel.grid(row=6, columnspan=4)
+  errorLabel.pack()
   root.mainloop()
