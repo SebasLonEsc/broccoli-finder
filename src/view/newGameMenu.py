@@ -8,6 +8,18 @@ from src.logic.board import boardGenerator
 from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENTS
+from src.view.newCustomGameMenu import createNewGameView
+
+# Closes the current window and creates the custom game window
+# Input:
+#   root: the root windget, the current window that is being displayed
+#   goBackFunc: Function to go back to the current view
+#   previousGoBackfunc: Function to go back to the previous view
+# Output:
+#   Nothing
+def openCustomGameView(root, goBackFunc, previousGoBackFunc):
+  closeInterface(root)
+  createNewGameView(goBackFunc, previousGoBackFunc)
 
 # Closes the current window and creates the new game window
 # Input:
@@ -34,8 +46,6 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
   if broccoliLowerLimit != broccoliUpperLimit and broccoliLowerLimit < broccoliUpperLimit:
     broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
 
-  print(broccoliAmount)
-
   closeInterface(root)
   boardObject = boardGenerator(rows, columns, broccoliAmount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
@@ -59,11 +69,12 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
                       command= partial(createGame, root, goBackFunc, previousGoBackFunc, difficulty, size),
                       disabledforeground="white",
                       justify="center",
-                      height=1,
+                      height=4,
+                      width=8,
                       padx=4,
                       pady=0,
                       text=size,
-                      )
+  )
   
   return button
 
@@ -73,8 +84,8 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
 # Output:
 #   Nothing
 def newGameMenu(goBackFunc):
-  windowWidth = 210
-  windowHeight = 140
+  windowWidth = 300
+  windowHeight = 180
 
   root = tk.Tk()
   root.title("New Game")
@@ -91,28 +102,45 @@ def newGameMenu(goBackFunc):
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
 
   frame = tk.Frame(root)
-  frame.grid(row=0, pady=[2,2])
+  frame.pack(pady=[2,2], expand=True)
   tk.Label(
     frame,
     text="New Game",
-    anchor="center").grid(row=0)
+    anchor="center").pack()
   
   frame = tk.Frame(root)
-  frame.grid(row=1, pady=[2,2])
+  frame.pack(pady=[2,2], expand=True)
   tk.Label(
     frame,
     text="Difficulty",
-    anchor="center").grid(row=0, column=1, padx=[2,2])
+    anchor="center").pack(side="left", padx=[2,2])
   gameDifficulty = ttk.Combobox(frame,
                                 values=GAMEDIFFICULTIES,
                                 state="readonly")
-  gameDifficulty.grid(row=0, column=2, padx=[2,2])
+  gameDifficulty.pack(side="left", padx=[2,2])
   gameDifficulty.set(GAMEDIFFICULTIES[0])
 
   frame = tk.Frame(root)
-  frame.grid(row=2, pady=[2,2])
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").grid(row=0, column=0, padx=[4,4])
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").grid(row=0, column=1, padx=[4,4])
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").grid(row=0, column=2, padx=[4,4])
+  frame.pack(pady=[2,2], expand=True)
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").pack(side="left", padx=[4,4])
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").pack(side="left", padx=[4,4])
+  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").pack(side="left", padx=[4,4])
+
+  frame = tk.Frame(root)
+  frame.pack(pady=[8,2], expand=True)
+  tk.Button(frame,
+            activebackground="white",
+            anchor="center",
+            bd=1,
+            bg="lightgray",
+            command= partial(openCustomGameView, root, newGameMenu, goBackFunc),
+            disabledforeground="white",
+            justify="center",
+            height=1,
+            width=10,
+            padx=4,
+            pady=0,
+            text="Custom Game"
+  ).pack()
 
   root.mainloop()
