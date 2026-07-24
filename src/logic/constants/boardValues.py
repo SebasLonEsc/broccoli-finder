@@ -38,3 +38,9 @@ BOARDSIZEVALUES = {
   "Medium": [11, 20],
   "Big": [21, 30]
   }
+
+# The maximun percent the board can use from the total screen height
+BOARDMAXIMUNSIZEPERCENT = 70
+
+# Pixel height of a tile in the board (measured by "hand")
+TILEPIXELHEIGHT = 22
