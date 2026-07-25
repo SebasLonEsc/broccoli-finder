@@ -1,7 +1,7 @@
 import tkinter as tk
 import numpy as np
-import math
 from functools import partial
+from pathlib import Path
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELHEIGHT
@@ -17,6 +17,11 @@ from src.logic.interfaceTools import closeInterface, goBack
 #   Nothing
 def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "icons" / "Green_broccoli.png"
+  greenBroccoliImage = tk.PhotoImage(file = str(imagePath))
+  imagePath = currentDir.parent / "icons" / "Red_broccoli.png"
+  redBroccoliImage = tk.PhotoImage(file = str(imagePath))
 
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
@@ -25,19 +30,23 @@ def handleGameStatus(boardObject, buttons, movePosition):
       backgroundColor = "gray70"
       fontColor = "white"
 
-      buttons[row, column].config(state=tk.DISABLED)
+      buttons[row, column].config(command=lambda: None)
 
+      broccoliImage = redBroccoliImage
       if movePosition[0] == row and movePosition[1] == column:
         backgroundColor = "dark red"
         fontColor = "white"
+        broccoliImage = greenBroccoliImage
       else:
         backgroundColor = "gray50"
         fontColor = "dark red"
 
       if checked and isBroccoli:
-        buttons[row, column].config(bg=backgroundColor)
-        buttons[row, column].config(disabledforeground=fontColor)
-        buttons[row, column].config(text="-1")
+        buttons[row, column].config(bg=backgroundColor,
+                                    disabledforeground=fontColor,
+                                    text="",
+                                    image=broccoliImage)
+        buttons[row, column].image = broccoliImage
 
 # Updates the tiles of the board to show the value (empty, proximity number or broccoli) of each affected tile by the player move
 # Input:
@@ -47,6 +56,10 @@ def handleGameStatus(boardObject, buttons, movePosition):
 #   Nothing
 def handleText(boardObject, buttons):
   tilesBoard = boardObject.tilesBoard
+
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "icons" / "Disabled_Empy_Tile.png"
+  tileImage = tk.PhotoImage(file=str(imagePath), width=1, height=1)
 
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
@@ -63,9 +76,8 @@ def handleText(boardObject, buttons):
       checked = tilesBoard[row, column]["checked"]
 
       if checked:
-        buttons[row, column].config(state=tk.DISABLED)
-        buttons[row, column].config(bg="gray70")
-        buttons[row, column].config(text=text)
+        buttons[row, column].config(bg="gray70", text=text, command=lambda: None, image=tileImage)
+        buttons[row, column].image = tileImage
 
 # Handles the click of the player on a tile of the board
 # Input:
@@ -151,6 +163,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   createCanvas = (rows * TILEPIXELHEIGHT * 100) / screenHeight > BOARDMAXIMUNSIZEPERCENT  
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
+
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "icons" / "Empy_Tile.png"
+  tileImage = tk.PhotoImage(file=str(imagePath), width=1, height=1)
   
   for row in range(0, rows):
     frame = tk.Frame(gameFrame, bg="lightgray", background="lightgray")
@@ -168,16 +184,17 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
       button = tk.Button(frame,
                         activebackground="white",
                         anchor="center",
-                        bd=1,
                         bg=backgroundColor,
                         command= partial(handleClick, boardObject, buttons, [row, column], gameStatuslabel),
                         disabledforeground="white",
                         justify="center",
-                        height=1,
-                        width=3,
+                        height=22,
+                        width=22,
                         padx=0,
                         pady=0,
-                        text= buttonText,
+                        text=buttonText,
+                        image=tileImage,
+                        compound="center",
                         )
       
       if isNullSpace:
