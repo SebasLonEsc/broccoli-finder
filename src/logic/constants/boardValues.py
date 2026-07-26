@@ -43,4 +43,4 @@ BOARDSIZEVALUES = {
 BOARDMAXIMUNSIZEPERCENT = 70
 
 # Pixel height of a tile in the board (measured by "hand")
-TILEPIXELHEIGHT = 22
+TILEPIXELHEIGHT = 24
