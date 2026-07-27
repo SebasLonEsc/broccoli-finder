@@ -5,6 +5,7 @@ from src.logic.board import boardGenerator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
+from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 from src.view.boardInterface import createBoardInterface
 
 # Validates if the input values are valid values
@@ -148,12 +149,11 @@ def createNewGameView(goBackFunc, goToMainMenu):
 
   errorLabel = tk.Label(errorTextFrame, text="", anchor="center")
   tk.Button(buttonFrame,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, goBackFunc, goToMainMenu),
-            disabledforeground="white",
             justify="center",
             height=1,
             padx=4,

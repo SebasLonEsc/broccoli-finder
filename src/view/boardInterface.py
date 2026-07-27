@@ -7,7 +7,7 @@ from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELHEIGHT
 from src.logic.constants.styleValues import *
-from src.logic.constants.iconsPaths import PROXIMITYNUMBERPATHS
+from src.logic.constants.imagesPaths import PROXIMITYNUMBERIMAGES
 from src.logic.interfaceTools import closeInterface, goBack
 
 # Updates the interface when winning or losing the game
@@ -21,9 +21,9 @@ from src.logic.interfaceTools import closeInterface, goBack
 def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
   currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "icons" / "Green_broccoli.png"
+  imagePath = currentDir.parent / "images" / "Green_broccoli.png"
   greenBroccoliImage = tk.PhotoImage(file = str(imagePath))
-  imagePath = currentDir.parent / "icons" / "Red_broccoli.png"
+  imagePath = currentDir.parent / "images" / "Red_broccoli.png"
   redBroccoliImage = tk.PhotoImage(file = str(imagePath))
 
   for row in range(0, boardObject.totalRows):
@@ -54,8 +54,8 @@ def createProximityTileImages():
   currentDir = Path(__file__).parent
   tileImages = []
 
-  for path in PROXIMITYNUMBERPATHS:
-    imagePath = currentDir.parent / "icons" / path
+  for path in PROXIMITYNUMBERIMAGES:
+    imagePath = currentDir.parent / "images" / path
     image = Image.open(imagePath)
     image = image.resize((24, 24), Image.Resampling.BOX)
     tileImage = ImageTk.PhotoImage(image, size=[24,24])
@@ -184,9 +184,9 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
     gameFrame.pack()
 
   currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "icons" / "Tile.png"
+  imagePath = currentDir.parent / "images" / "Tile.png"
   tileImage = tk.PhotoImage(file=str(imagePath))
-  imagePath = currentDir.parent / "icons" / "Null_Tile.png"
+  imagePath = currentDir.parent / "images" / "Null_Tile.png"
   NullTileImage = tk.PhotoImage(file=str(imagePath))
   
   for row in range(0, rows):
@@ -228,7 +228,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   actionFrame = tk.Frame(root)
   actionFrame.pack(pady=[0,2])
   tk.Button(actionFrame,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
@@ -240,7 +240,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             text= "Main Menu",
             ).pack(side="left", padx=[2,4])
   tk.Button(actionFrame,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,

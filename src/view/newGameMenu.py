@@ -10,7 +10,8 @@ from src.logic.board import boardGenerator
 from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENTS
-from src.logic.constants.styleValues import BOARDBUTTONSIZES
+from src.logic.constants.styleValues import BOARDBUTTONSIZES, BUTTONCOLOR, BUTTONACTIVECOLOR
+from src.logic.constants.imagesPaths import BOARDSELECTORIMAGES
 from src.view.newCustomGameMenu import createNewGameView
 
 # Closes the current window and creates the custom game window
@@ -65,21 +66,20 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
 #   Nothing
 def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
   currentDir = Path(__file__).parent
-  imageName = size + "_Sized_Board.png"
+  imageName = BOARDSELECTORIMAGES[size]
   imageSize = BOARDBUTTONSIZES[size]
-  imagePath = currentDir.parent / "icons" / imageName
+  imagePath = currentDir.parent / "images" / imageName
 
   image = Image.open(imagePath)
   image = image.resize(imageSize, Image.Resampling.LANCZOS)
   boardImage = ImageTk.PhotoImage(image)
   
   button = tk.Button(masterWidget,
-                      activebackground="white",
+                      activebackground=BUTTONACTIVECOLOR,
                       anchor="center",
                       bd=1,
-                      bg="lightgray",
+                      bg=BUTTONCOLOR,
                       command= partial(createGame, root, goBackFunc, previousGoBackFunc, difficulty, size),
-                      disabledforeground="white",
                       justify="center",
                       width=imageSize[0]+10,
                       height=imageSize[1]+20,
@@ -146,9 +146,8 @@ def newGameMenu(goBackFunc):
             activebackground="white",
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(openCustomGameView, root, newGameMenu, goBackFunc),
-            disabledforeground="white",
             justify="center",
             height=1,
             width=10,
