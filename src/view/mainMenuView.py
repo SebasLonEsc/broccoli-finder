@@ -2,6 +2,7 @@ import tkinter as tk
 from functools import partial
 from src.view.newGameMenu import newGameMenu
 from src.logic.interfaceTools import centerWindow, closeInterface
+from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
 # Closes the current window and creates the new game menu window
 # Input:
@@ -33,26 +34,24 @@ def createMainMenuView():
     anchor="center").pack(pady=2)
   
   tk.Button(root,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(handleNewGame, root),
-            disabledforeground="white",
             justify="center",
             height=1,
             padx=0,
             pady=0,
-            text= "New Game",
+            text= "New Game"
             ).pack(pady=2)
   
   tk.Button(root,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(closeInterface, root),
-            disabledforeground="white",
             justify="center",
             height=1,
             width=8,

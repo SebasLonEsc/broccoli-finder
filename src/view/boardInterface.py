@@ -1,10 +1,13 @@
 import tkinter as tk
 import numpy as np
-import math
 from functools import partial
+from pathlib import Path
+from PIL import Image, ImageTk
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELHEIGHT
+from src.logic.constants.styleValues import *
+from src.logic.constants.imagesPaths import PROXIMITYNUMBERIMAGES
 from src.logic.interfaceTools import closeInterface, goBack
 
 # Updates the interface when winning or losing the game
@@ -17,27 +20,48 @@ from src.logic.interfaceTools import closeInterface, goBack
 #   Nothing
 def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "images" / "Green_broccoli.png"
+  greenBroccoliImage = tk.PhotoImage(file = str(imagePath))
+  imagePath = currentDir.parent / "images" / "Red_broccoli.png"
+  redBroccoliImage = tk.PhotoImage(file = str(imagePath))
 
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
       checked = tilesBoard[row, column]["checked"]
       isBroccoli = tilesBoard[row, column]["tileValue"] == "-1"
-      backgroundColor = "gray70"
-      fontColor = "white"
+      backgroundColor = BROCCOLITILECOLOR
 
-      buttons[row, column].config(state=tk.DISABLED)
+      buttons[row, column].config(command=lambda: None)
 
+      broccoliImage = redBroccoliImage
       if movePosition[0] == row and movePosition[1] == column:
-        backgroundColor = "dark red"
-        fontColor = "white"
-      else:
-        backgroundColor = "gray50"
-        fontColor = "dark red"
+        backgroundColor = EATENBROCCOLITILECOLOR
+        broccoliImage = greenBroccoliImage
 
       if checked and isBroccoli:
-        buttons[row, column].config(bg=backgroundColor)
-        buttons[row, column].config(disabledforeground=fontColor)
-        buttons[row, column].config(text="-1")
+        buttons[row, column].config(bg=backgroundColor,
+                                    text="",
+                                    image=broccoliImage)
+        buttons[row, column].image = broccoliImage
+
+# Creates an array of images for each proximity tile number
+# Input:
+#   Nothing
+# Output:
+#   Array [PhotoImage, PhotoImage...]: An array from 0 to 8 broccoli proximity tile images
+def createProximityTileImages():
+  currentDir = Path(__file__).parent
+  tileImages = []
+
+  for path in PROXIMITYNUMBERIMAGES:
+    imagePath = currentDir.parent / "images" / path
+    image = Image.open(imagePath)
+    image = image.resize((24, 24), Image.Resampling.BOX)
+    tileImage = ImageTk.PhotoImage(image, size=[24,24])
+    tileImages.append(tileImage)
+
+  return tileImages  
 
 # Updates the tiles of the board to show the value (empty, proximity number or broccoli) of each affected tile by the player move
 # Input:
@@ -48,24 +72,29 @@ def handleGameStatus(boardObject, buttons, movePosition):
 def handleText(boardObject, buttons):
   tilesBoard = boardObject.tilesBoard
 
+  tileImages = createProximityTileImages()
+
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
-      buttonText = buttons[row, column].cget("text")
+      buttonColor = buttons[row, column].cget("bg")
 
-      if buttonText != "":
+      if buttonColor != TILEBACKGROUNDCOLOR:
         continue
 
-      text = tilesBoard[row, column]["tileValue"]
+      tileValue = 0
+      if tilesBoard[row, column]["tileValue"] != " ":
+        tileValue = int(tilesBoard[row, column]["tileValue"])
 
-      if text == "0":
-        text = " "
-
+      buttonColor = PROXIMITYCOLORS[tileValue]
       checked = tilesBoard[row, column]["checked"]
 
       if checked:
-        buttons[row, column].config(state=tk.DISABLED)
-        buttons[row, column].config(bg="gray70")
-        buttons[row, column].config(text=text)
+        buttons[row, column].config(bg=buttonColor,
+                                    text="",
+                                    command=lambda: None,
+                                    image=tileImages[tileValue],
+                                    )
+        buttons[row, column].image = tileImages[tileValue]
 
 # Handles the click of the player on a tile of the board
 # Input:
@@ -147,42 +176,48 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   lastFrame= tk.Frame(root)
   gameStatuslabel = tk.Label(lastFrame, text="", anchor="center")
 
-  gameFrame = root
+  gameFrame = tk.Frame(root, bd=2)
   createCanvas = (rows * TILEPIXELHEIGHT * 100) / screenHeight > BOARDMAXIMUNSIZEPERCENT  
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
+  else:
+    gameFrame.pack()
+
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "images" / "Tile.png"
+  tileImage = tk.PhotoImage(file=str(imagePath))
+  imagePath = currentDir.parent / "images" / "Null_Tile.png"
+  NullTileImage = tk.PhotoImage(file=str(imagePath))
   
   for row in range(0, rows):
-    frame = tk.Frame(gameFrame, bg="lightgray", background="lightgray")
-    frame.pack(expand=True)
+    frame = tk.Frame(gameFrame, bg=TILEBACKGROUNDCOLOR)
+    frame.pack()
 
     for column in range(0, columns):
-      buttonText = ""
       isNullSpace = tilesBoard[row, column]["checked"]
-      backgroundColor = "lightgray"
+      backgroundColor = TILEBACKGROUNDCOLOR
+      buttonCommand = partial(handleClick, boardObject, buttons, [row, column], gameStatuslabel)
 
       if isNullSpace:
-        buttonText = " "
-        backgroundColor = "gray60"
+        buttonCommand = lambda: None
+        backgroundColor = NULLSPACETILECOLOR
 
       button = tk.Button(frame,
                         activebackground="white",
                         anchor="center",
-                        bd=1,
+                        bd=0,
                         bg=backgroundColor,
-                        command= partial(handleClick, boardObject, buttons, [row, column], gameStatuslabel),
+                        command= buttonCommand,
                         disabledforeground="white",
                         justify="center",
-                        height=1,
-                        width=3,
+                        height=22,
+                        width=22,
                         padx=0,
                         pady=0,
-                        text= buttonText,
+                        image=tileImage if not isNullSpace else NullTileImage,
+                        compound="center",
                         )
-      
-      if isNullSpace:
-        button.config(state=tk.DISABLED)
-      
+            
       buttons[row, column] = button
       button.pack(side="left")
       button = None
@@ -193,10 +228,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   actionFrame = tk.Frame(root)
   actionFrame.pack(pady=[0,2])
   tk.Button(actionFrame,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(goBack, root, goToMainMenu),
             justify="center",
             height=1,
@@ -205,10 +240,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             text= "Main Menu",
             ).pack(side="left", padx=[2,4])
   tk.Button(actionFrame,
-            activebackground="white",
+            activebackground=BUTTONACTIVECOLOR,
             anchor="center",
             bd=1,
-            bg="lightgray",
+            bg=BUTTONCOLOR,
             command= partial(closeInterface, root),
             justify="center",
             height=1,
