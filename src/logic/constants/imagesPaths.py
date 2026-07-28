@@ -29,8 +29,11 @@ FLAGGEDTILE = "Flag_Tile.png"
 # Image name for active flag status button
 ACTIVEFLAGSTATUS = "Active_Flag_Tile.png"
 
-# Image name for green broccoli tile
-GREENBROCCOLI = "Green_broccoli.png"
+# Image name for the broccoli counter
+GREENBROCCOLIBUTTON = "Green_broccoli_Button.png"
+
+# Image name for the green broccoli tile
+GREENBROCCOLITILE = "Green_broccoli_Tile.png"
 
 # Image name for the red broccoli tile
-REDBROCCOLI = "Red_broccoli.png"
+REDBROCCOLITILE = "Red_broccoli.png"

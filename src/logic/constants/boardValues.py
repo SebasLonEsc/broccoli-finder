@@ -43,5 +43,5 @@ BOARDSIZEVALUES = {
 # The maximun percent the board can use from the total screen height
 BOARDMAXIMUNSIZEPERCENT = 70
 
-# Pixel height of a tile in the board (measured by "hand")
-TILEPIXELHEIGHT = 24
+# Pixel size of a tile in the board (measured by "hand")
+TILEPIXELSIZE = 24
