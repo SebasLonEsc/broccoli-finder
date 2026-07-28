@@ -32,6 +32,9 @@ BUTTONCOLOR = "#D3D3D3"
 # Any action button active background color
 BUTTONACTIVECOLOR = "#FFFFFF"
 
+# The color of the counter where the total amount of broccoli is shown
+BROCCOLICOUNTERCOLOR = "#000000"
+
 # A dictionary with for the [width, height] values for the board size selector buttons
 BOARDBUTTONSIZES = {
   "Small": [216, 168],
