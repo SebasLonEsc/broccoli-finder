@@ -71,6 +71,9 @@ def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLi
   if tilesBoard[positionX, positionY]["checked"]:
     return False
 
+  if tilesBoard[positionX, positionY]["flagged"]:
+    return False
+
   return True
 
 # Makes the move made by the player
