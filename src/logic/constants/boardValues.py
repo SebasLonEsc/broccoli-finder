@@ -6,11 +6,12 @@ BOARDVALUESGUIDE = {
 }
 
 # Each tile in the tilesBoard matrix has a checked and tileValue value
-# checked defines if the specific tile has been click before, is a null space or 
-#   if it was revealed by clicking another empty tile in the proximity
-# tileValue is the current value of a checked tile, being empty for empty tiles, a nullspace 
-#   or the number of broccolis in the proximity of the tile
-BOARDTILEVALUE = {"checked": False, "tileValue": " "}
+#   checked defines if the specific tile has been click before, is a null space or 
+#     if it was revealed by clicking another empty tile in the proximity
+#   tileValue is the current value of a checked tile, being empty for empty tiles, a nullspace 
+#     or the number of broccolis in the proximity of the tile
+#   flagged indicates if the current tile has been flagged by the player as a possible broccoli
+BOARDTILEVALUE = {"checked": False, "tileValue": " ", "flagged": False}
 
 # The available board shapes
 # square: No changes

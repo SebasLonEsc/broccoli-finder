@@ -49,6 +49,14 @@ class Board:
     def changeNullSpacesAmount(self, nullSpace):
       self.nullSpaceNumber = nullSpace
 
+    def flagTile(self, flaggedStatus, row, column):
+      tile = self.tilesBoard[row, column]
+      tile["flagged"] = flaggedStatus
+      tilesBoard = self.tilesBoard
+      tilesBoard[row, column] = tile
+
+      self.changeTilesBoard(tilesBoard)
+
 # Generates the Board Object, defines it shape and fills it with broccolis
 # Input:
 #   rows: the amount of rows of the board
