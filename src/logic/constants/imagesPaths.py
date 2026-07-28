@@ -15,3 +15,22 @@ BOARDSELECTORIMAGES = {
   "Medium": "Medium_Sized_Board.png",
   "Big": "Big_Sized_Board.png"
 }
+
+# Image name for the not-checked tile
+TILE = "Tile.png"
+
+# Image name for the nullspace tile
+NULLTILE = "Null_Tile.png"
+
+# Image name for the flag tile
+# Is used for the unactive flag status button too
+FLAGGEDTILE = "Flag_Tile.png"
+
+# Image name for active flag status button
+ACTIVEFLAGSTATUS = "Active_Flag_Tile.png"
+
+# Image name for green broccoli tile
+GREENBROCCOLI = "Green_broccoli.png"
+
+# Image name for the red broccoli tile
+REDBROCCOLI = "Red_broccoli.png"
