@@ -7,8 +7,61 @@ from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import *
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELHEIGHT
 from src.logic.constants.styleValues import *
-from src.logic.constants.imagesPaths import PROXIMITYNUMBERIMAGES
+from src.logic.constants.imagesPaths import *
 from src.logic.interfaceTools import closeInterface, goBack
+
+# Changes the current flag status for the game
+# When true the player can flag or unflag tiles, make moves otherwise
+# Input:
+#   button: the button widget used for changing the status
+# Output:
+#   Nothing
+def changeFlagStatus(button):
+  global flagCommand
+  imageName = FLAGGEDTILE
+
+  if not flagCommand:
+    imageName = ACTIVEFLAGSTATUS
+
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "images" / imageName
+  flagButtonImage = tk.PhotoImage(file = str(imagePath))
+
+  flagCommand = not flagCommand
+  button.config(image=flagButtonImage)
+  button.image = flagButtonImage
+
+# Handles the flaging or unflaging of a tile
+# Updates the tile images based on the status
+# Input:
+#   boardObject: the object containing all of the information about the board
+#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
+#   movePosition: an array containg the [row, column] of the current move made by the player
+# Output:
+#   Nothing
+def handleFlagTile(boardObject, buttons, movePosition):
+  tilesBoard = boardObject.tilesBoard
+  row = movePosition[0]
+  column = movePosition[1]
+  clickedTile = tilesBoard[row, column]
+
+  if clickedTile["checked"]:
+    return
+
+  newFlaggedStatus = not clickedTile["flagged"]
+  boardObject.flagTile(newFlaggedStatus, row, column)
+
+  imageName = TILE
+
+  if newFlaggedStatus:
+    imageName = FLAGGEDTILE
+
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "images" / imageName
+  tileImage = tk.PhotoImage(file = str(imagePath))
+
+  buttons[row, column].config(image=tileImage)
+  buttons[row, column].image = tileImage
 
 # Updates the interface when winning or losing the game
 # Disables all buttons and reveal all broccolis if is a lost game
@@ -21,9 +74,9 @@ from src.logic.interfaceTools import closeInterface, goBack
 def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
   currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "images" / "Green_broccoli.png"
+  imagePath = currentDir.parent / "images" / GREENBROCCOLI
   greenBroccoliImage = tk.PhotoImage(file = str(imagePath))
-  imagePath = currentDir.parent / "images" / "Red_broccoli.png"
+  imagePath = currentDir.parent / "images" / REDBROCCOLI
   redBroccoliImage = tk.PhotoImage(file = str(imagePath))
 
   for row in range(0, boardObject.totalRows):
@@ -105,17 +158,27 @@ def handleText(boardObject, buttons):
 # Output:
 #   Nothing
 def handleClick(boardObject, buttons, movePosition, winLabel):
-  boardObject, gameStatus = handleMove(boardObject, movePosition)
-  handleText(boardObject, buttons)
+  tilesBoard = boardObject.tilesBoard
+  row = movePosition[0]
+  column = movePosition[1]
+  flagTileStatus = tilesBoard[row, column]["flagged"]
 
-  if gameStatus != 0:
-    gameStatusText = WINNINGTEXT
+  if not flagCommand and not flagTileStatus:
+    boardObject, gameStatus = handleMove(boardObject, movePosition)
+    handleText(boardObject, buttons)
 
-    if gameStatus < 0:
-      gameStatusText = LOSINGTEXT
+    if gameStatus != 0:
+      gameStatusText = WINNINGTEXT
 
-    winLabel.config(text=gameStatusText)
-    handleGameStatus(boardObject, buttons, movePosition)
+      if gameStatus < 0:
+        gameStatusText = LOSINGTEXT
+
+      winLabel.config(text=gameStatusText)
+      handleGameStatus(boardObject, buttons, movePosition)
+
+  elif flagCommand:
+    handleFlagTile(boardObject, buttons, movePosition)
+
 
 # Creates a canvas to display the board on it
 # The canvas add a scrollbar for big sized boards
@@ -152,6 +215,9 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   buttons = np.empty(shape=[rows,columns],dtype="object")
   tilesBoard = boardObject.tilesBoard
 
+  global flagCommand
+  flagCommand = False
+
   root = tk.Tk()
   root.title("Broccoli")
   root.grid_columnconfigure(0, weight=1)
@@ -169,9 +235,28 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
 
+  currentDir = Path(__file__).parent
+  imagePath = currentDir.parent / "images" / FLAGGEDTILE
+  flagButtonImage = tk.PhotoImage(file=str(imagePath))
+
   frame = tk.Frame(root)
   frame.pack()
-  tk.Label(frame, text="Broccoli Seeker").pack()
+  tk.Label(frame, text="Broccoli Seeker").pack(side="left")
+  button = tk.Button(frame,
+            activebackground="white",
+            anchor="center",
+            bd=0,
+            justify="center",
+            height=22,
+            width=22,
+            padx=0,
+            pady=0,
+            image=flagButtonImage,
+            )
+
+  button.config(command=partial(changeFlagStatus, button))
+  button.image = flagButtonImage
+  button.pack(side="left")
   
   lastFrame= tk.Frame(root)
   gameStatuslabel = tk.Label(lastFrame, text="", anchor="center")
@@ -183,10 +268,9 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   else:
     gameFrame.pack()
 
-  currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "images" / "Tile.png"
+  imagePath = currentDir.parent / "images" / TILE
   tileImage = tk.PhotoImage(file=str(imagePath))
-  imagePath = currentDir.parent / "images" / "Null_Tile.png"
+  imagePath = currentDir.parent / "images" / NULLTILE
   NullTileImage = tk.PhotoImage(file=str(imagePath))
   
   for row in range(0, rows):
