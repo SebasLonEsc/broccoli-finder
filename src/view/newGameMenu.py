@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageTk
 import random
 import math
-from src.logic.interfaceTools import centerWindow, closeInterface, goBack
+from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
 from src.logic.board import boardGenerator
 from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARDSIZEVALUES
@@ -114,6 +114,7 @@ def newGameMenu(goBackFunc):
   gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goBackFunc))
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
+  createInfoMenu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
