@@ -252,7 +252,8 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   imagePath = currentDir.parent / "images" / FLAGGEDTILE
   flagButtonImage = tk.PhotoImage(file=str(imagePath))
 
-  topFrameWidth = TILEPIXELSIZE * boardObject.totalColumns
+  topFrameColumnSize = columns if columns > 10 else 10
+  topFrameWidth = TILEPIXELSIZE * topFrameColumnSize
   topFrame = tk.Frame(root, width=topFrameWidth, height=30, pady=2)
   topFrame.propagate(False)                                                              # Allows to define the width and height of the frame
   topFrame.pack()
