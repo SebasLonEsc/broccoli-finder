@@ -2,7 +2,7 @@ import tkinter as tk
 from functools import partial
 import math
 from src.logic.board import boardGenerator
-from src.logic.interfaceTools import centerWindow, closeInterface, goBack
+from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
@@ -111,6 +111,7 @@ def createNewGameView(goBackFunc, goToMainMenu):
   gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
+  createInfoMenu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)

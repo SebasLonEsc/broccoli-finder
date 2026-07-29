@@ -8,7 +8,7 @@ from src.logic.constants.gameValues import *
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELSIZE
 from src.logic.constants.styleValues import *
 from src.logic.constants.imagesPaths import *
-from src.logic.interfaceTools import closeInterface, goBack
+from src.logic.interfaceTools import closeInterface, goBack, createInfoMenu
 
 # Changes the current flag status for the game
 # When true the player can flag or unflag tiles, make moves otherwise
@@ -246,6 +246,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc, goToMainMenu))
   gameMenu.add_separator()
   gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
+  createInfoMenu(tk, menu)
 
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / FLAGGEDTILE
@@ -271,7 +272,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   button.image = flagButtonImage
   button.pack(side="left", expand=True)
 
-  tk.Label(topFrame, text="Broccoli Seeker").pack(side="left", expand=True)
+  tk.Label(topFrame, text="Broccoli Finder").pack(side="left", expand=True)
 
   broccoliCounterFrame = tk.Frame(topFrame)
   broccoliCounterFrame.pack(side="right", expand=True)
