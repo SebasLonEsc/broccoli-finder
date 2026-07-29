@@ -81,16 +81,16 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
                      anchor="center",
                      bd=1,
                      bg=BUTTONCOLOR,
-                     command= partial(createGame,
-                                      root,
-                                      goBackFunc,
-                                      previousGoBackFunc,
-                                      difficulty,
-                                      size
-                                      ),
+                     command=partial(createGame,
+                                     root,
+                                     goBackFunc,
+                                     previousGoBackFunc,
+                                     difficulty,
+                                     size
+                                     ),
                      justify="center",
-                     width=imageSize[0]+10,
-                     height=imageSize[1]+20,
+                     width=imageSize[0] + 10, #Leave space for padding
+                     height=imageSize[1] + 20, #Leave space for padding
                      padx=4,
                      pady=0,
                      text=size,
@@ -175,11 +175,11 @@ def newGameMenu(goBackFunc):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(openCustomGameView,
-                             root,
-                             newGameMenu,
-                             goBackFunc
-                             ),
+            command=partial(openCustomGameView,
+                            root,
+                            newGameMenu,
+                            goBackFunc
+                            ),
             justify="center",
             height=1,
             width=10,

@@ -31,7 +31,7 @@ def closeInterface(root):
 #     Used to go back two views prior
 # Output:
 #   Nothing
-def goBack(root, goBackFunc, previousGoBackFunc = None):
+def goBack(root, goBackFunc, previousGoBackFunc=None):
   closeInterface(root)
 
   if previousGoBackFunc is None:
@@ -53,10 +53,10 @@ def createTopLevel(tk, message, title):
   topLevel.title(title)
   topLevel.geometry("400x250")
 
-  messageWidget = tk.Message(topLevel, text = message)
+  messageWidget = tk.Message(topLevel, text=message)
   closeButton = tk.Button(topLevel,
-                          text = "Close",
-                          command = topLevel.destroy
+                          text="Close",
+                          command=topLevel.destroy
                           )
 
   messageWidget.pack()

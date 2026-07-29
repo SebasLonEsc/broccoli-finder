@@ -30,7 +30,7 @@ def printing(boardObject):
     for j in range(boardObject.tilesBoard[i].shape[0]):
       row += boardObject.tilesBoard[i,j]["tileValue"] + "  "
 
-    row +="| " +  str(i + 1)
+    row += "| " + str(i + 1)
     print(row)
 
   print(separationRow)

@@ -38,17 +38,17 @@ def outOfBoundsValidation(currentPos, pos, limit = 0):
 #   Returns an array of [newRow, newColumn] position if the position is a nullSpace
 #     this [newRow, newColumn] position is a position beyond the null space (if possible)
 #     if is not a nullSpace, return the [row, position] of the next position (position with the increment)
-def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit = 0, vLimit = 0):
+def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit=0, vLimit=0):
   hPosition = outOfBoundsValidation(pos[0] + hIncrement, pos[0], hLimit)
   vPosition = outOfBoundsValidation(pos[1] + vIncrement, pos[1], vLimit)
 
-  if board[hPosition,vPosition] == -2:
+  if board[hPosition, vPosition] == -2:
     newHorizontalPosition = outOfBoundsValidation(hPosition + hIncrement,
                                                   hPosition, hLimit)
     newVerticalPosition = outOfBoundsValidation(vPosition + vIncrement,
                                                 vPosition, vLimit)
 
-    if board[newHorizontalPosition,newVerticalPosition] == -2:
+    if board[newHorizontalPosition, newVerticalPosition] == -2:
       newHorizontalPosition = hPosition
       newVerticalPosition = vPosition
 
@@ -73,8 +73,8 @@ def broccoliProximity(board, pos, totalRows, totalColumns):
   verticalStart = checkNullSpaces(board, pos, 0, -1)[1]
   verticalEnd = checkNullSpaces(board, pos, 0, 1, 0, totalColumns)[1]
 
-  for i in range(horizontalStart, horizontalEnd+1):
-    for j in range(verticalStart, verticalEnd+1):
+  for i in range(horizontalStart, horizontalEnd + 1):
+    for j in range(verticalStart, verticalEnd + 1):
       if board[i,j] < 0:
         continue
 

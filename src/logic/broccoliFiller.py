@@ -31,7 +31,7 @@ def defineBroccoliPositions(board, boardObject):
 # Output:
 #   Returns the boardObject with the board matrix
 #     filled with the specified amount of broccolis
-def boardBroccoliFiller(boardObject, broccoliAmount = 1):
+def boardBroccoliFiller(boardObject, broccoliAmount=1):
   board = boardObject.board
   totalRows = boardObject.totalRows
   totalColumns = boardObject.totalColumns

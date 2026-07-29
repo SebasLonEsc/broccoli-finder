@@ -174,20 +174,20 @@ def createNewGameView(goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(createNewGame,
-                             root,
-                             rows,
-                             columns,
-                             broccoliAmount,
-                             errorLabel,
-                             goBackFunc,
-                             goToMainMenu
-                             ),
+            command=partial(createNewGame,
+                            root,
+                            rows,
+                            columns,
+                            broccoliAmount,
+                            errorLabel,
+                            goBackFunc,
+                            goToMainMenu
+                            ),
             justify="center",
             height=1,
             padx=4,
             pady=0,
-            text= "Play",
+            text="Play",
             ).pack(pady=[4,2])
   
   errorLabel.pack()

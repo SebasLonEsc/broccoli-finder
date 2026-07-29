@@ -112,10 +112,10 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
   if board[positionX, positionY] > 0:
     return tilesBoard
 
-  newPositions = [[positionX-1, positionY],
-                  [positionX+1, positionY],
-                  [positionX, positionY-1],
-                  [positionX, positionY+1]
+  newPositions = [[positionX - 1, positionY],
+                  [positionX + 1, positionY],
+                  [positionX, positionY - 1],
+                  [positionX, positionY + 1]
                   ]
 
   for i in range(len(newPositions)):

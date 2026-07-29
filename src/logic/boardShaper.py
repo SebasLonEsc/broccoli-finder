@@ -74,13 +74,13 @@ def defineCornerSizes(boardObject, randomCorners):
 
   if randomCorners:
     for i in range(len(cornerSizes)):
-      horizontalSize = random.randint(1,horizontalCornerSizeLimit)
-      verticalSize = random.randint(1,verticalCornerSizeLimit)
+      horizontalSize = random.randint(1, horizontalCornerSizeLimit)
+      verticalSize = random.randint(1, verticalCornerSizeLimit)
       cornerSizes[i] = [horizontalSize, verticalSize]
 
   if not randomCorners:
-    horizontalSize = random.randint(1,horizontalCornerSizeLimit)
-    verticalSize = random.randint(1,verticalCornerSizeLimit)
+    horizontalSize = random.randint(1, horizontalCornerSizeLimit)
+    verticalSize = random.randint(1, verticalCornerSizeLimit)
     cornerSize = 1
 
     if(horizontalSize <= verticalSize):
@@ -178,8 +178,8 @@ def crossShaper(boardObject):
     # Blocks 4x4 boards on having cross shape
     return boardObject
 
-  crossRow = random.randint(1, totalRows-2)
-  crossColumn = random.randint(1, totalColumns-2)
+  crossRow = random.randint(1, totalRows - 2)
+  crossColumn = random.randint(1, totalColumns - 2)
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
 

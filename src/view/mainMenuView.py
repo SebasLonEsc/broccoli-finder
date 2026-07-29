@@ -43,12 +43,12 @@ def createMainMenuView():
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(handleNewGame, root),
+            command=partial(handleNewGame, root),
             justify="center",
             height=1,
             padx=0,
             pady=0,
-            text= "New Game"
+            text="New Game"
             ).pack(pady=2)
   
   tk.Button(root,
@@ -62,7 +62,7 @@ def createMainMenuView():
             width=8,
             padx=0,
             pady=0,
-            text= "Exit",
+            text="Exit",
             ).pack(pady=[4,8])
   
   root.mainloop()

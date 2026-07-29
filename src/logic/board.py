@@ -69,8 +69,8 @@ class Board:
 # Output:
 #   Returns the generated board object
 def boardGenerator(rows, columns, broccoliAmount):
-  emptyBoard = np.zeros(shape=[rows,columns],dtype=np.int8)
-  tilesBoard = np.ndarray(shape=[rows,columns],dtype=np.object_)
+  emptyBoard = np.zeros(shape=[rows, columns], dtype=np.int8)
+  tilesBoard = np.ndarray(shape=[rows, columns], dtype=np.object_)
   tilesBoard = fillTilesBoard(tilesBoard)
   
   boardObject = Board(emptyBoard,

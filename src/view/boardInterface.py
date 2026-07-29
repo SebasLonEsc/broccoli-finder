@@ -42,7 +42,7 @@ def changeFlagStatus(button):
 
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / imageName
-  flagButtonImage = tk.PhotoImage(file = str(imagePath))
+  flagButtonImage = tk.PhotoImage(file=str(imagePath))
 
   flagCommand = not flagCommand
   button.config(image=flagButtonImage)
@@ -83,7 +83,7 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
 
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / imageName
-  tileImage = tk.PhotoImage(file = str(imagePath))
+  tileImage = tk.PhotoImage(file=str(imagePath))
 
   buttons[row, column].config(image=tileImage)
   buttons[row, column].image = tileImage
@@ -102,9 +102,9 @@ def handleGameStatus(boardObject, buttons, movePosition):
   tilesBoard = boardObject.tilesBoard
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / GREENBROCCOLITILE
-  greenBroccoliImage = tk.PhotoImage(file = str(imagePath))
+  greenBroccoliImage = tk.PhotoImage(file=str(imagePath))
   imagePath = currentDir.parent / "images" / REDBROCCOLITILE
-  redBroccoliImage = tk.PhotoImage(file = str(imagePath))
+  redBroccoliImage = tk.PhotoImage(file=str(imagePath))
 
   for row in range(0, boardObject.totalRows):
     for column in range(0, boardObject.totalColumns):
@@ -246,7 +246,7 @@ def createBoardCanvas(root):
 def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   rows = boardObject.totalRows
   columns = boardObject.totalColumns
-  buttons = np.empty(shape=[rows,columns],dtype="object")
+  buttons = np.empty(shape=[rows, columns], dtype="object")
   tilesBoard = boardObject.tilesBoard
 
   global broccoliAmountCounter
@@ -335,7 +335,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
 
   gameFrame = tk.Frame(root, bd=2)
   boardCalculatedSize = rows * TILEPIXELSIZE
-  createCanvas = (boardCalculatedSize * 100 / screenHeight) > BOARDMAXIMUNSIZEPERCENT
+  createCanvas = (boardCalculatedSize*100 / screenHeight) > BOARDMAXIMUNSIZEPERCENT
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
   else:
@@ -370,7 +370,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
                          anchor="center",
                          bd=0,
                          bg=backgroundColor,
-                         command= buttonCommand,
+                         command=buttonCommand,
                          disabledforeground="white",
                          justify="center",
                          height=22,
@@ -395,12 +395,12 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(goBack, root, goToMainMenu),
+            command=partial(goBack, root, goToMainMenu),
             justify="center",
             height=1,
             padx=0,
             pady=0,
-            text= "Main Menu",
+            text="Main Menu",
             ).pack(side="left", padx=[2,4])
   
   tk.Button(actionFrame,
@@ -408,13 +408,13 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(closeInterface, root),
+            command=partial(closeInterface, root),
             justify="center",
             height=1,
             width=8,
             padx=0,
             pady=0,
-            text= "Exit",
+            text="Exit",
             ).pack(side="left", padx=[4,2])
   
   root.mainloop()
