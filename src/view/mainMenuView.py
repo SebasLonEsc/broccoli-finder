@@ -1,5 +1,6 @@
 import tkinter as tk
 from functools import partial
+
 from src.view.newGameMenu import newGameMenu
 from src.logic.interfaceTools import centerWindow, closeInterface, createInfoMenu
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
@@ -32,10 +33,10 @@ def createMainMenuView():
   root.config(menu=menu)
   createInfoMenu(tk, menu)
 
-  tk.Label(
-    root,
-    text="Broccoli Finder",
-    anchor="center").pack(pady=2)
+  tk.Label(root,
+           text="Broccoli Finder",
+           anchor="center"
+           ).pack(pady=2)
   
   tk.Button(root,
             activebackground=BUTTONACTIVECOLOR,

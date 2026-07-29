@@ -1,5 +1,5 @@
 from src.logic.handleMove import handleMove
-from src.logic.constants.gameValues import *
+from src.logic.constants.gameValues import LOSINGTEXT, WINNINGTEXT
 
 # Handles the printing of the board on console
 # Input:
@@ -36,7 +36,8 @@ def printing(boardObject):
   print(separationRow)
   print(guideRow)
 
-# Prints the board on the console and request the player to make the moves on the game
+# Prints the board on the console
+# and request the player to make the moves on the game
 # Upon losing or wining the game prints the corresponding message
 # Input:
 #   boardObject: the object containing all of the information about the board
@@ -52,7 +53,10 @@ def printBoardOnConsole(boardObject):
     row = int(input("Enter the row:")) - 1
     column = int(input("Enter the column:")) - 1
 
-    if  row < 0 or row >= rowLimit or column < 0 or column >= columnLimit:
+    if (row < 0 or
+        row >= rowLimit or
+        column < 0 or
+        column >= columnLimit):
       print("Invalid Row or column value")
       continue
 

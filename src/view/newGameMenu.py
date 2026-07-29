@@ -2,17 +2,18 @@ import tkinter as tk
 from tkinter import ttk
 from functools import partial
 from pathlib import Path
-from PIL import Image, ImageTk
 import random
 import math
+from PIL import Image, ImageTk
+
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
 from src.logic.board import boardGenerator
 from src.view.boardInterface import createBoardInterface
+from src.view.newCustomGameMenu import createNewGameView
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BOARDBUTTONSIZES, BUTTONCOLOR, BUTTONACTIVECOLOR
 from src.logic.constants.imagesPaths import BOARDSELECTORIMAGES
-from src.view.newCustomGameMenu import createNewGameView
 
 # Closes the current window and creates the custom game window
 # Input:
@@ -47,7 +48,8 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
   broccoliUpperLimit = math.floor(boardSize * broccoliPercent[1])
   broccoliAmount = broccoliLowerLimit
 
-  if broccoliLowerLimit != broccoliUpperLimit and broccoliLowerLimit < broccoliUpperLimit:
+  if (broccoliLowerLimit != broccoliUpperLimit and
+      broccoliLowerLimit < broccoliUpperLimit):
     broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
 
   closeInterface(root)
@@ -75,27 +77,34 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
   boardImage = ImageTk.PhotoImage(image)
   
   button = tk.Button(masterWidget,
-                      activebackground=BUTTONACTIVECOLOR,
-                      anchor="center",
-                      bd=1,
-                      bg=BUTTONCOLOR,
-                      command= partial(createGame, root, goBackFunc, previousGoBackFunc, difficulty, size),
-                      justify="center",
-                      width=imageSize[0]+10,
-                      height=imageSize[1]+20,
-                      padx=4,
-                      pady=0,
-                      text=size,
-                      image=boardImage,
-                      compound="bottom"
-  )
+                     activebackground=BUTTONACTIVECOLOR,
+                     anchor="center",
+                     bd=1,
+                     bg=BUTTONCOLOR,
+                     command= partial(createGame,
+                                      root,
+                                      goBackFunc,
+                                      previousGoBackFunc,
+                                      difficulty,
+                                      size
+                                      ),
+                     justify="center",
+                     width=imageSize[0]+10,
+                     height=imageSize[1]+20,
+                     padx=4,
+                     pady=0,
+                     text=size,
+                     image=boardImage,
+                     compound="bottom"
+                     )
   button.image = boardImage
   
   return button
 
 # Creates the new game selector menu interface
 # Input:
-#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
+#   goBackFunc: The current goBack function.
+#     Used to go back to the previous view (In this case the main menu)
 # Output:
 #   Nothing
 def newGameMenu(goBackFunc):
@@ -137,9 +146,27 @@ def newGameMenu(goBackFunc):
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").pack(side="left", padx=[4,4], anchor="n")
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").pack(side="left", padx=[4,4], anchor="n")
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").pack(side="left", padx=[4,4], anchor="n")
+  createBoardSizeButton(root,
+                        newGameMenu,
+                        goBackFunc,
+                        frame,
+                        gameDifficulty,
+                        "Small"
+                        ).pack(side="left", padx=[4,4], anchor="n")
+  createBoardSizeButton(root,
+                        newGameMenu,
+                        goBackFunc,
+                        frame,
+                        gameDifficulty,
+                        "Medium"
+                        ).pack(side="left", padx=[4,4], anchor="n")
+  createBoardSizeButton(root,
+                        newGameMenu,
+                        goBackFunc,
+                        frame,
+                        gameDifficulty,
+                        "Big"
+                        ).pack(side="left", padx=[4,4], anchor="n")
 
   frame = tk.Frame(root)
   frame.pack(pady=[8,2], expand=True)
@@ -148,13 +175,17 @@ def newGameMenu(goBackFunc):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(openCustomGameView, root, newGameMenu, goBackFunc),
+            command= partial(openCustomGameView,
+                             root,
+                             newGameMenu,
+                             goBackFunc
+                             ),
             justify="center",
             height=1,
             width=10,
             padx=4,
             pady=0,
             text="Custom Game"
-  ).pack(pady=[0,4])
+            ).pack(pady=[0,4])
 
   root.mainloop()

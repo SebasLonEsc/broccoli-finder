@@ -3,12 +3,29 @@ import numpy as np
 from functools import partial
 from pathlib import Path
 from PIL import Image, ImageTk
+
 from src.logic.handleMove import handleMove
-from src.logic.constants.gameValues import *
-from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELSIZE
-from src.logic.constants.styleValues import *
-from src.logic.constants.imagesPaths import *
 from src.logic.interfaceTools import closeInterface, goBack, createInfoMenu
+from src.logic.constants.gameValues import WINNINGTEXT, LOSINGTEXT
+from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELSIZE
+from src.logic.constants.styleValues import (BROCCOLICOUNTERCOLOR,
+                                             BROCCOLITILECOLOR,
+                                             BUTTONACTIVECOLOR,
+                                             BUTTONCOLOR,
+                                             EATENBROCCOLITILECOLOR,
+                                             NULLSPACETILECOLOR,
+                                             PROXIMITYCOLORS,
+                                             TILEBACKGROUNDCOLOR
+                                             )
+from src.logic.constants.imagesPaths import (ACTIVEFLAGSTATUS,
+                                             FLAGGEDTILE,
+                                             GREENBROCCOLIBUTTON,
+                                             GREENBROCCOLITILE,
+                                             NULLTILE,
+                                             PROXIMITYNUMBERIMAGES,
+                                             REDBROCCOLITILE,
+                                             TILE
+                                             )
 
 # Changes the current flag status for the game
 # When true the player can flag or unflag tiles, make moves otherwise
@@ -35,8 +52,9 @@ def changeFlagStatus(button):
 # Updates the tile images based on the status
 # Input:
 #   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
-#   movePosition: an array containg the [row, column] of the current move made by the player
+#   buttons: a matrix contains all of the buttons.
+#     each one correspond to a tile on the board in the interface
+#   movePosition: an array [row, column] of the current move made by the player
 #   broccoliCounter: Broccoli counter widget
 # Output:
 #   Nothing
@@ -75,8 +93,9 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
 # Disables all buttons and reveal all broccolis if is a lost game
 # Input:
 #   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
-#   movePosition: an array containg the [row, column] of the current move made by the player
+#   buttons: a matrix contains all of the buttons.
+#     each one correspond to a tile on the board in the interface
+#   movePosition: an array [row, column] of the current move made by the player
 # Output:
 #   Nothing
 def handleGameStatus(boardObject, buttons, movePosition):
@@ -103,14 +122,15 @@ def handleGameStatus(boardObject, buttons, movePosition):
       if checked and isBroccoli:
         buttons[row, column].config(bg=backgroundColor,
                                     text="",
-                                    image=broccoliImage)
+                                    image=broccoliImage
+                                    )
         buttons[row, column].image = broccoliImage
 
 # Creates an array of images for each proximity tile number
 # Input:
 #   Nothing
 # Output:
-#   Array [PhotoImage, PhotoImage...]: An array from 0 to 8 broccoli proximity tile images
+#   An array of PhotoImage(s) from 0 to 8 broccoli proximity tiles
 def createProximityTileImages():
   currentDir = Path(__file__).parent
   tileImages = []
@@ -124,10 +144,12 @@ def createProximityTileImages():
 
   return tileImages  
 
-# Updates the tiles of the board to show the value (empty, proximity number or broccoli) of each affected tile by the player move
+# Updates the tiles of the board to show the value (empty, proximity number or broccoli)
+#   of each affected tile by the player move
 # Input:
 #   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
+#   buttons: a matrix contains all of the buttons.
+#     each one correspond to a tile on the board in the interface
 # Output:
 #   Nothing
 def handleText(boardObject, buttons):
@@ -160,8 +182,9 @@ def handleText(boardObject, buttons):
 # Handles the click of the player on a tile of the board
 # Input:
 #   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons that correspond to each tile on the board in the interface
-#   movePosition: an array containg the [row, column] of the current move made by the player
+#   buttons: a matrix contains all of the buttons.
+#     each one correspond to a tile on the board in the interface
+#   movePosition: an array [row, column] of the current move made by the player
 #   winLabel: the label widget that shows the lose or win text
 #   broccoliCounter: Broccoli counter widget
 # Output:
@@ -205,9 +228,11 @@ def createBoardCanvas(root):
   boardCanvas.configure(yscrollcommand=scrollbar.set)
 
   gameFrame = tk.Frame(boardCanvas)
-  gameFrame.bind("<Configure>", lambda e: boardCanvas.configure(scrollregion=boardCanvas.bbox("all")))
+  gameFrame.bind("<Configure>",
+                 lambda _: boardCanvas.configure(scrollregion=boardCanvas.bbox("all")))
   canvasWindowId = boardCanvas.create_window((0,0), window=gameFrame, anchor="center")
-  boardCanvas.bind("<Configure>", lambda e: boardCanvas.itemconfig(canvasWindowId, width=canvasFrame.winfo_width()))
+  boardCanvas.bind("<Configure>",
+                   lambda _: boardCanvas.itemconfig(canvasWindowId, width=canvasFrame.winfo_width()))
 
   return gameFrame
 
@@ -255,19 +280,19 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   topFrameColumnSize = columns if columns > 10 else 10
   topFrameWidth = TILEPIXELSIZE * topFrameColumnSize
   topFrame = tk.Frame(root, width=topFrameWidth, height=30, pady=2)
-  topFrame.propagate(False)                                                              # Allows to define the width and height of the frame
+  topFrame.propagate(False)     # Allows to define the width and height of the frame
   topFrame.pack()
   button = tk.Button(topFrame,
-                      activebackground="white",
-                      anchor="center",
-                      bd=0,
-                      justify="center",
-                      height=22,
-                      width=22,
-                      padx=0,
-                      pady=0,
-                      image=flagButtonImage,
-                    )
+                     activebackground="white",
+                     anchor="center",
+                     bd=0,
+                     justify="center",
+                     height=22,
+                     width=22,
+                     padx=0,
+                     pady=0,
+                     image=flagButtonImage
+                     )
 
   button.config(command=partial(changeFlagStatus, button))
   button.image = flagButtonImage
@@ -280,10 +305,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   imagePath = currentDir.parent / "images" / GREENBROCCOLIBUTTON
   broccoliCounterImage = tk.PhotoImage(file=str(imagePath))
   broccoliCounterLabel = tk.Label(broccoliCounterFrame,
-                                    bg=BUTTONCOLOR,
-                                    image=broccoliCounterImage,
-                                    bd=2,
-                                    relief="raised",
+                                  bg=BUTTONCOLOR,
+                                  image=broccoliCounterImage,
+                                  bd=2,
+                                  relief="raised"
                                   )
   broccoliCounterLabel.image = broccoliCounterImage
   broccoliCounterLabel.pack(side="left", padx=[2,2])
@@ -300,7 +325,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
                              justify="right",
                              compound="center",
                              image=emptyImage
-                            )
+                             )
   broccoliCounter.image = emptyImage
   broccoliCounter.pack(side="left")
   
@@ -309,7 +334,8 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   gameStatuslabel = tk.Label(lastFrame, text="", anchor="center")
 
   gameFrame = tk.Frame(root, bd=2)
-  createCanvas = (rows * TILEPIXELSIZE * 100) / screenHeight > BOARDMAXIMUNSIZEPERCENT  
+  boardCalculatedSize = rows * TILEPIXELSIZE
+  createCanvas = (boardCalculatedSize * 100 / screenHeight) > BOARDMAXIMUNSIZEPERCENT
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
   else:
@@ -327,27 +353,33 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
     for column in range(0, columns):
       isNullSpace = tilesBoard[row, column]["checked"]
       backgroundColor = TILEBACKGROUNDCOLOR
-      buttonCommand = partial(handleClick, boardObject, buttons, [row, column], gameStatuslabel, broccoliCounter)
+      buttonCommand = partial(handleClick,
+                              boardObject,
+                              buttons,
+                              [row, column],
+                              gameStatuslabel,
+                              broccoliCounter
+                              )
 
       if isNullSpace:
         buttonCommand = lambda: None
         backgroundColor = NULLSPACETILECOLOR
 
       button = tk.Button(frame,
-                        activebackground="white",
-                        anchor="center",
-                        bd=0,
-                        bg=backgroundColor,
-                        command= buttonCommand,
-                        disabledforeground="white",
-                        justify="center",
-                        height=22,
-                        width=22,
-                        padx=0,
-                        pady=0,
-                        image=tileImage if not isNullSpace else NullTileImage,
-                        compound="center",
-                        )
+                         activebackground="white",
+                         anchor="center",
+                         bd=0,
+                         bg=backgroundColor,
+                         command= buttonCommand,
+                         disabledforeground="white",
+                         justify="center",
+                         height=22,
+                         width=22,
+                         padx=0,
+                         pady=0,
+                         image=tileImage if not isNullSpace else NullTileImage,
+                         compound="center"
+                         )
             
       buttons[row, column] = button
       button.pack(side="left")
@@ -370,6 +402,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             pady=0,
             text= "Main Menu",
             ).pack(side="left", padx=[2,4])
+  
   tk.Button(actionFrame,
             activebackground=BUTTONACTIVECOLOR,
             anchor="center",

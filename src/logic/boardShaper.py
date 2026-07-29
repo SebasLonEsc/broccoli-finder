@@ -1,6 +1,7 @@
-import random
 import numpy as np
 import math
+import random
+
 from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
 
 # Defines the weight of each avaiable board shape for the randomize
@@ -22,7 +23,8 @@ def shapeWeigher(boardObject):
       i += 1
       continue
 
-    if (totalRows == 2 or totalColumns == 2) and (shape == "cutCorners" or shape == "randomCutcorners"):
+    if ((totalRows == 2 or totalColumns == 2) and
+        (shape == "cutCorners" or shape == "randomCutcorners")):
       boardShapesWeight[i] = 0
       i += 1
       continue
@@ -52,7 +54,8 @@ def shapeWeigher(boardObject):
 #   boardObject: the object containing all of the information about the board
 #   randomCorners: boolean indicating if each corner size is randomized
 # Output:
-#   Returns a matrix containg the sizes for each corner in a [horizontalSize, verticalSize] pattern
+#   Returns a matrix containg the sizes for each corner
+#     in a [horizontalSize, verticalSize] pattern
 def defineCornerSizes(boardObject, randomCorners):
   cornerSizes = np.zeros((4,2), dtype=np.int_)
   totalRows = boardObject.totalRows
@@ -101,7 +104,8 @@ def defineCornerSizes(boardObject, randomCorners):
 # c:column or vertical
 # Input:
 #   boardObject: the object containing all of the information about the board
-#   randomCorners (optional): boolean indicating if each corner size is randomized (default value is False)
+#   randomCorners(optional): bool indicating if each corner size is randomized
+#     default value is False
 # Output:
 #   Returns the board object with the updated information of the cutCorner shape
 def cutCornersShaper(boardObject, randomCorners=False):
@@ -156,7 +160,8 @@ def cutCornersShaper(boardObject, randomCorners=False):
 
 
 # Shapes the board in a cross-like shape
-# The row and column of the cross are selected randomly without including the first and last row/column
+# The row and column of the cross are selected randomly
+#   without including the first and last row/column
 # Input:
 #   boardObject: the object containing all of the information about the board
 # Output:
@@ -165,10 +170,12 @@ def crossShaper(boardObject):
   totalRows = boardObject.totalRows
   totalColumns = boardObject.totalColumns
 
-  if(totalRows <= 3 or totalColumns <= 3):  # For side of length 3 the available space it's too little
+  if(totalRows <= 3 or totalColumns <= 3):
+    # For side of length 3 the available space it's too little
     return boardObject
   
-  if(totalRows * totalColumns <= 16): # Blocks 4x4 boards on having cross shape
+  if(totalRows * totalColumns <= 16):
+    # Blocks 4x4 boards on having cross shape
     return boardObject
 
   crossRow = random.randint(1, totalRows-2)

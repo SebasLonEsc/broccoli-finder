@@ -5,7 +5,11 @@ WINNINGTEXT = "CONGRATULATIONS\nYou Won the Game!!"
 LOSINGTEXT = "Sorry you lost"
 
 # Game Difficulties types
-GAMEDIFFICULTIES = ["Easy", "Normal", "Hard"]
+GAMEDIFFICULTIES = [
+  "Easy",
+  "Normal",
+  "Hard"
+  ]
 
 # The maximun amount of broccolis per game difficulty
 # The total is found using the total amount of tiles in the board
@@ -25,4 +29,4 @@ GAMEBROCCOLIPERCENTS = {
     "Normal": [0.11, 0.15],
     "Hard": [0.18, 0.2]
   }
-}
+  }

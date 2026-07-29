@@ -1,12 +1,13 @@
 import tkinter as tk
 from functools import partial
 import math
+
 from src.logic.board import boardGenerator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
+from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
-from src.view.boardInterface import createBoardInterface
 
 # Validates if the input values are valid values
 # Input:
@@ -16,7 +17,7 @@ from src.view.boardInterface import createBoardInterface
 # Output:
 #   Returns a String depending if the inputs are valid
 #     "The following values are invalid:" if all values are valid
-#     "The following values are invalid:" + InputValue if one/several value is invalid
+#     "The following values are invalid:" + InputValue if a value is invalid
 #     "Value is not numeric" if there is a non numeric value
 def validateInputs(rows, columns, broccoliAmount):
   try:
@@ -27,7 +28,9 @@ def validateInputs(rows, columns, broccoliAmount):
     boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
     boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
     broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
-    broccoliLimit = math.ceil(numberOfRows * numberOfColumns * broccoliPercentLimit)
+    broccoliLimit = math.ceil(numberOfRows
+                              * numberOfColumns
+                              * broccoliPercentLimit)
 
     if numberOfRows < boardSizeLowerLimit:
       errorText += "\n# Rows can't be less than " + str(boardSizeLowerLimit)
@@ -44,8 +47,11 @@ def validateInputs(rows, columns, broccoliAmount):
     if numberOfBroccolis < 1:
       errorText += "\n# Broccolis can't be less than 1"
 
-    if numberOfBroccolis > broccoliLimit and errorText == "The following values are invalid:":
-      errorText = "Number of Broccolis can't be more than " + str(broccoliLimit) + "\nfor the current board size"
+    if (numberOfBroccolis > broccoliLimit and
+        errorText == "The following values are invalid:"):
+      errorText = ("Number of Broccolis can't be more than "
+                   + str(broccoliLimit)
+                   + "\nfor the current board size")
     
     return errorText
   except:
@@ -58,8 +64,10 @@ def validateInputs(rows, columns, broccoliAmount):
 #   columns: number of columns on the board
 #   broccoliAmount: number of broccolis on the board
 #   errorLabel: The label widget to display an error message
-#   createNewGameView: The function that creates the current view/window. Used in the next view for the goBack function
-#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
+#   createNewGameView: The function that creates the current view/window.
+#     Used in the next view for the goBack function
+#   goBackFunc: The current goBack function.
+#     Used to go back to the previous view (In this case the main menu)
 # Output:
 #   Nothing
 def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc):
@@ -74,10 +82,13 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   numberOfBroccolis = int(broccoliAmount.get())
 
   broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
-  broccoliAmountProportion = math.ceil(numberOfRows * numberOfColumns * broccoliPercentLimit)
+  broccoliAmountProportion = math.ceil(numberOfRows
+                                       * numberOfColumns
+                                       * broccoliPercentLimit)
 
   if numberOfBroccolis > broccoliAmountProportion:
-    errorText = "Please reduce the amount of Broccolis to no more than " + str(broccoliAmountProportion)
+    errorText = ("Please reduce the amount of Broccolis to no more than "
+                 + str(broccoliAmountProportion))
     errorLabel.config(text=errorText)
     return
 
@@ -87,7 +98,8 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
 
 # Creates the new game menu interface
 # Input:
-#   goBackFunc: The current goBack function. Used to go back to the previous view
+#   goBackFunc: The current goBack function.
+#     Used to go back to the previous view
 #   goToMainMenu: Function to go back to the main menu
 # Output:
 #   Nothing
@@ -123,18 +135,26 @@ def createNewGameView(goBackFunc, goToMainMenu):
   boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
   boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
   broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
-  maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit * boardSizeUpperLimit * broccoliPercentLimit)
+  maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit
+                                        * boardSizeUpperLimit
+                                        * broccoliPercentLimit)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
   tk.Label(frame, text="# Rows").pack(side="left", padx=[0,20])
-  rows = tk.Spinbox(frame, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  rows = tk.Spinbox(frame,
+                    from_=boardSizeLowerLimit,
+                    to=boardSizeUpperLimit
+                    )
   rows.pack(side="left", pady=2)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
   tk.Label(frame, text="# Columns").pack(side="left")
-  columns = tk.Spinbox(frame, from_=boardSizeLowerLimit, to=boardSizeUpperLimit)
+  columns = tk.Spinbox(frame,
+                       from_=boardSizeLowerLimit,
+                       to=boardSizeUpperLimit
+                       )
   columns.pack(side="left", pady=2)
 
   frame = tk.Frame(root)
@@ -154,7 +174,15 @@ def createNewGameView(goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTONCOLOR,
-            command= partial(createNewGame, root, rows, columns, broccoliAmount, errorLabel, goBackFunc, goToMainMenu),
+            command= partial(createNewGame,
+                             root,
+                             rows,
+                             columns,
+                             broccoliAmount,
+                             errorLabel,
+                             goBackFunc,
+                             goToMainMenu
+                             ),
             justify="center",
             height=1,
             padx=4,

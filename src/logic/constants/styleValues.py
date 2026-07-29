@@ -1,14 +1,15 @@
 # The broccoli proximity number tile colors
-PROXIMITYCOLORS = ["#ffffff",
-                   "#00828C",
-                   "#002A8C",
-                   "#008C35",
-                   "#FFD70A",
-                   "#FF6400",
-                   "#C80A00",
-                   "#8C0054",
-                   "#4D008C"
-                  ]
+PROXIMITYCOLORS = [
+  "#ffffff",
+  "#00828C",
+  "#002A8C",
+  "#008C35",
+  "#FFD70A",
+  "#FF6400",
+  "#C80A00",
+  "#8C0054",
+  "#4D008C"
+  ]
 
 # Normal tile background color
 TILEBACKGROUNDCOLOR = "#D3D3D3"
@@ -35,7 +36,8 @@ BUTTONACTIVECOLOR = "#FFFFFF"
 # The color of the counter where the total amount of broccoli is shown
 BROCCOLICOUNTERCOLOR = "#000000"
 
-# A dictionary with for the [width, height] values for the board size selector buttons
+# A dictionary with for the [width, height] values
+#   for the board size selector buttons
 BOARDBUTTONSIZES = {
   "Small": [216, 168],
   "Medium": [216, 216],

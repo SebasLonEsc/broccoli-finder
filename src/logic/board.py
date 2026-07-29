@@ -1,9 +1,11 @@
 import numpy as np
+
 from .boardShaper import boardShaper
 from .broccoliFiller import boardBroccoliFiller
 from .constants.boardValues import BOARDTILEVALUE
 
-# Fills the each tile from the tiles board attribute with a dictionary and returns the filled matrix
+# Fills the each tile from the tiles board attribute with a dictionary
+#   and returns the filled matrix
 # Input:
 #   tilesBoard: matrix containing each tiles of the board
 # Output:
@@ -16,9 +18,11 @@ def fillTilesBoard(tilesBoard):
   return tilesBoard
 
 # The board Class
-#   board: the matrix that contains the board (shape, null spaces, proximity numbers and broccoli positions)
+#   board: the board matrix containg the information about
+#     nullspaces, broccoli position and proximity
 #   tilesBoard: matrix containing each tiles of the board
-#     the tiles register the player progress and what the player sees in the interface or console
+#     the tiles register the player progress
+#     and what the player sees in the interface or console
 #   rows: the amount of rows of the board
 #   columns: the amount of columns of the board
 class Board:
@@ -69,12 +73,11 @@ def boardGenerator(rows, columns, broccoliAmount):
   tilesBoard = np.ndarray(shape=[rows,columns],dtype=np.object_)
   tilesBoard = fillTilesBoard(tilesBoard)
   
-  boardObject = Board(
-    emptyBoard,
-    tilesBoard,
-    rows,
-    columns
-  )
+  boardObject = Board(emptyBoard,
+                      tilesBoard,
+                      rows,
+                      columns
+                      )
 
   boardObject = boardShaper(boardObject)
   boardObject = boardBroccoliFiller(boardObject, broccoliAmount)
