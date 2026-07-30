@@ -61,16 +61,16 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
   """
   global broccoliAmountCounter
 
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
   row = movePosition[0]
   column = movePosition[1]
-  clickedTile = tilesBoard[row, column]
+  clickedTile = tiles_board[row, column]
 
   if clickedTile["checked"]:
     return
 
   newFlaggedStatus = not clickedTile["flagged"]
-  boardObject.flagTile(newFlaggedStatus, row, column)
+  boardObject.flag_tile(newFlaggedStatus, row, column)
 
   imageName = TILE
 
@@ -99,17 +99,17 @@ def handleGameStatus(boardObject, buttons, movePosition):
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     movePosition (array): An array [row, column] of the current move made by the player
   """
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / GREENBROCCOLITILE
   greenBroccoliImage = tk.PhotoImage(file=str(imagePath))
   imagePath = currentDir.parent / "images" / REDBROCCOLITILE
   redBroccoliImage = tk.PhotoImage(file=str(imagePath))
 
-  for row in range(0, boardObject.totalRows):
-    for column in range(0, boardObject.totalColumns):
-      checked = tilesBoard[row, column]["checked"]
-      isBroccoli = tilesBoard[row, column]["tileValue"] == "-1"
+  for row in range(0, boardObject.total_rows):
+    for column in range(0, boardObject.total_columns):
+      checked = tiles_board[row, column]["checked"]
+      isBroccoli = tiles_board[row, column]["tileValue"] == "-1"
       backgroundColor = BROCCOLITILECOLOR
 
       buttons[row, column].config(command=lambda: None)
@@ -155,23 +155,23 @@ def handleText(boardObject, buttons):
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
   """
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
 
   tileImages = createProximityTileImages()
 
-  for row in range(0, boardObject.totalRows):
-    for column in range(0, boardObject.totalColumns):
+  for row in range(0, boardObject.total_rows):
+    for column in range(0, boardObject.total_columns):
       buttonColor = buttons[row, column].cget("bg")
 
       if buttonColor != TILEBACKGROUNDCOLOR:
         continue
 
       tileValue = 0
-      if tilesBoard[row, column]["tileValue"] != " ":
-        tileValue = int(tilesBoard[row, column]["tileValue"])
+      if tiles_board[row, column]["tileValue"] != " ":
+        tileValue = int(tiles_board[row, column]["tileValue"])
 
       buttonColor = PROXIMITYCOLORS[tileValue]
-      checked = tilesBoard[row, column]["checked"]
+      checked = tiles_board[row, column]["checked"]
 
       if checked:
         buttons[row, column].config(bg=buttonColor,
@@ -192,10 +192,10 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
     winLabel (tk.Label): The label widget that shows the lose or win text
     broccoliCounter (tk.Label): Broccoli counter widget
   """
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
   row = movePosition[0]
   column = movePosition[1]
-  flagTileStatus = tilesBoard[row, column]["flagged"]
+  flagTileStatus = tiles_board[row, column]["flagged"]
 
   if not flagCommand and not flagTileStatus:
     boardObject, gameStatus = handle_move(boardObject, movePosition)
@@ -248,13 +248,13 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
     goBackFunc (Func): Function to go back to the previous view
     goToMainMenu (Func): Function to go back to the main menu view
   """
-  rows = boardObject.totalRows
-  columns = boardObject.totalColumns
+  rows = boardObject.total_rows
+  columns = boardObject.total_columns
   buttons = np.empty(shape=[rows, columns], dtype="object")
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
 
   global broccoliAmountCounter
-  broccoliAmountCounter = boardObject.broccoliAmount
+  broccoliAmountCounter = boardObject.broccoli_amount
 
   global flagCommand
   flagCommand = False
@@ -355,7 +355,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
     frame.pack()
 
     for column in range(0, columns):
-      isNullSpace = tilesBoard[row, column]["checked"]
+      isNullSpace = tiles_board[row, column]["checked"]
       backgroundColor = TILEBACKGROUNDCOLOR
       buttonCommand = partial(handleClick,
                               boardObject,

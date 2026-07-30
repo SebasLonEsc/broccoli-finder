@@ -52,7 +52,7 @@ def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit=0, vLimit=0):
   
   return [hPosition, vPosition]
 
-def broccoliProximity(board, pos, totalRows, totalColumns):
+def broccoliProximity(board, pos, total_rows, total_columns):
   """Checks and registers the proximity values of the broccolis on the board matrix.
 
   The numbers indicate how many broccolis are around that specific tile of the board
@@ -60,16 +60,16 @@ def broccoliProximity(board, pos, totalRows, totalColumns):
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
     pos (array[int]): The previous position
-    totalRows (int): The amount of rows on the board
-    totalColumns (int): The amount of columns on the board
+    total_rows (int): The amount of rows on the board
+    total_columns (int): The amount of columns on the board
   Returns:
     np.ndarray: The board matrix with the proximity numbers.
       Which indicate the amount of broccolis next to each tile
   """
   horizontalStart = checkNullSpaces(board, pos, -1, 0)[0]
-  horizontalEnd = checkNullSpaces(board, pos, 1, 0, totalRows)[0]
+  horizontalEnd = checkNullSpaces(board, pos, 1, 0, total_rows)[0]
   verticalStart = checkNullSpaces(board, pos, 0, -1)[1]
-  verticalEnd = checkNullSpaces(board, pos, 0, 1, 0, totalColumns)[1]
+  verticalEnd = checkNullSpaces(board, pos, 0, 1, 0, total_columns)[1]
 
   for i in range(horizontalStart, horizontalEnd + 1):
     for j in range(verticalStart, verticalEnd + 1):

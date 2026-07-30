@@ -26,7 +26,7 @@ def openCustomGameView(root, goBackFunc, previousGoBackFunc):
   closeInterface(root)
   createNewGameView(goBackFunc, previousGoBackFunc)
 
-def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
+def createGame(root, goBackFunc, previousGoBackFunc, difficulty, board_size):
   """Closes the current window and creates the new game window.
 
   Args:
@@ -34,26 +34,26 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
     goBackFunc (Func): Function to go back to the current view
     previousGoBackfunc (Func): Function to go back to the previous view
     gameDifficulty (int): The game difficulty combobox
-    boardSize (str): The selected board size
+    board_size (str): The selected board size
   """
   gameDifficulty = difficulty.get()
 
-  broccoliPercent = GAMEBROCCOLIPERCENTS[boardSize][gameDifficulty]
-  boardSizes = BOARDSIZEVALUES[boardSize]
+  broccoliPercent = GAMEBROCCOLIPERCENTS[board_size][gameDifficulty]
+  board_sizes = BOARDSIZEVALUES[board_size]
 
-  rows = random.randint(boardSizes[0], boardSizes[1])
-  columns = random.randint(boardSizes[0], boardSizes[1])
-  boardSize = rows * columns
-  broccoliLowerLimit = math.ceil(boardSize * broccoliPercent[0])
-  broccoliUpperLimit = math.floor(boardSize * broccoliPercent[1])
-  broccoliAmount = broccoliLowerLimit
+  rows = random.randint(board_sizes[0], board_sizes[1])
+  columns = random.randint(board_sizes[0], board_sizes[1])
+  board_size = rows * columns
+  broccoliLowerLimit = math.ceil(board_size * broccoliPercent[0])
+  broccoliUpperLimit = math.floor(board_size * broccoliPercent[1])
+  broccoli_amount = broccoliLowerLimit
 
   if (broccoliLowerLimit != broccoliUpperLimit and
       broccoliLowerLimit < broccoliUpperLimit):
-    broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
+    broccoli_amount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
 
   closeInterface(root)
-  boardObject = board_generator(rows, columns, broccoliAmount)
+  boardObject = board_generator(rows, columns, broccoli_amount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
 
 def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
@@ -65,7 +65,7 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
     previousGoBackfunc (Func): Function to go back to the previous view
     masterWidget (tk.Widget): The widget where the button is being placed
     gameDifficulty (int): The game difficulty combobox
-    boardSize (str): The selected board size
+    board_size (str): The selected board size
   """
   currentDir = Path(__file__).parent
   imageName = BOARDSELECTORIMAGES[size]

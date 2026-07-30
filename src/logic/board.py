@@ -1,22 +1,22 @@
 import numpy as np
 
-from .boardShaper import boardShaper
-from .broccoliFiller import boardBroccoliFiller
+from .boardShaper import board_shaper
+from .broccoliFiller import board_broccoli_filler
 from .constants.boardValues import BOARDTILEVALUE
 
-def fillTilesBoard(tilesBoard):
-  """Fills each tile from the tilesBoard attribute with a dictionary.
+def fill_tiles_board(tiles_board):
+  """Fills each tile from the tiles_board attribute with a dictionary.
   
   Args:
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    tiles_board (np.ndarray): Matrix containing each tiles of the board
   Output:
-    np.ndarray: Filled tilesboard matrix with dictionaries, one for each tile on the board
+    np.ndarray: Filled tiles_board matrix with dictionaries, one for each tile on the board
   """
-  for i in range(0, tilesBoard.shape[0]):
-    for j in range(0, tilesBoard.shape[1]):
-      tilesBoard[i,j] = BOARDTILEVALUE.copy()
+  for i in range(0, tiles_board.shape[0]):
+    for j in range(0, tiles_board.shape[1]):
+      tiles_board[i,j] = BOARDTILEVALUE.copy()
 
-  return tilesBoard
+  return tiles_board
 
 class Board:
   """The board Class.
@@ -24,68 +24,68 @@ class Board:
   Args:
     board (np.dnarray): The board matrix containg the information about:
       nullspaces, broccoli position and proximity
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board.
+    tiles_board (np.ndarray): Matrix containing each tiles of the board.
       The tiles register the player progress.
       And what the player sees in the interface or console
     rows (int): The amount of rows of the board
     columns (int): The amount of columns of the board
   """
-  def __init__(self, board, tilesBoard, rows, columns):
+  def __init__(self, board, tiles_board, rows, columns):
     self.board = board
-    self.tilesBoard = tilesBoard
-    self.totalRows = rows
-    self.totalColumns = columns
-    self.broccoliAmount = 0
-    self.availableSpace = rows * columns
-    self.nullSpaceNumber = 0
+    self.tiles_board = tiles_board
+    self.total_rows = rows
+    self.total_columns = columns
+    self.broccoli_amount = 0
+    self.available_space = rows * columns
+    self.null_space_amount = 0
   
-  def boardSize(self):
-    return self.totalRows * self.totalColumns
+  def board_size(self):
+    return self.total_rows * self.total_columns
   
-  def changeBoard(self, board):
+  def change_board(self, board):
     self.board = board
 
-  def changeTilesBoard(self, tilesBoard):
-    self.tilesBoard = tilesBoard
+  def change_tiles_board(self, tiles_board):
+    self.tiles_board = tiles_board
 
-  def changeBroccoliAmount(self, broccoliAmount):
-    self.broccoliAmount = broccoliAmount
+  def change_broccoli_amount(self, broccoli_amount):
+    self.broccoli_amount = broccoli_amount
 
-  def changeAvaliableSpaces(self, availableSpace):
-    self.availableSpace = availableSpace
+  def change_avaliable_spaces_amount(self, available_space):
+    self.available_space = available_space
 
-  def changeNullSpacesAmount(self, nullSpace):
-    self.nullSpaceNumber = nullSpace
+  def change_null_spaces_amount(self, null_spaces_amount):
+    self.null_space_amount = null_spaces_amount
 
-  def flagTile(self, flaggedStatus, row, column):
-    tile = self.tilesBoard[row, column]
-    tile["flagged"] = flaggedStatus
-    tilesBoard = self.tilesBoard
-    tilesBoard[row, column] = tile
+  def flag_tile(self, flagged_status, row, column):
+    tile = self.tiles_board[row, column]
+    tile["flagged"] = flagged_status
+    tiles_board = self.tiles_board
+    tiles_board[row, column] = tile
 
-    self.changeTilesBoard(tilesBoard)
+    self.change_tiles_board(tiles_board)
 
-def board_generator(rows, columns, broccoliAmount):
+def board_generator(rows, columns, broccoli_amount):
   """Generates the Board Object, defines it shape and fills it with broccolis.
 
   Args:
     rows (int): The amount of rows of the board
     columns (int): The amount of columns of the board
-    broccoliAmount (int): The amount of broccolis on the board
+    broccoli_amount (int): The amount of broccolis on the board
   Returns:
     Board: The board object
   """
-  emptyBoard = np.zeros(shape=[rows, columns], dtype=np.int8)
-  tilesBoard = np.ndarray(shape=[rows, columns], dtype=np.object_)
-  tilesBoard = fillTilesBoard(tilesBoard)
+  empty_board = np.zeros(shape=[rows, columns], dtype=np.int8)
+  tiles_board = np.ndarray(shape=[rows, columns], dtype=np.object_)
+  tiles_board = fill_tiles_board(tiles_board)
   
-  boardObject = Board(emptyBoard,
-                      tilesBoard,
+  board_object = Board(empty_board,
+                      tiles_board,
                       rows,
                       columns
                       )
 
-  boardObject = boardShaper(boardObject)
-  boardObject = boardBroccoliFiller(boardObject, broccoliAmount)
+  board_object = board_shaper(board_object)
+  board_object = board_broccoli_filler(board_object, broccoli_amount)
 
-  return boardObject
+  return board_object

@@ -9,7 +9,7 @@ def printing(board_object):
   """
   guide_row = "     "
   separation_row = "   --"
-  for j in range(board_object.tilesBoard.shape[1]):
+  for j in range(board_object.tiles_board.shape[1]):
     complement = "  "
     if j+1 >= 10:
       complement = " "
@@ -20,15 +20,15 @@ def printing(board_object):
   print(guide_row)
   print(separation_row)
 
-  for i in range(board_object.tilesBoard.shape[0]):
+  for i in range(board_object.tiles_board.shape[0]):
     complement = " "
 
     if i+1 >= 10:
       complement = ""
 
     row = complement + str(i + 1) + " | "
-    for j in range(board_object.tilesBoard[i].shape[0]):
-      row += board_object.tilesBoard[i,j]["tileValue"] + "  "
+    for j in range(board_object.tiles_board[i].shape[0]):
+      row += board_object.tiles_board[i,j]["tileValue"] + "  "
 
     row += "| " + str(i + 1)
     print(row)
@@ -45,8 +45,8 @@ def print_board_on_console(board_object):
     board_object (Board): The object containing all of the information about the board
   """
   game_status = 0
-  row_limit = board_object.totalRows
-  column_limit = board_object.totalColumns
+  row_limit = board_object.total_rows
+  column_limit = board_object.total_columns
   printing(board_object)
 
   while game_status == 0:

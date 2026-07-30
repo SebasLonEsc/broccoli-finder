@@ -13,8 +13,8 @@ def shapeWeigher(boardObject):
   Returns:
     np.ndarray: An array of the weights for each available baord shape
   """
-  totalRows = boardObject.totalRows
-  totalColumns = boardObject.totalColumns
+  total_rows = boardObject.total_rows
+  total_columns = boardObject.total_columns
 
   boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
   boardShapesWeight[0] = 2
@@ -25,20 +25,20 @@ def shapeWeigher(boardObject):
       i += 1
       continue
 
-    if ((totalRows == 2 or totalColumns == 2) and
+    if ((total_rows == 2 or total_columns == 2) and
         (shape == "cutCorners" or shape == "randomCutcorners")):
       boardShapesWeight[i] = 0
       i += 1
       continue
 
     if shape == "cross":
-      if totalRows == 2 or totalColumns == 2: # A two-lenght side will be reduce to one lenght on cross-shape
+      if total_rows == 2 or total_columns == 2: # A two-lenght side will be reduce to one lenght on cross-shape
         boardShapesWeight[i] = 0
         i += 1
         continue
 
-      boardSize = totalRows * totalColumns
-      if boardSize < 16:  # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
+      board_size = total_rows * total_columns
+      if board_size < 16:  # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
         boardShapesWeight[i] = 0
         i += 1
         continue
@@ -62,18 +62,18 @@ def defineCornerSizes(boardObject, randomCorners):
       In a [horizontalSize, verticalSize] pattern
   """
   cornerSizes = np.zeros((4,2), dtype=np.int_)
-  totalRows = boardObject.totalRows
-  totalColumns = boardObject.totalColumns
-  horizontalCornerSizeLimit = math.floor(totalRows / 2)
-  verticalCornerSizeLimit = math.floor(totalColumns / 2)
+  total_rows = boardObject.total_rows
+  total_columns = boardObject.total_columns
+  horizontalCornerSizeLimit = math.floor(total_rows / 2)
+  verticalCornerSizeLimit = math.floor(total_columns / 2)
 
-  if totalRows % 2 == 0 and totalRows == 4:
+  if total_rows % 2 == 0 and total_rows == 4:
     horizontalCornerSizeLimit -= 1
 
-  if totalColumns % 2 == 0 and totalColumns == 4:
+  if total_columns % 2 == 0 and total_columns == 4:
     verticalCornerSizeLimit -= 1
 
-  if totalRows <= 2 or totalColumns <= 2:
+  if total_rows <= 2 or total_columns <= 2:
     return cornerSizes
 
   if randomCorners:
@@ -119,11 +119,11 @@ def cutCornersShaper(boardObject, randomCorners=False):
     Board: The board object with the updated information of the cutCorner shape
   """
   board = boardObject.board
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
   cornerSizes = defineCornerSizes(boardObject, randomCorners)
 
   tile = {}
-  nullSpaceNumber = 0  
+  null_space_amount = 0  
 
   for i in range(len(cornerSizes)):
     startPoint = 0
@@ -134,14 +134,14 @@ def cutCornersShaper(boardObject, randomCorners=False):
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tilesBoard[j, CORNERGUIDE[i][1]]
+      tile = tiles_board[j, CORNERGUIDE[i][1]]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
       if board[j, CORNERGUIDE[i][1]] == 0:
         board[j, CORNERGUIDE[i][1]] = -2
-        tilesBoard[j, CORNERGUIDE[i][1]] = tile
-        nullSpaceNumber += 1
+        tiles_board[j, CORNERGUIDE[i][1]] = tile
+        null_space_amount += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
@@ -151,19 +151,19 @@ def cutCornersShaper(boardObject, randomCorners=False):
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tilesBoard[CORNERGUIDE[i][0], j]
+      tile = tiles_board[CORNERGUIDE[i][0], j]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
       if board[CORNERGUIDE[i][0], j] == 0:
         board[CORNERGUIDE[i][0], j] = -2
-        tilesBoard[CORNERGUIDE[i][0], j] = tile
-        nullSpaceNumber += 1
+        tiles_board[CORNERGUIDE[i][0], j] = tile
+        null_space_amount += 1
     
-  boardObject.changeBoard(board)
-  boardObject.changeTilesBoard(tilesBoard)
-  boardObject.changeNullSpacesAmount(nullSpaceNumber)
-  boardObject.changeAvaliableSpaces(boardObject.boardSize() - nullSpaceNumber)
+  boardObject.change_board(board)
+  boardObject.change_tiles_board(tiles_board)
+  boardObject.change_null_spaces_amount(null_space_amount)
+  boardObject.change_avaliable_spaces_amount(boardObject.board_size() - null_space_amount)
 
   return boardObject
 
@@ -178,54 +178,54 @@ def crossShaper(boardObject):
     Returns:
       Board: The board object with the updated information of the cross shape
   """
-  totalRows = boardObject.totalRows
-  totalColumns = boardObject.totalColumns
+  total_rows = boardObject.total_rows
+  total_columns = boardObject.total_columns
 
-  if(totalRows <= 3 or totalColumns <= 3):
+  if(total_rows <= 3 or total_columns <= 3):
     # For side of length 3 the available space it's too little
     return boardObject
   
-  if(totalRows * totalColumns <= 16):
+  if(total_rows * total_columns <= 16):
     # Blocks 4x4 boards on having cross shape
     return boardObject
 
-  crossRow = random.randint(1, totalRows - 2)
-  crossColumn = random.randint(1, totalColumns - 2)
+  crossRow = random.randint(1, total_rows - 2)
+  crossColumn = random.randint(1, total_columns - 2)
   board = boardObject.board
-  tilesBoard = boardObject.tilesBoard
+  tiles_board = boardObject.tiles_board
 
   tile = {}
-  nullSpaceNumber = 0
+  null_space_amount = 0
 
-  for column in range(totalColumns):
-    tile = tilesBoard[crossRow, column]
+  for column in range(total_columns):
+    tile = tiles_board[crossRow, column]
     tile["tileValue"] = "*"
     tile["checked"] = True
     
     board[crossRow, column] = -2
-    tilesBoard[crossRow, column] = tile
-    nullSpaceNumber += 1
+    tiles_board[crossRow, column] = tile
+    null_space_amount += 1
 
-  for row in range(totalRows):
+  for row in range(total_rows):
     if board[row, crossColumn] == -2:
       continue
 
-    tile = tilesBoard[row, crossColumn]
+    tile = tiles_board[row, crossColumn]
     tile["tileValue"] = "*"
     tile["checked"] = True
 
     board[row, crossColumn] = -2
-    tilesBoard[row, crossColumn] = tile
-    nullSpaceNumber += 1
+    tiles_board[row, crossColumn] = tile
+    null_space_amount += 1
 
-  boardObject.changeBoard(board)
-  boardObject.changeTilesBoard(tilesBoard)
-  boardObject.changeNullSpacesAmount(nullSpaceNumber)
-  boardObject.changeAvaliableSpaces(boardObject.boardSize() - nullSpaceNumber)
+  boardObject.change_board(board)
+  boardObject.change_tiles_board(tiles_board)
+  boardObject.change_null_spaces_amount(null_space_amount)
+  boardObject.change_avaliable_spaces_amount(boardObject.board_size() - null_space_amount)
 
   return boardObject
 
-def boardShaper(boardObject):
+def board_shaper(boardObject):
   """Handles the shaping of the board.
 
   Args:

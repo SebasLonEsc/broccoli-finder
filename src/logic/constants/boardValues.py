@@ -5,7 +5,7 @@ BOARDVALUESGUIDE = {
   -2: "nullSpace"
   }
 
-# Each tile in the tilesBoard matrix has a checked and tileValue value.
+# Each tile in the tiles_board matrix has a checked and tileValue value.
 #   checked: defines if the specific tile has been click before, is a null space or 
 #     if it was revealed by clicking another empty tile in the proximity
 #   tileValue: is the current value of a checked tile being:

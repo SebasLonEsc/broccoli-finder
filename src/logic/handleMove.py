@@ -1,37 +1,37 @@
-def revealAllBroccolis(board, tilesBoard, broccoliAmount):
+def revealAllBroccolis(board, tiles_board, broccoli_amount):
   """Reveals all of the broccolis of the board when LOSING the game.
 
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board
-    broccoliAmount (int): The amount of broccolis on the board
+    tiles_board (np.ndarray): Matrix containing each tiles of the board
+    broccoli_amount (int): The amount of broccolis on the board
   Returns:
-    np.ndarray: tilesBoard matrix with the revealed borccolis
+    np.ndarray: tiles_board matrix with the revealed borccolis
   """
   countedBroccolis = 0
 
-  for row in range(0, tilesBoard.shape[0]):
-    for column in range(0, tilesBoard.shape[1]):
+  for row in range(0, tiles_board.shape[0]):
+    for column in range(0, tiles_board.shape[1]):
       if board[row, column] == -1:
-        tilesBoard[row, column]["checked"] = True
-        tilesBoard[row, column]["tileValue"] = str(board[row, column])
+        tiles_board[row, column]["checked"] = True
+        tiles_board[row, column]["tileValue"] = str(board[row, column])
         countedBroccolis += 1
 
-      if countedBroccolis == broccoliAmount:
+      if countedBroccolis == broccoli_amount:
         break
   
-  return tilesBoard
+  return tiles_board
 
-def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
+def checkGameStatus(board, tiles_board, movePosition, broccoli_amount):
   """Checks the current game status after a move was done.
 
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    tiles_board (np.ndarray): Matrix containing each tiles of the board
     movePosition (array): An array [row, column] of the current move made by the player
-    broccoliAmount (int): The amount of broccolis on the board
+    broccoli_amount (int): The amount of broccolis on the board
   Returns:
     int: Returns the current game status
       -1 -> Indicate a lost game.
@@ -42,26 +42,26 @@ def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
     return -1
 
   uncheckedTiles = 0  
-  for i in range(0, tilesBoard.shape[0]):
-    for j in range(0, tilesBoard.shape[1]):
+  for i in range(0, tiles_board.shape[0]):
+    for j in range(0, tiles_board.shape[1]):
       if movePosition[0] == i and movePosition[1] == j:
         continue
 
-      if tilesBoard[i,j]["checked"] == False:
+      if tiles_board[i,j]["checked"] == False:
         uncheckedTiles += 1
 
-  if uncheckedTiles != broccoliAmount:
+  if uncheckedTiles != broccoli_amount:
     return 0
 
   return 1
 
-def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
+def checkValidMove(board, tiles_board, movePosition, boardRowLimit, boardColumnLimit):
   """Checks if the current move made by the player is a valid one.
 
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    tiles_board (np.ndarray): Matrix containing each tiles of the board
     movePosition (array): An array [row, column] of the current move made by the player
     boardRowLimit (int): The amount of rows on the board
     boardColumnLimit (int): The amount of columns on the board
@@ -80,21 +80,21 @@ def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLi
   if board[positionX, positionY] == -2:
     return False
   
-  if tilesBoard[positionX, positionY]["checked"]:
+  if tiles_board[positionX, positionY]["checked"]:
     return False
 
-  if tilesBoard[positionX, positionY]["flagged"]:
+  if tiles_board[positionX, positionY]["flagged"]:
     return False
 
   return True
 
-def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
+def makeMove(board, tiles_board, movePosition, boardRowLimit, boardColumnLimit):
   """Makes the move made by the player.
 
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
-    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    tiles_board (np.ndarray): Matrix containing each tiles of the board
     movePosition (array): An array [row, column] of the current move made by the player
     boardRowLimit (int): The amount of rows on the board
     boardColumnLimit (int): The amount of columns on the board
@@ -104,7 +104,7 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
       Returns the unchanged matrix otherwise
   """
   validMove = checkValidMove(board,
-                             tilesBoard,
+                             tiles_board,
                              movePosition,
                              boardRowLimit,
                              boardColumnLimit
@@ -113,13 +113,13 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
   positionY = movePosition[1]
 
   if not validMove:
-    return tilesBoard
+    return tiles_board
 
-  tilesBoard[positionX, positionY]["checked"] = True
-  tilesBoard[positionX, positionY]["tileValue"] = str(board[positionX, positionY])
+  tiles_board[positionX, positionY]["checked"] = True
+  tiles_board[positionX, positionY]["tileValue"] = str(board[positionX, positionY])
 
   if board[positionX, positionY] > 0:
-    return tilesBoard
+    return tiles_board
 
   newPositions = [[positionX - 1, positionY],
                   [positionX + 1, positionY],
@@ -129,7 +129,7 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 
   for i in range(len(newPositions)):
     validMove = checkValidMove(board,
-                               tilesBoard,
+                               tiles_board,
                                newPositions[i],
                                boardRowLimit,
                                boardColumnLimit
@@ -138,19 +138,19 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
     if not validMove:
       continue
 
-    tilesBoard = makeMove(board,
-                          tilesBoard,
+    tiles_board = makeMove(board,
+                          tiles_board,
                           newPositions[i],
                           boardRowLimit,
                           boardColumnLimit
                           )
 
-  return tilesBoard
+  return tiles_board
 
 def handle_move(boardObject, movePosition):
   """Handles the move made by the player.
 
-  Updates the tilesBoard marix if so.
+  Updates the tiles_board matrix if so.
   And validates the game status after the move
   Args:
     boardObject (Board): The object containing all of the information about the board
@@ -163,30 +163,30 @@ def handle_move(boardObject, movePosition):
       1 -> Indicates a won game
   """
   board = boardObject.board
-  tilesBoard = boardObject.tilesBoard
-  broccoliAmount = boardObject.broccoliAmount
+  tiles_board = boardObject.tiles_board
+  broccoli_amount = boardObject.broccoli_amount
 
   if board[movePosition[0], movePosition[1]] == -2:
     return boardObject, 0
   
-  boardRowLimit = boardObject.totalRows
-  boardColumnLimit = boardObject.totalColumns
-  tilesBoard = makeMove(board,
-                        tilesBoard,
+  boardRowLimit = boardObject.total_rows
+  boardColumnLimit = boardObject.total_columns
+  tiles_board = makeMove(board,
+                        tiles_board,
                         movePosition,
                         boardRowLimit,
                         boardColumnLimit
                         )
-  boardObject.changeTilesBoard(tilesBoard)
+  boardObject.change_tiles_board(tiles_board)
 
   gameStatus = checkGameStatus(board,
-                               tilesBoard,
+                               tiles_board,
                                movePosition,
-                               broccoliAmount
+                               broccoli_amount
                                )
 
   if gameStatus < 0: 
-    tilesBoard = revealAllBroccolis(board, tilesBoard, broccoliAmount)
-    boardObject.changeTilesBoard(tilesBoard)
+    tiles_board = revealAllBroccolis(board, tiles_board, broccoli_amount)
+    boardObject.change_tiles_board(tiles_board)
   
   return boardObject, gameStatus

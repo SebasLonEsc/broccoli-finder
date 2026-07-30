@@ -9,13 +9,13 @@ from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
-def validateInputs(rows, columns, broccoliAmount):
+def validateInputs(rows, columns, broccoli_amount):
   """Validates if the input values are valid values.
 
   Args:
     rows (int): Number of rows on the board
     columns (int): Number of columns on the board
-    broccoliAmount (int): Number of broccolis on the board
+    broccoli_amount (int): Number of broccolis on the board
   Returns:
     str: Message indicating if the inputs are valid.
       "The following values are invalid:" if all values are valid.
@@ -26,7 +26,7 @@ def validateInputs(rows, columns, broccoliAmount):
     errorText = "The following values are invalid:"
     numberOfRows = int(rows.get())
     numberOfColumns = int(columns.get())
-    numberOfBroccolis = int(broccoliAmount.get())
+    numberOfBroccolis = int(broccoli_amount.get())
     boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
     boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
     broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
@@ -59,21 +59,21 @@ def validateInputs(rows, columns, broccoliAmount):
   except:
     return "Value is not numeric"
 
-def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc):
+def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGameView, goBackFunc):
   """Closes the current window and creates the new game interface.
 
   Args:
     root (tk.Tk): The root windget, the current window that is being displayed
     rows (int): Number of rows on the board
     columns (int): Number of columns on the board
-    broccoliAmount (int): Number of broccolis on the board
+    broccoli_amount (int): Number of broccolis on the board
     errorLabel (tk.Label): The label widget to display an error message
     createNewGameView (Func): The function that creates the current view/window.
       Used in the next view for the goBack function
     goBackFunc (Func): The current goBack function.
       Used to go back to the previous view (In this case the main menu)
   """
-  errorText = validateInputs(rows, columns, broccoliAmount)
+  errorText = validateInputs(rows, columns, broccoli_amount)
 
   if errorText != "The following values are invalid:":
     errorLabel.config(text=errorText)
@@ -81,16 +81,16 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   
   numberOfRows = int(rows.get())
   numberOfColumns = int(columns.get())
-  numberOfBroccolis = int(broccoliAmount.get())
+  numberOfBroccolis = int(broccoli_amount.get())
 
   broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
-  broccoliAmountProportion = math.ceil(numberOfRows
+  broccoli_amountProportion = math.ceil(numberOfRows
                                        * numberOfColumns
                                        * broccoliPercentLimit)
 
-  if numberOfBroccolis > broccoliAmountProportion:
+  if numberOfBroccolis > broccoli_amountProportion:
     errorText = ("Please reduce the amount of Broccolis to no more than "
-                 + str(broccoliAmountProportion))
+                 + str(broccoli_amountProportion))
     errorLabel.config(text=errorText)
     return
 
@@ -162,8 +162,8 @@ def createNewGameView(goBackFunc, goToMainMenu):
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
   tk.Label(frame, text="# Broccolis").pack(side="left")
-  broccoliAmount = tk.Spinbox(frame, from_=1, to=maximumNumberOfBroccolis)
-  broccoliAmount.pack(side="left", pady=2)
+  broccoli_amount = tk.Spinbox(frame, from_=1, to=maximumNumberOfBroccolis)
+  broccoli_amount.pack(side="left", pady=2)
 
   buttonFrame = tk.Frame(root)
   buttonFrame.pack(pady=[2,2], expand=True)
@@ -180,7 +180,7 @@ def createNewGameView(goBackFunc, goToMainMenu):
                             root,
                             rows,
                             columns,
-                            broccoliAmount,
+                            broccoli_amount,
                             errorLabel,
                             goBackFunc,
                             goToMainMenu
