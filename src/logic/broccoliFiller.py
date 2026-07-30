@@ -2,14 +2,16 @@ import random
 
 from .broccoliProximity import broccoliProximity
 
-# Calculates a valid random position for a broccoli
-# Input:
-#   board: the board matrix containg the information about:
-#     nullspaces, broccoli position and proximity
-#   boardObject: the object containing all of the information about the board
-# Output:
-#   Returns an array of [row, column] position of a broccoli
 def defineBroccoliPositions(board, boardObject):
+  """Calculates a valid random position for a broccoli.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about:
+      nullspaces, broccoli position and proximity
+    boardObject (Board): The object containing all of the information about the board
+  Returns:
+    array[int]: An array of [row, column] position of a broccoli
+  """
   pos = [0,0]
   invalidPosition = True
 
@@ -23,15 +25,15 @@ def defineBroccoliPositions(board, boardObject):
   
   return pos
 
-# Fills a board with a specific number of broccolis
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   broccoliAmount (optional): the number of broccolis on the board.
-#     Default value is 1
-# Output:
-#   Returns the boardObject with the board matrix.
-#     Filled with the specified amount of broccolis
 def boardBroccoliFiller(boardObject, broccoliAmount=1):
+  """Fills a board with a specific number of broccolis.
+
+  Args:
+    boardObject (Board): The object containing all of the information about the board
+    broccoliAmount (int): The number of broccolis on the board (default 1)
+  Returns:
+    Board: The boardObject with the board matrix filled the specified amount of broccolis
+  """
   board = boardObject.board
   totalRows = boardObject.totalRows
   totalColumns = boardObject.totalColumns

@@ -1,12 +1,14 @@
-# Reveals all of the broccolis of the board when LOSING the game
-# Input:
-#   board: the board matrix containg the information about
-#     nullspaces, broccoli position and proximity
-#   tilesBoard: matrix containing each tiles of the board
-#   broccoliAmount: the amount of broccolis on the board
-# Output:
-#   Returns the tilesBoard matrix with the revealed borccolis
 def revealAllBroccolis(board, tilesBoard, broccoliAmount):
+  """Reveals all of the broccolis of the board when LOSING the game.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    broccoliAmount (int): The amount of broccolis on the board
+  Returns:
+    np.ndarray: tilesBoard matrix with the revealed borccolis
+  """
   countedBroccolis = 0
 
   for row in range(0, tilesBoard.shape[0]):
@@ -21,19 +23,21 @@ def revealAllBroccolis(board, tilesBoard, broccoliAmount):
   
   return tilesBoard
 
-# Checks the current game status after a move was done
-# Input:
-#   board: the board matrix containg the information about:
-#     nullspaces, broccoli position and proximity
-#   tilesBoard: matrix containing each tiles of the board
-#   movePosition: an array [row, column] of the current move made by the player
-#   broccoliAmount: the amount of broccolis on the board
-# Output:
-#   Returns the current game status
-#     -1: Indicate a lost game
-#      0: Indicate the game is still on
-#      1: Indicates a won game
 def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
+  """Checks the current game status after a move was done.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    movePosition (array): An array [row, column] of the current move made by the player
+    broccoliAmount (int): The amount of broccolis on the board
+  Returns:
+    int: Returns the current game status
+      -1 -> Indicate a lost game.
+      0 -> Indicate the game is still on.
+      1 -> Indicates a won game
+  """
   if board[movePosition[0], movePosition[1]] == -1:
     return -1
 
@@ -51,17 +55,19 @@ def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
 
   return 1
 
-# Checks if the current move made by the player is a valid one
-# Input:
-#   board: the board matrix containg the information about:
-#     nullspaces, broccoli position and proximity
-#   tilesBoard: matrix containing each tiles of the board
-#   movePosition: an array [row, column] of the current move made by the player
-#   boardRowLimit: the amount of rows on the board
-#   boardColumnLimit: the amount of columns on the board
-# Output:
-#   Returns True if the move is valid, False otherwise
 def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
+  """Checks if the current move made by the player is a valid one.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    movePosition (array): An array [row, column] of the current move made by the player
+    boardRowLimit (int): The amount of rows on the board
+    boardColumnLimit (int): The amount of columns on the board
+  Returns:
+    bool: True if the move is valid, False otherwise
+  """
   positionX = movePosition[0]
   positionY = movePosition[1]
 
@@ -82,18 +88,21 @@ def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLi
 
   return True
 
-# Makes the move made by the player
-# Input:
-#   board: the board matrix containg the information about:
-#     nullspaces, broccoli position and proximity
-#   tilesBoard: matrix containing each tiles of the board
-#   movePosition: an array [row, column] of the current move made by the player
-#   boardRowLimit: the amount of rows on the board
-#   boardColumnLimit: the amount of columns on the board
-# Output:
-#   Returns the tileBoard matrix with the move registered if valid.
-#   Returns the unchanged matrix otherwise
 def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
+  """Makes the move made by the player.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    tilesBoard (np.ndarray): Matrix containing each tiles of the board
+    movePosition (array): An array [row, column] of the current move made by the player
+    boardRowLimit (int): The amount of rows on the board
+    boardColumnLimit (int): The amount of columns on the board
+
+  Returns:
+    np.array: Updated tileBoard matrix after the player move if valid.
+      Returns the unchanged matrix otherwise
+  """
   validMove = checkValidMove(board,
                              tilesBoard,
                              movePosition,
@@ -138,16 +147,21 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 
   return tilesBoard
 
-# Handles the move made by the player.
-# Updates the tilesBoard marix if so.
-# And validates the game status after the move
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   movePosition: an array [row, column] of the current move made by the player
-# Output:
-#   Updated boardObject (if the move is valid or a game condition is met)
-#   Status of the game
 def handleMove(boardObject, movePosition):
+  """Handles the move made by the player.
+
+  Updates the tilesBoard marix if so.
+  And validates the game status after the move
+  Args:
+    boardObject (Board): The object containing all of the information about the board
+    movePosition (array): An array [row, column] of the current move made by the player
+  Returns:
+    Board: Updated boardObject (if the move is valid or a game condition is met)
+    int: Status of the game
+      -1 -> Indicate a lost game.
+      0 -> Indicate the game is still on.
+      1 -> Indicates a won game
+  """
   board = boardObject.board
   tilesBoard = boardObject.tilesBoard
   broccoliAmount = boardObject.broccoliAmount

@@ -1,12 +1,12 @@
 from src.logic.handleMove import handleMove
 from src.logic.constants.gameValues import LOSINGTEXT, WINNINGTEXT
 
-# Handles the printing of the board on console
-# Input:
-#   boardObject: the object containing all of the information about the board
-# Output:
-#   Nothing
 def printing(boardObject):
+  """Handles the printing of the board on console.
+
+  Args:
+    boardObject (Board): The object containing all of the information about the board
+  """
   guideRow = "     "
   separationRow = "   --"
   for j in range(boardObject.tilesBoard.shape[1]):
@@ -36,14 +36,14 @@ def printing(boardObject):
   print(separationRow)
   print(guideRow)
 
-# Prints the board on the console.
-# Request the player to make the moves on the game.
-# Upon losing or wining the game prints the corresponding message
-# Input:
-#   boardObject: the object containing all of the information about the board
-# Output:
-#   Nothing
 def printBoardOnConsole(boardObject):
+  """Prints the board on the console.
+
+  Request the player to make the moves on the game.
+  Upon losing or wining the game prints the corresponding message
+  Args:
+    boardObject (Board): The object containing all of the information about the board
+  """
   gameStatus = 0
   rowLimit = boardObject.totalRows
   columnLimit = boardObject.totalColumns

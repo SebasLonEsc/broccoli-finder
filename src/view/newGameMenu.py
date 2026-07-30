@@ -19,7 +19,7 @@ def openCustomGameView(root, goBackFunc, previousGoBackFunc):
   """Closes the current window and creates the custom game window.
 
   Args:
-    root (tk.Tk): the root windget, the current window that is being displayed
+    root (tk.Tk): The root windget, the current window that is being displayed
     goBackFunc (func): Function to go back to the current view
     previousGoBackfunc (func): Function to go back to the previous view
   """

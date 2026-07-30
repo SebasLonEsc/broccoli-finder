@@ -1,12 +1,14 @@
-# Validates if the current position is out of bounds
-# Input:
-#   currentPos: the new position that is being evaluated
-#   pos: the previous position
-#   limit: the limit value that the position can have
-# Output:
-#   Returns the currentPos if the position is not out of bounds.
-#   Return pos argument otherwise
 def outOfBoundsValidation(currentPos, pos, limit = 0):
+  """Validates if the current position is out of bounds.
+
+  Args:
+   currentPos (array[int]): The new position that is being evaluated
+   pos (array[int]): The previous position
+   limit (int): The limit value that the position can have (default 0)
+  Returns:
+    array[int]: Returns the currentPos if the position is not out of bounds.
+      Returns pos argument otherwise
+  """
   if limit == 0 and currentPos < limit:
     return pos
   
@@ -15,24 +17,24 @@ def outOfBoundsValidation(currentPos, pos, limit = 0):
   
   return currentPos
 
-# Verifies if there are null spaces on the current position.
-# In case of null space, moves the position on a tile farder.
-#   In horizontal or vertical direction based on increments.
-# Input:
-#   board: the board matrix containg the information about
-#     nullspaces, broccoli position and proximity
-#   pos: the current evaluated position
-#   hIncrement: the horizontal increment to select the next position
-#   vIncrement: the vertical increment to select the next position
-#   hLimit(optional): the horizontal limit that the row position value can take.
-#     Default value is 0
-#   vLimit(optional): the vertical limit that the column position value can take.
-#     Default value is 0
-# Output:
-#   Returns an array of [newRow, newColumn] position if the position is a nullSpace.
-#     This [newRow, newColumn] position is a position beyond the null space (if possible).
-#     If it isn't a nullSpace, return the [row, position] of the next position (position with the increment)
 def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit=0, vLimit=0):
+  """Verifies if there are null spaces on the current position.
+
+  In case of null space, moves the position on a tile farder.
+  In horizontal or vertical direction based on increments.
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    pos (array[int]): The previous position
+    hIncrement (int): The horizontal increment to select the next position
+    vIncrement (int): The vertical increment to select the next position
+    hLimit (int): The horizontal limit that the row position value can take (default 0)
+    vLimit (int): The vertical limit that the column position value can take (default 0)
+  Returns:
+    array[int]: An array of [newRow, newColumn] position if the position is a nullSpace.
+      This [newRow, newColumn] position is a position beyond the null space (if possible).
+      If it isn't a nullSpace, return the [row, position] of the next position (position with the increment)
+  """
   hPosition = outOfBoundsValidation(pos[0] + hIncrement, pos[0], hLimit) # hPosition: horizontal position
   vPosition = outOfBoundsValidation(pos[1] + vIncrement, pos[1], vLimit) # vPosition: vertical position
 
@@ -50,18 +52,20 @@ def checkNullSpaces(board, pos, hIncrement, vIncrement, hLimit=0, vLimit=0):
   
   return [hPosition, vPosition]
 
-# Checks and registers the proximity values of the broccolis on the board matrix.
-# The numbers indicate how many broccolis are around that specific tile of the board
-# Input:
-#   board: the board matrix containg the information about:
-#     nullspaces, broccoli position and proximity
-#   pos: the current evaluated position
-#   totalRows: the amount of rows on the board
-#   totalColumns: the amount of columns on the board
-# Output:
-#   Returns the board matrix with the proximity numbers.
-#     Which indicate the amount of broccolis next to each tile
 def broccoliProximity(board, pos, totalRows, totalColumns):
+  """Checks and registers the proximity values of the broccolis on the board matrix.
+
+  The numbers indicate how many broccolis are around that specific tile of the board
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    pos (array[int]): The previous position
+    totalRows (int): The amount of rows on the board
+    totalColumns (int): The amount of columns on the board
+  Returns:
+    np.ndarray: The board matrix with the proximity numbers.
+      Which indicate the amount of broccolis next to each tile
+  """
   horizontalStart = checkNullSpaces(board, pos, -1, 0)[0]
   horizontalEnd = checkNullSpaces(board, pos, 1, 0, totalRows)[0]
   verticalStart = checkNullSpaces(board, pos, 0, -1)[1]

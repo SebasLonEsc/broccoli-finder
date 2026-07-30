@@ -94,7 +94,7 @@ def handleGameStatus(boardObject, buttons, movePosition):
 
   Disables all buttons and reveal all broccolis if is a lost game.
   Args:
-    boardObject (Board): the object containing all of the information about the board
+    boardObject (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     movePosition (array): An array [row, column] of the current move made by the player
@@ -151,7 +151,7 @@ def handleText(boardObject, buttons):
   The value can be empty, a proximity number or a broccoli.
   This applies for each affected tile by the player move
   Args:
-    boardObject (Board): the object containing all of the information about the board
+    boardObject (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
   """
@@ -185,11 +185,11 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
   """Handles the click of the player on a tile of the board.
 
   Args:
-    boardObject (Board): the object containing all of the information about the board
+    boardObject (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     movePosition (array): An array [row, column] of the current move made by the player
-    winLabel (tk.Label): Rhe label widget that shows the lose or win text
+    winLabel (tk.Label): The label widget that shows the lose or win text
     broccoliCounter (tk.Label): Broccoli counter widget
   """
   tilesBoard = boardObject.tilesBoard
@@ -244,7 +244,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   """Creates the interface of the board
 
   Args:
-    boardObject (Board): the object containing all of the information about the board
+    boardObject (Board): Rhe object containing all of the information about the board
     goBackFunc (Func): Function to go back to the previous view
     goToMainMenu (Func): Function to go back to the main menu view
   """

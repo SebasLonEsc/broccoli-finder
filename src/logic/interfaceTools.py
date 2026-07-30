@@ -4,9 +4,9 @@ def centerWindow(window, windowWidth, windowHeight):
   """Places the window at the center of the screen.
 
   Args:
-    window (tk.widget): the root windget, the current window that is being displayed
-    windowWidth (int): the width of the current window
-    windowHeight (int): the height of the current window
+    window (tk.widget): The root windget, the current window that is being displayed
+    windowWidth (int): The width of the current window
+    windowHeight (int): The height of the current window
   """
   screenWidth = window.winfo_screenwidth()
   screenHeight = window.winfo_screenheight()
@@ -18,20 +18,15 @@ def closeInterface(root):
   """Closes the current window.
 
   Args:
-    root (tk.Tk): the root windget, the current window that is being displayed
+    root (tk.Tk): The root windget, the current window that is being displayed
   """
   root.destroy()
 
-# 
-# Input:
-#   
-# Output:
-#   Nothing
 def goBack(root, goBackFunc, previousGoBackFunc=None):
   """Closes the current window and creates the new game menu window.
 
   Args:
-    root (tk.Tk): the root windget, the current window that is being displayed
+    root (tk.Tk): The root windget, the current window that is being displayed
     goBackFunc (Func): The current goBack function.
       Used to go back to the previous view
     previousGoBackFunc (Func): The goBack function of the previous view.

@@ -9,20 +9,15 @@ from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
-# 
-# Input:
-#   
-# Output:
-#   
 def validateInputs(rows, columns, broccoliAmount):
   """Validates if the input values are valid values.
 
   Args:
-    rows (int): number of rows on the board
-    columns (int): number of columns on the board
-    broccoliAmount (int): number of broccolis on the board
+    rows (int): Number of rows on the board
+    columns (int): Number of columns on the board
+    broccoliAmount (int): Number of broccolis on the board
   Returns:
-    str: message indicating if the inputs are valid.
+    str: Message indicating if the inputs are valid.
       "The following values are invalid:" if all values are valid.
       "The following values are invalid:" + InputValue if a value is invalid.
       "Value is not numeric" if there is a non numeric value
@@ -68,10 +63,10 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   """Closes the current window and creates the new game interface.
 
   Args:
-    root (tk.Tk): the root windget, the current window that is being displayed
-    rows (int): number of rows on the board
-    columns (int): number of columns on the board
-    broccoliAmount (int): number of broccolis on the board
+    root (tk.Tk): The root windget, the current window that is being displayed
+    rows (int): Number of rows on the board
+    columns (int): Number of columns on the board
+    broccoliAmount (int): Number of broccolis on the board
     errorLabel (tk.Label): The label widget to display an error message
     createNewGameView (Func): The function that creates the current view/window.
       Used in the next view for the goBack function
