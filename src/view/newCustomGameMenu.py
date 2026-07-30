@@ -2,7 +2,7 @@ import tkinter as tk
 from functools import partial
 import math
 
-from src.logic.board import boardGenerator
+from src.logic.board import board_generator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
 from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARDSIZEVALUES
@@ -95,7 +95,7 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
     return
 
   closeInterface(root)
-  boardObject = boardGenerator(numberOfRows, numberOfColumns, numberOfBroccolis)
+  boardObject = board_generator(numberOfRows, numberOfColumns, numberOfBroccolis)
   createBoardInterface(boardObject, createNewGameView, goBackFunc)
 
 def createNewGameView(goBackFunc, goToMainMenu):

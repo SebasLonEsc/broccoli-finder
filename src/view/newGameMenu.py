@@ -7,7 +7,7 @@ import math
 from PIL import Image, ImageTk
 
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
-from src.logic.board import boardGenerator
+from src.logic.board import board_generator
 from src.view.boardInterface import createBoardInterface
 from src.view.newCustomGameMenu import createNewGameView
 from src.logic.constants.boardValues import BOARDSIZEVALUES
@@ -53,7 +53,7 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
     broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
 
   closeInterface(root)
-  boardObject = boardGenerator(rows, columns, broccoliAmount)
+  boardObject = board_generator(rows, columns, broccoliAmount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
 
 def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):

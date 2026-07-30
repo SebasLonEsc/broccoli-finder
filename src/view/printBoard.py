@@ -36,7 +36,7 @@ def printing(boardObject):
   print(separationRow)
   print(guideRow)
 
-def printBoardOnConsole(boardObject):
+def print_board_on_console(boardObject):
   """Prints the board on the console.
 
   Request the player to make the moves on the game.

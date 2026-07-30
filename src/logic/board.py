@@ -65,7 +65,7 @@ class Board:
 
     self.changeTilesBoard(tilesBoard)
 
-def boardGenerator(rows, columns, broccoliAmount):
+def board_generator(rows, columns, broccoliAmount):
   """Generates the Board Object, defines it shape and fills it with broccolis.
 
   Args:

@@ -12,9 +12,9 @@ def handleNewGame(root):
     root (tk.TK): The root windget, the current window that is being displayed
   """
   closeInterface(root)
-  newGameMenu(createMainMenuView)
+  newGameMenu(create_main_menu_view)
 
-def createMainMenuView():
+def create_main_menu_view():
   """Creates the main menu window."""
   windowWidth = 220
   windowHeight = 80
