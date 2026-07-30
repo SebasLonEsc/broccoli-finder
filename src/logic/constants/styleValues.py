@@ -23,7 +23,7 @@ DISABLEDTILECOLOR = "#B3B3B3"
 # Broccoli tile background color
 BROCCOLITILECOLOR = "#7F7F7F"
 
-# Eaten broccoli tile background color
+# Eaten broccoli tile background color.
 # Indicates the tile where the broccoli was found upon losing the game
 EATENBROCCOLITILECOLOR = "#8B0000"
 
@@ -36,8 +36,8 @@ BUTTONACTIVECOLOR = "#FFFFFF"
 # The color of the counter where the total amount of broccoli is shown
 BROCCOLICOUNTERCOLOR = "#000000"
 
-# A dictionary with for the [width, height] values
-#   for the board size selector buttons
+# A dictionary with for the [width, height] values.
+# For the board size selector buttons
 BOARDBUTTONSIZES = {
   "Small": [216, 168],
   "Medium": [216, 216],

@@ -65,9 +65,9 @@ def createTopLevel(tk, message, title):
 
 # Creates the info menu
 # Input:
-#   tk: The tk library reference
-#     (passed as argument to reduce double referencing on this file.
-#      Just a personal preference for this case)
+#   tk: The tk library reference.
+#     Passed as argument to reduce double referencing on this file.
+#     Just a personal preference for this case
 #   menuWidget: The menu widget where the menu is going to be attached
 # Output:
 #   Nothing

@@ -36,8 +36,8 @@ def printing(boardObject):
   print(separationRow)
   print(guideRow)
 
-# Prints the board on the console
-# and request the player to make the moves on the game
+# Prints the board on the console.
+# Request the player to make the moves on the game.
 # Upon losing or wining the game prints the corresponding message
 # Input:
 #   boardObject: the object containing all of the information about the board

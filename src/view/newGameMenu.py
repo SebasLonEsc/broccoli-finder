@@ -56,7 +56,7 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
   boardObject = boardGenerator(rows, columns, broccoliAmount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
 
-# Creates a board size button
+# Creates a board size selector button
 # Input:
 #   root: the root windget, the current window that is being displayed
 #   goBackFunc: Function to go back to the current view

@@ -27,7 +27,7 @@ from src.logic.constants.imagesPaths import (ACTIVEFLAGSTATUS,
                                              TILE
                                              )
 
-# Changes the current flag status for the game
+# Changes the current flag status for the game.
 # When true the player can flag or unflag tiles, make moves otherwise
 # Input:
 #   button: the button widget used for changing the status
@@ -48,12 +48,12 @@ def changeFlagStatus(button):
   button.config(image=flagButtonImage)
   button.image = flagButtonImage
 
-# Handles the flaging or unflaging of a tile
+# Handles the flaging or unflaging of a tile.
 # Updates the tile images based on the status
 # Input:
 #   boardObject: the object containing all of the information about the board
 #   buttons: a matrix contains all of the buttons.
-#     each one correspond to a tile on the board in the interface
+#     Each one correspond to a tile on the board in the interface
 #   movePosition: an array [row, column] of the current move made by the player
 #   broccoliCounter: Broccoli counter widget
 # Output:
@@ -89,12 +89,12 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
   buttons[row, column].image = tileImage
   broccoliCounter.config(text=broccoliAmountCounter)
 
-# Updates the interface when winning or losing the game
+# Updates the interface when winning or losing the game.
 # Disables all buttons and reveal all broccolis if is a lost game
 # Input:
 #   boardObject: the object containing all of the information about the board
 #   buttons: a matrix contains all of the buttons.
-#     each one correspond to a tile on the board in the interface
+#     Each one correspond to a tile on the board in the interface
 #   movePosition: an array [row, column] of the current move made by the player
 # Output:
 #   Nothing
@@ -144,12 +144,13 @@ def createProximityTileImages():
 
   return tileImages  
 
-# Updates the tiles of the board to show the value (empty, proximity number or broccoli)
-#   of each affected tile by the player move
+# Updates the tiles of the board to show the tile value:
+#   empty, a proximity number or a broccoli.
+#   For each affected tile by the player move
 # Input:
 #   boardObject: the object containing all of the information about the board
 #   buttons: a matrix contains all of the buttons.
-#     each one correspond to a tile on the board in the interface
+#     Each one correspond to a tile on the board in the interface
 # Output:
 #   Nothing
 def handleText(boardObject, buttons):
@@ -183,7 +184,7 @@ def handleText(boardObject, buttons):
 # Input:
 #   boardObject: the object containing all of the information about the board
 #   buttons: a matrix contains all of the buttons.
-#     each one correspond to a tile on the board in the interface
+#     Each one correspond to a tile on the board in the interface
 #   movePosition: an array [row, column] of the current move made by the player
 #   winLabel: the label widget that shows the lose or win text
 #   broccoliCounter: Broccoli counter widget
@@ -212,8 +213,8 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
     handleFlagTile(boardObject, buttons, movePosition, broccoliCounter)
 
 
-# Creates a canvas to display the board on it
-# The canvas add a scrollbar for big sized boards
+# Creates a canvas to display the board on it.
+# The canvas adds a scrollbar for big sized boards
 # Input:
 #   root: the root windget, the current window that is being displayed
 # Output:

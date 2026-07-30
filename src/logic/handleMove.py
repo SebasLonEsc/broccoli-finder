@@ -23,7 +23,7 @@ def revealAllBroccolis(board, tilesBoard, broccoliAmount):
 
 # Checks the current game status after a move was done
 # Input:
-#   board: the board matrix containg the information about
+#   board: the board matrix containg the information about:
 #     nullspaces, broccoli position and proximity
 #   tilesBoard: matrix containing each tiles of the board
 #   movePosition: an array [row, column] of the current move made by the player
@@ -53,7 +53,7 @@ def checkGameStatus(board, tilesBoard, movePosition, broccoliAmount):
 
 # Checks if the current move made by the player is a valid one
 # Input:
-#   board: the board matrix containg the information about
+#   board: the board matrix containg the information about:
 #     nullspaces, broccoli position and proximity
 #   tilesBoard: matrix containing each tiles of the board
 #   movePosition: an array [row, column] of the current move made by the player
@@ -84,15 +84,15 @@ def checkValidMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLi
 
 # Makes the move made by the player
 # Input:
-#   board: the board matrix containg the information about
+#   board: the board matrix containg the information about:
 #     nullspaces, broccoli position and proximity
 #   tilesBoard: matrix containing each tiles of the board
 #   movePosition: an array [row, column] of the current move made by the player
 #   boardRowLimit: the amount of rows on the board
 #   boardColumnLimit: the amount of columns on the board
 # Output:
-#   Returns the tileBoard matrix with the move registered if valid,
-#     returns the unchanged matrix otherwise
+#   Returns the tileBoard matrix with the move registered if valid.
+#   Returns the unchanged matrix otherwise
 def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
   validMove = checkValidMove(board,
                              tilesBoard,
@@ -138,9 +138,9 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 
   return tilesBoard
 
-# Handles the move made by the player. Check if the move if valid,
-#   updates the tilesBoard marix if so
-#   and validate the game status after the move
+# Handles the move made by the player.
+# Updates the tilesBoard marix if so.
+# And validates the game status after the move
 # Input:
 #   boardObject: the object containing all of the information about the board
 #   movePosition: an array [row, column] of the current move made by the player

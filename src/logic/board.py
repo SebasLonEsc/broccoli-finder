@@ -4,8 +4,8 @@ from .boardShaper import boardShaper
 from .broccoliFiller import boardBroccoliFiller
 from .constants.boardValues import BOARDTILEVALUE
 
-# Fills the each tile from the tiles board attribute with a dictionary
-#   and returns the filled matrix
+# Fills the each tile from the tiles board attribute with a dictionary.
+#   And returns the filled matrix
 # Input:
 #   tilesBoard: matrix containing each tiles of the board
 # Output:
@@ -18,11 +18,11 @@ def fillTilesBoard(tilesBoard):
   return tilesBoard
 
 # The board Class
-#   board: the board matrix containg the information about
+#   board: the board matrix containg the information about:
 #     nullspaces, broccoli position and proximity
-#   tilesBoard: matrix containing each tiles of the board
-#     the tiles register the player progress
-#     and what the player sees in the interface or console
+#   tilesBoard: matrix containing each tiles of the board.
+#     The tiles register the player progress.
+#     And what the player sees in the interface or console
 #   rows: the amount of rows of the board
 #   columns: the amount of columns of the board
 class Board:

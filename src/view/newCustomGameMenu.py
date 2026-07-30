@@ -15,7 +15,7 @@ from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 #   columns: number of columns on the board
 #   broccoliAmount: number of broccolis on the board
 # Output:
-#   Returns a String depending if the inputs are valid
+#   Returns a String depending if the inputs are valid.
 #     "The following values are invalid:" if all values are valid
 #     "The following values are invalid:" + InputValue if a value is invalid
 #     "Value is not numeric" if there is a non numeric value
