@@ -4,7 +4,7 @@ from functools import partial
 from pathlib import Path
 from PIL import Image, ImageTk
 
-from src.logic.handleMove import handleMove
+from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import closeInterface, goBack, createInfoMenu
 from src.logic.constants.gameValues import WINNINGTEXT, LOSINGTEXT
 from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELSIZE
@@ -198,7 +198,7 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
   flagTileStatus = tilesBoard[row, column]["flagged"]
 
   if not flagCommand and not flagTileStatus:
-    boardObject, gameStatus = handleMove(boardObject, movePosition)
+    boardObject, gameStatus = handle_move(boardObject, movePosition)
     handleText(boardObject, buttons)
 
     if gameStatus != 0:

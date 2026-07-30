@@ -147,7 +147,7 @@ def makeMove(board, tilesBoard, movePosition, boardRowLimit, boardColumnLimit):
 
   return tilesBoard
 
-def handleMove(boardObject, movePosition):
+def handle_move(boardObject, movePosition):
   """Handles the move made by the player.
 
   Updates the tilesBoard marix if so.

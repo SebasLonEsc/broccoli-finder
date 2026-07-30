@@ -1,72 +1,72 @@
-from src.logic.handleMove import handleMove
+from src.logic.handleMove import handle_move
 from src.logic.constants.gameValues import LOSINGTEXT, WINNINGTEXT
 
-def printing(boardObject):
+def printing(board_object):
   """Handles the printing of the board on console.
 
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
   """
-  guideRow = "     "
-  separationRow = "   --"
-  for j in range(boardObject.tilesBoard.shape[1]):
+  guide_row = "     "
+  separation_row = "   --"
+  for j in range(board_object.tilesBoard.shape[1]):
     complement = "  "
     if j+1 >= 10:
-      complement= " "
+      complement = " "
 
-    guideRow += str(j + 1) + complement
-    separationRow += "---"
+    guide_row += str(j + 1) + complement
+    separation_row += "---"
 
-  print(guideRow)
-  print(separationRow)
+  print(guide_row)
+  print(separation_row)
 
-  for i in range(boardObject.tilesBoard.shape[0]):
+  for i in range(board_object.tilesBoard.shape[0]):
     complement = " "
 
     if i+1 >= 10:
       complement = ""
 
     row = complement + str(i + 1) + " | "
-    for j in range(boardObject.tilesBoard[i].shape[0]):
-      row += boardObject.tilesBoard[i,j]["tileValue"] + "  "
+    for j in range(board_object.tilesBoard[i].shape[0]):
+      row += board_object.tilesBoard[i,j]["tileValue"] + "  "
 
     row += "| " + str(i + 1)
     print(row)
 
-  print(separationRow)
-  print(guideRow)
+  print(separation_row)
+  print(guide_row)
 
-def print_board_on_console(boardObject):
+def print_board_on_console(board_object):
   """Prints the board on the console.
 
   Request the player to make the moves on the game.
   Upon losing or wining the game prints the corresponding message
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
   """
-  gameStatus = 0
-  rowLimit = boardObject.totalRows
-  columnLimit = boardObject.totalColumns
-  printing(boardObject)
+  game_status = 0
+  row_limit = board_object.totalRows
+  column_limit = board_object.totalColumns
+  printing(board_object)
 
-  while gameStatus == 0:
+  while game_status == 0:
     row = int(input("Enter the row:")) - 1
     column = int(input("Enter the column:")) - 1
 
     if (row < 0 or
-        row >= rowLimit or
+        row >= row_limit or
         column < 0 or
-        column >= columnLimit):
+        column >= column_limit):
       print("Invalid Row or column value")
       continue
 
-    boardObject, gameStatus = handleMove(boardObject, [row, column])
-    printing(boardObject)
+    board_object, game_status = handle_move(board_object, [row, column])
+    printing(board_object)
 
-  if gameStatus == 1:
+  if game_status == 1:
     print(WINNINGTEXT)
     return 0
   
-  if gameStatus == -1:
+  if game_status == -1:
     print(LOSINGTEXT)
     return 0
