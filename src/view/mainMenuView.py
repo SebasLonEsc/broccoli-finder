@@ -5,21 +5,17 @@ from src.view.newGameMenu import newGameMenu
 from src.logic.interfaceTools import centerWindow, closeInterface, createInfoMenu
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
-# Closes the current window and creates the new game menu window
-# Input:
-#   root: the root windget, the current window that is being displayed
-# Output:
-#   Nothing
 def handleNewGame(root):
+  """Closes the current window and creates the new game menu window.
+  
+  Args:
+    root (tk.TK): The root windget, the current window that is being displayed
+  """
   closeInterface(root)
   newGameMenu(createMainMenuView)
 
-# Creates the main menu window
-# Input:
-#   Nothing
-# Output:
-#   Nothing
 def createMainMenuView():
+  """Creates the main menu window."""
   windowWidth = 220
   windowHeight = 80
 

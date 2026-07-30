@@ -9,17 +9,24 @@ from src.logic.constants.boardValues import BOARDSIZEVALUES
 from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
 from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
-# Validates if the input values are valid values
+# 
 # Input:
-#   rows: number of rows on the board
-#   columns: number of columns on the board
-#   broccoliAmount: number of broccolis on the board
+#   
 # Output:
-#   Returns a String depending if the inputs are valid.
-#     "The following values are invalid:" if all values are valid
-#     "The following values are invalid:" + InputValue if a value is invalid
-#     "Value is not numeric" if there is a non numeric value
+#   
 def validateInputs(rows, columns, broccoliAmount):
+  """Validates if the input values are valid values.
+
+  Args:
+    rows (int): number of rows on the board
+    columns (int): number of columns on the board
+    broccoliAmount (int): number of broccolis on the board
+  Returns:
+    str: message indicating if the inputs are valid.
+      "The following values are invalid:" if all values are valid.
+      "The following values are invalid:" + InputValue if a value is invalid.
+      "Value is not numeric" if there is a non numeric value
+  """
   try:
     errorText = "The following values are invalid:"
     numberOfRows = int(rows.get())
@@ -57,20 +64,20 @@ def validateInputs(rows, columns, broccoliAmount):
   except:
     return "Value is not numeric"
 
-# Closes the current window and creates the new game interface
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   rows: number of rows on the board
-#   columns: number of columns on the board
-#   broccoliAmount: number of broccolis on the board
-#   errorLabel: The label widget to display an error message
-#   createNewGameView: The function that creates the current view/window.
-#     Used in the next view for the goBack function
-#   goBackFunc: The current goBack function.
-#     Used to go back to the previous view (In this case the main menu)
-# Output:
-#   Nothing
 def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGameView, goBackFunc):
+  """Closes the current window and creates the new game interface.
+
+  Args:
+    root (tk.Tk): the root windget, the current window that is being displayed
+    rows (int): number of rows on the board
+    columns (int): number of columns on the board
+    broccoliAmount (int): number of broccolis on the board
+    errorLabel (tk.Label): The label widget to display an error message
+    createNewGameView (Func): The function that creates the current view/window.
+      Used in the next view for the goBack function
+    goBackFunc (Func): The current goBack function.
+      Used to go back to the previous view (In this case the main menu)
+  """
   errorText = validateInputs(rows, columns, broccoliAmount)
 
   if errorText != "The following values are invalid:":
@@ -96,14 +103,14 @@ def createNewGame(root, rows, columns, broccoliAmount, errorLabel, createNewGame
   boardObject = boardGenerator(numberOfRows, numberOfColumns, numberOfBroccolis)
   createBoardInterface(boardObject, createNewGameView, goBackFunc)
 
-# Creates the new game menu interface
-# Input:
-#   goBackFunc: The current goBack function.
-#     Used to go back to the previous view
-#   goToMainMenu: Function to go back to the main menu
-# Output:
-#   Nothing
 def createNewGameView(goBackFunc, goToMainMenu):
+  """Creates the new game menu interface.
+
+  Args:
+    goBackFunc (Func): The current goBack function.
+      Used to go back to the previous view
+    goToMainMenu (Func): Function to go back to the main menu
+  """
   windowMinWidth = 250
   windowMinHeight = 150
   windowMaxWidth = 300

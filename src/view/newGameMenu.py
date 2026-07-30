@@ -15,27 +15,27 @@ from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENT
 from src.logic.constants.styleValues import BOARDBUTTONSIZES, BUTTONCOLOR, BUTTONACTIVECOLOR
 from src.logic.constants.imagesPaths import BOARDSELECTORIMAGES
 
-# Closes the current window and creates the custom game window
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-# Output:
-#   Nothing
 def openCustomGameView(root, goBackFunc, previousGoBackFunc):
+  """Closes the current window and creates the custom game window.
+
+  Args:
+    root (tk.Tk): the root windget, the current window that is being displayed
+    goBackFunc (func): Function to go back to the current view
+    previousGoBackfunc (func): Function to go back to the previous view
+  """
   closeInterface(root)
   createNewGameView(goBackFunc, previousGoBackFunc)
 
-# Closes the current window and creates the new game window
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-#   gameDifficulty: The game difficulty combobox
-#   boardSize: The selected board size
-# Output:
-#   Nothing
 def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
+  """Closes the current window and creates the new game window.
+
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    goBackFunc (Func): Function to go back to the current view
+    previousGoBackfunc (Func): Function to go back to the previous view
+    gameDifficulty (int): The game difficulty combobox
+    boardSize (str): The selected board size
+  """
   gameDifficulty = difficulty.get()
 
   broccoliPercent = GAMEBROCCOLIPERCENTS[boardSize][gameDifficulty]
@@ -56,17 +56,17 @@ def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
   boardObject = boardGenerator(rows, columns, broccoliAmount)
   createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
 
-# Creates a board size selector button
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-#   masterWidget: The widget where the button is being placed
-#   gameDifficulty: The game difficulty combobox
-#   boardSize: The selected board size
-# Output:
-#   Nothing
 def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
+  """Creates a board size selector button.
+
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    goBackFunc (Func): Function to go back to the current view
+    previousGoBackfunc (Func): Function to go back to the previous view
+    masterWidget (tk.Widget): The widget where the button is being placed
+    gameDifficulty (int): The game difficulty combobox
+    boardSize (str): The selected board size
+  """
   currentDir = Path(__file__).parent
   imageName = BOARDSELECTORIMAGES[size]
   imageSize = BOARDBUTTONSIZES[size]
@@ -101,13 +101,13 @@ def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, di
   
   return button
 
-# Creates the new game selector menu interface
-# Input:
-#   goBackFunc: The current goBack function.
-#     Used to go back to the previous view (In this case the main menu)
-# Output:
-#   Nothing
 def newGameMenu(goBackFunc):
+  """Creates the new game selector menu interface.
+
+  Args:
+    goBackFunc (Func): The current goBack function.
+      Used to go back to the previous view (In this case the main menu)
+  """
   windowWidth = 786
   windowHeight = 380
 

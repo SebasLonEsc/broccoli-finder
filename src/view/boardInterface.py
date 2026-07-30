@@ -27,13 +27,13 @@ from src.logic.constants.imagesPaths import (ACTIVEFLAGSTATUS,
                                              TILE
                                              )
 
-# Changes the current flag status for the game.
-# When true the player can flag or unflag tiles, make moves otherwise
-# Input:
-#   button: the button widget used for changing the status
-# Output:
-#   Nothing
 def changeFlagStatus(button):
+  """Changes the current flag status for the game.
+
+  When true the player can flag or unflag tiles, make moves otherwise.
+  Args:
+    button (tk.button): The button widget used for changing the status
+  """
   global flagCommand
   imageName = FLAGGEDTILE
 
@@ -48,17 +48,17 @@ def changeFlagStatus(button):
   button.config(image=flagButtonImage)
   button.image = flagButtonImage
 
-# Handles the flaging or unflaging of a tile.
-# Updates the tile images based on the status
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons.
-#     Each one correspond to a tile on the board in the interface
-#   movePosition: an array [row, column] of the current move made by the player
-#   broccoliCounter: Broccoli counter widget
-# Output:
-#   Nothing
 def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
+  """Handles the flaging or unflaging of a tile.
+  
+  Updates the tile images based on the status.
+  Args:
+    boardObject (Board): The object containing all of the information about the board
+    buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
+      Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
+    movePosition (array): An array [row, column] of the current move made by the player
+    broccoliCounter (tk.Label): Broccoli counter widget
+  """
   global broccoliAmountCounter
 
   tilesBoard = boardObject.tilesBoard
@@ -89,16 +89,16 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
   buttons[row, column].image = tileImage
   broccoliCounter.config(text=broccoliAmountCounter)
 
-# Updates the interface when winning or losing the game.
-# Disables all buttons and reveal all broccolis if is a lost game
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons.
-#     Each one correspond to a tile on the board in the interface
-#   movePosition: an array [row, column] of the current move made by the player
-# Output:
-#   Nothing
 def handleGameStatus(boardObject, buttons, movePosition):
+  """Updates the interface when winning or losing the game.
+
+  Disables all buttons and reveal all broccolis if is a lost game.
+  Args:
+    boardObject (Board): the object containing all of the information about the board
+    buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
+      Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
+    movePosition (array): An array [row, column] of the current move made by the player
+  """
   tilesBoard = boardObject.tilesBoard
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / GREENBROCCOLITILE
@@ -126,12 +126,12 @@ def handleGameStatus(boardObject, buttons, movePosition):
                                     )
         buttons[row, column].image = broccoliImage
 
-# Creates an array of images for each proximity tile number
-# Input:
-#   Nothing
-# Output:
-#   An array of PhotoImage(s) from 0 to 8 broccoli proximity tiles
 def createProximityTileImages():
+  """Creates an array of images for each proximity tile number
+
+  Returns:
+   array: An array of ImageTk.PhotoImage from 0 to 8 broccoli proximity tiles
+  """
   currentDir = Path(__file__).parent
   tileImages = []
 
@@ -144,16 +144,17 @@ def createProximityTileImages():
 
   return tileImages  
 
-# Updates the tiles of the board to show the tile value:
-#   empty, a proximity number or a broccoli.
-#   For each affected tile by the player move
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons.
-#     Each one correspond to a tile on the board in the interface
-# Output:
-#   Nothing
+
 def handleText(boardObject, buttons):
+  """Updates the tiles of the board to show the tile value.
+
+  The value can be empty, a proximity number or a broccoli.
+  This applies for each affected tile by the player move
+  Args:
+    boardObject (Board): the object containing all of the information about the board
+    buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
+      Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
+  """
   tilesBoard = boardObject.tilesBoard
 
   tileImages = createProximityTileImages()
@@ -180,17 +181,17 @@ def handleText(boardObject, buttons):
                                     )
         buttons[row, column].image = tileImages[tileValue]
 
-# Handles the click of the player on a tile of the board
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   buttons: a matrix contains all of the buttons.
-#     Each one correspond to a tile on the board in the interface
-#   movePosition: an array [row, column] of the current move made by the player
-#   winLabel: the label widget that shows the lose or win text
-#   broccoliCounter: Broccoli counter widget
-# Output:
-#   Nothing
 def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
+  """Handles the click of the player on a tile of the board.
+
+  Args:
+    boardObject (Board): the object containing all of the information about the board
+    buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
+      Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
+    movePosition (array): An array [row, column] of the current move made by the player
+    winLabel (tk.Label): Rhe label widget that shows the lose or win text
+    broccoliCounter (tk.Label): Broccoli counter widget
+  """
   tilesBoard = boardObject.tilesBoard
   row = movePosition[0]
   column = movePosition[1]
@@ -213,13 +214,15 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
     handleFlagTile(boardObject, buttons, movePosition, broccoliCounter)
 
 
-# Creates a canvas to display the board on it.
-# The canvas adds a scrollbar for big sized boards
-# Input:
-#   root: the root windget, the current window that is being displayed
-# Output:
-#   tk.Frame: The frame where the board will be displayed
 def createBoardCanvas(root):
+  """Creates a canvas to display the board on it.
+
+  The canvas adds a scrollbar for big sized boards
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+  Returns:
+    tk.Frame: The frame where the board will be displayed
+  """
   canvasFrame = tk.Frame(root)
   canvasFrame.pack(expand=True, fill="both")
   boardCanvas = tk.Canvas(canvasFrame)
@@ -237,14 +240,14 @@ def createBoardCanvas(root):
 
   return gameFrame
 
-# Creates the interface of the board
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   goBackFunc: Function to go back to the previous view
-#   goToMainMenu: Function to go back to the main menu view
-# Output:
-#   Nothing
 def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
+  """Creates the interface of the board
+
+  Args:
+    boardObject (Board): the object containing all of the information about the board
+    goBackFunc (Func): Function to go back to the previous view
+    goToMainMenu (Func): Function to go back to the main menu view
+  """
   rows = boardObject.totalRows
   columns = boardObject.totalColumns
   buttons = np.empty(shape=[rows, columns], dtype="object")
