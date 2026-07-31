@@ -4,7 +4,7 @@ import math
 
 from src.logic.board import board_generator
 from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu
-from src.view.boardInterface import createBoardInterface
+from src.view.boardInterface import create_board_interface
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
 from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
@@ -59,7 +59,7 @@ def validateInputs(rows, columns, broccoli_amount):
   except:
     return "Value is not numeric"
 
-def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGameView, go_back_func):
+def createNewGame(root, rows, columns, broccoli_amount, errorLabel, create_new_game_view, go_back_func):
   """Closes the current window and creates the new game interface.
 
   Args:
@@ -68,7 +68,7 @@ def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGam
     columns (int): Number of columns on the board
     broccoli_amount (int): Number of broccolis on the board
     errorLabel (tk.Label): The label widget to display an error message
-    createNewGameView (Func): The function that creates the current view/window.
+    create_new_game_view (Func): The function that creates the current view/window.
       Used in the next view for the go_back function
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view (In this case the main menu)
@@ -95,10 +95,10 @@ def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGam
     return
 
   close_interface(root)
-  boardObject = board_generator(numberOfRows, numberOfColumns, numberOfBroccolis)
-  createBoardInterface(boardObject, createNewGameView, go_back_func)
+  board_object = board_generator(numberOfRows, numberOfColumns, numberOfBroccolis)
+  create_board_interface(board_object, create_new_game_view, go_back_func)
 
-def createNewGameView(go_back_func, goToMainMenu):
+def create_new_game_view(go_back_func, goToMainMenu):
   """Creates the new game menu interface.
 
   Args:
@@ -119,12 +119,12 @@ def createNewGameView(go_back_func, goToMainMenu):
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  gameMenu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="New Game", command=partial(go_back, root, go_back_func, goToMainMenu))
-  gameMenu.add_command(label="Main Menu", command=partial(go_back, root, goToMainMenu))
-  gameMenu.add_separator()
-  gameMenu.add_command(label="Exit", command=partial(close_interface, root))
+  game_menu = tk.Menu(menu, tearoff=0)
+  menu.add_cascade(label="Game", menu=game_menu)
+  game_menu.add_command(label="New Game", command=partial(go_back, root, go_back_func, goToMainMenu))
+  game_menu.add_command(label="Main Menu", command=partial(go_back, root, goToMainMenu))
+  game_menu.add_separator()
+  game_menu.add_command(label="Exit", command=partial(close_interface, root))
   create_info_menu(tk, menu)
 
   frame = tk.Frame(root)

@@ -147,37 +147,37 @@ def makeMove(board, tiles_board, movePosition, boardRowLimit, boardColumnLimit):
 
   return tiles_board
 
-def handle_move(boardObject, movePosition):
+def handle_move(board_object, movePosition):
   """Handles the move made by the player.
 
   Updates the tiles_board matrix if so.
   And validates the game status after the move
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
     movePosition (array): An array [row, column] of the current move made by the player
   Returns:
-    Board: Updated boardObject (if the move is valid or a game condition is met)
+    Board: Updated board object (if the move is valid or a game condition is met)
     int: Status of the game
       -1 -> Indicate a lost game.
       0 -> Indicate the game is still on.
       1 -> Indicates a won game
   """
-  board = boardObject.board
-  tiles_board = boardObject.tiles_board
-  broccoli_amount = boardObject.broccoli_amount
+  board = board_object.board
+  tiles_board = board_object.tiles_board
+  broccoli_amount = board_object.broccoli_amount
 
   if board[movePosition[0], movePosition[1]] == -2:
-    return boardObject, 0
+    return board_object, 0
   
-  boardRowLimit = boardObject.total_rows
-  boardColumnLimit = boardObject.total_columns
+  boardRowLimit = board_object.total_rows
+  boardColumnLimit = board_object.total_columns
   tiles_board = makeMove(board,
                         tiles_board,
                         movePosition,
                         boardRowLimit,
                         boardColumnLimit
                         )
-  boardObject.change_tiles_board(tiles_board)
+  board_object.change_tiles_board(tiles_board)
 
   gameStatus = checkGameStatus(board,
                                tiles_board,
@@ -187,6 +187,6 @@ def handle_move(boardObject, movePosition):
 
   if gameStatus < 0: 
     tiles_board = revealAllBroccolis(board, tiles_board, broccoli_amount)
-    boardObject.change_tiles_board(tiles_board)
+    board_object.change_tiles_board(tiles_board)
   
-  return boardObject, gameStatus
+  return board_object, gameStatus

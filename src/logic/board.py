@@ -80,10 +80,10 @@ def board_generator(rows, columns, broccoli_amount):
   tiles_board = fill_tiles_board(tiles_board)
   
   board_object = Board(empty_board,
-                      tiles_board,
-                      rows,
-                      columns
-                      )
+                       tiles_board,
+                       rows,
+                       columns
+                       )
 
   board_object = board_shaper(board_object)
   board_object = board_broccoli_filler(board_object, broccoli_amount)

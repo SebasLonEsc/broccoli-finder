@@ -55,9 +55,9 @@ def create_top_level(tk, message, title):
 
   message_widget = tk.Message(top_level, text=message)
   close_button = tk.Button(top_level,
-                          text="Close",
-                          command=top_level.destroy
-                          )
+                           text="Close",
+                           command=top_level.destroy
+                           )
 
   message_widget.pack()
   close_button.pack(pady=[2,0])
@@ -79,8 +79,8 @@ def create_info_menu(tk, menu_widget):
   menu_widget.add_cascade(label="Info", menu=info_menu)
 
   info_menu.add_command(label="About",
-                       command=lambda: create_top_level(tk, about_message, "About")
-                       )
+                        command=lambda: create_top_level(tk, about_message, "About")
+                        )
   info_menu.add_command(label="Credits",
-                       command=lambda: create_top_level(tk, credits_message, "Credits")
-                       )
+                        command=lambda: create_top_level(tk, credits_message, "Credits")
+                        )

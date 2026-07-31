@@ -4,17 +4,17 @@ import random
 
 from .constants.boardValues import BOARD_SHAPES, CORNER_GUIDE
 
-def shapeWeigher(boardObject):
+def shapeWeigher(board_object):
   """Defines the weight of each avaiable board shape for the randomize.
  
   No-shaped board has a default weight of 2 for all iterations
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
   Returns:
     np.ndarray: An array of the weights for each available baord shape
   """
-  total_rows = boardObject.total_rows
-  total_columns = boardObject.total_columns
+  total_rows = board_object.total_rows
+  total_columns = board_object.total_columns
 
   boardShapesWeight = np.zeros(shape=[len(BOARD_SHAPES)])
   boardShapesWeight[0] = 2
@@ -48,22 +48,22 @@ def shapeWeigher(boardObject):
 
   return boardShapesWeight
 
-def defineCornerSizes(boardObject, randomCorners):
+def defineCornerSizes(board_object, randomCorners):
   """Define the corner size for cut corners shape (an random cut corners).
 
   In a normal cut corner shape all corner sizes are the same.
   For the random version shape, each corner has it own size.
   Which doesn't go beyond the half of the board horizontally or vertically
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
     randomCorners (bool): Boolean indicating if each corner size is randomized
   Returns:
     np.ndarray: A matrix containg the sizes for each corner.
       In a [horizontalSize, verticalSize] pattern
   """
   cornerSizes = np.zeros((4,2), dtype=np.int_)
-  total_rows = boardObject.total_rows
-  total_columns = boardObject.total_columns
+  total_rows = board_object.total_rows
+  total_columns = board_object.total_columns
   horizontalCornerSizeLimit = math.floor(total_rows / 2)
   verticalCornerSizeLimit = math.floor(total_columns / 2)
 
@@ -97,7 +97,7 @@ def defineCornerSizes(boardObject, randomCorners):
   
   return cornerSizes
 
-def cutCornersShaper(boardObject, randomCorners=False):
+def cutCornersShaper(board_object, randomCorners=False):
   """Shapes the board in a with its corners cut.
 
   Random values defines if the size of the cut is random or not.
@@ -113,14 +113,14 @@ def cutCornersShaper(boardObject, randomCorners=False):
   r:row or horizontal
   c:column or vertical
   Args:
-   boardObject (Board): The object containing all of the information about the board
+   board_object (Board): The object containing all of the information about the board
    randomCorners(bool): Indicates if each corner size is randomized (default False)
   Returns:
     Board: The board object with the updated information of the cutCorner shape
   """
-  board = boardObject.board
-  tiles_board = boardObject.tiles_board
-  cornerSizes = defineCornerSizes(boardObject, randomCorners)
+  board = board_object.board
+  tiles_board = board_object.tiles_board
+  cornerSizes = defineCornerSizes(board_object, randomCorners)
 
   tile = {}
   null_space_amount = 0  
@@ -160,39 +160,39 @@ def cutCornersShaper(boardObject, randomCorners=False):
         tiles_board[CORNER_GUIDE[i][0], j] = tile
         null_space_amount += 1
     
-  boardObject.change_board(board)
-  boardObject.change_tiles_board(tiles_board)
-  boardObject.change_null_spaces_amount(null_space_amount)
-  boardObject.change_avaliable_spaces_amount(boardObject.board_size() - null_space_amount)
+  board_object.change_board(board)
+  board_object.change_tiles_board(tiles_board)
+  board_object.change_null_spaces_amount(null_space_amount)
+  board_object.change_avaliable_spaces_amount(board_object.board_size() - null_space_amount)
 
-  return boardObject
+  return board_object
 
 
-def crossShaper(boardObject):
+def crossShaper(board_object):
   """Shapes the board in a cross-like shape.
 
   The row and column of the cross are selected randomly.
   Without including the first and last row/column
   Args:
-     boardObject (Board): The object containing all of the information about the board
+     board_object (Board): The object containing all of the information about the board
     Returns:
       Board: The board object with the updated information of the cross shape
   """
-  total_rows = boardObject.total_rows
-  total_columns = boardObject.total_columns
+  total_rows = board_object.total_rows
+  total_columns = board_object.total_columns
 
   if(total_rows <= 3 or total_columns <= 3):
     # For side of length 3 the available space it's too little
-    return boardObject
+    return board_object
   
   if(total_rows * total_columns <= 16):
     # Blocks 4x4 boards on having cross shape
-    return boardObject
+    return board_object
 
   crossRow = random.randint(1, total_rows - 2)
   crossColumn = random.randint(1, total_columns - 2)
-  board = boardObject.board
-  tiles_board = boardObject.tiles_board
+  board = board_object.board
+  tiles_board = board_object.tiles_board
 
   tile = {}
   null_space_amount = 0
@@ -218,24 +218,24 @@ def crossShaper(boardObject):
     tiles_board[row, crossColumn] = tile
     null_space_amount += 1
 
-  boardObject.change_board(board)
-  boardObject.change_tiles_board(tiles_board)
-  boardObject.change_null_spaces_amount(null_space_amount)
-  boardObject.change_avaliable_spaces_amount(boardObject.board_size() - null_space_amount)
+  board_object.change_board(board)
+  board_object.change_tiles_board(tiles_board)
+  board_object.change_null_spaces_amount(null_space_amount)
+  board_object.change_avaliable_spaces_amount(board_object.board_size() - null_space_amount)
 
-  return boardObject
+  return board_object
 
-def board_shaper(boardObject):
+def board_shaper(board_object):
   """Handles the shaping of the board.
 
   Args:
-    boardObject (Board): The object containing all of the information about the board
+    board_object (Board): The object containing all of the information about the board
   Returns:
     Board: The board object in a randomly selected shape
   """
-  boardShapesWeight = shapeWeigher(boardObject)
+  boardShapesWeight = shapeWeigher(board_object)
   boardShape = random.choices(BOARD_SHAPES, boardShapesWeight)[0]
-  shapedBoard = boardObject
+  shapedBoard = board_object
 
   match boardShape:
     case "cutCorners":
