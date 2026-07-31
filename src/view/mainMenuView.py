@@ -1,18 +1,18 @@
 import tkinter as tk
 from functools import partial
 
-from src.view.newGameMenu import newGameMenu
+from src.view.newGameMenu import new_game_menu
 from src.logic.interfaceTools import center_window, close_interface, create_info_menu
 from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
-def handleNewGame(root):
+def handle_new_game(root):
   """Closes the current window and creates the new game menu window.
   
   Args:
     root (tk.TK): The root windget, the current window that is being displayed
   """
   close_interface(root)
-  newGameMenu(create_main_menu_view)
+  new_game_menu(create_main_menu_view)
 
 def create_main_menu_view():
   """Creates the main menu window."""
@@ -39,7 +39,7 @@ def create_main_menu_view():
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,
-            command=partial(handleNewGame, root),
+            command=partial(handle_new_game, root),
             justify="center",
             height=1,
             padx=0,

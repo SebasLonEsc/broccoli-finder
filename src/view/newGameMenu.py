@@ -101,7 +101,7 @@ def createBoardSizeButton(root, go_back_func, previous_go_back_func, masterWidge
   
   return button
 
-def newGameMenu(go_back_func):
+def new_game_menu(go_back_func):
   """Creates the new game selector menu interface.
 
   Args:
@@ -149,7 +149,7 @@ def newGameMenu(go_back_func):
 
   for size in BOARD_SIZES:
     createBoardSizeButton(root,
-                          newGameMenu,
+                          new_game_menu,
                           go_back_func,
                           frame,
                           gameDifficulty,
@@ -165,7 +165,7 @@ def newGameMenu(go_back_func):
             bg=BUTTON_COLOR,
             command=partial(openCustomGameView,
                             root,
-                            newGameMenu,
+                            new_game_menu,
                             go_back_func
                             ),
             justify="center",
