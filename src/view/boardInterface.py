@@ -48,7 +48,7 @@ def changeFlagStatus(button):
   button.config(image=flagButtonImage)
   button.image = flagButtonImage
 
-def handleFlagTile(board_object, buttons, movePosition, broccoliCounter):
+def handleFlagTile(board_object, buttons, move_position, broccoliCounter):
   """Handles the flaging or unflaging of a tile.
   
   Updates the tile images based on the status.
@@ -56,14 +56,14 @@ def handleFlagTile(board_object, buttons, movePosition, broccoliCounter):
     board_object (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
-    movePosition (array): An array [row, column] of the current move made by the player
+    move_position (array): An array [row, column] of the current move made by the player
     broccoliCounter (tk.Label): Broccoli counter widget
   """
   global broccoliAmountCounter
 
   tiles_board = board_object.tiles_board
-  row = movePosition[0]
-  column = movePosition[1]
+  row = move_position[0]
+  column = move_position[1]
   clickedTile = tiles_board[row, column]
 
   if clickedTile["checked"]:
@@ -89,7 +89,7 @@ def handleFlagTile(board_object, buttons, movePosition, broccoliCounter):
   buttons[row, column].image = tileImage
   broccoliCounter.config(text=broccoliAmountCounter)
 
-def handleGameStatus(board_object, buttons, movePosition):
+def handleGameStatus(board_object, buttons, move_position):
   """Updates the interface when winning or losing the game.
 
   Disables all buttons and reveal all broccolis if is a lost game.
@@ -97,7 +97,7 @@ def handleGameStatus(board_object, buttons, movePosition):
     board_object (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
-    movePosition (array): An array [row, column] of the current move made by the player
+    move_position (array): An array [row, column] of the current move made by the player
   """
   tiles_board = board_object.tiles_board
   current_dir = Path(__file__).parent
@@ -115,7 +115,7 @@ def handleGameStatus(board_object, buttons, movePosition):
       buttons[row, column].config(command=lambda: None)
 
       broccoliImage = redBroccoliImage
-      if movePosition[0] == row and movePosition[1] == column:
+      if move_position[0] == row and move_position[1] == column:
         backgroundColor = EATEN_BROCCOLI_TILE_COLOR
         broccoliImage = greenBroccoliImage
 
@@ -181,37 +181,37 @@ def handleText(board_object, buttons):
                                     )
         buttons[row, column].image = tileImages[tileValue]
 
-def handleClick(board_object, buttons, movePosition, winLabel, broccoliCounter):
+def handleClick(board_object, buttons, move_position, winLabel, broccoliCounter):
   """Handles the click of the player on a tile of the board.
 
   Args:
     board_object (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
-    movePosition (array): An array [row, column] of the current move made by the player
+    move_position (array): An array [row, column] of the current move made by the player
     winLabel (tk.Label): The label widget that shows the lose or win text
     broccoliCounter (tk.Label): Broccoli counter widget
   """
   tiles_board = board_object.tiles_board
-  row = movePosition[0]
-  column = movePosition[1]
+  row = move_position[0]
+  column = move_position[1]
   flagTileStatus = tiles_board[row, column]["flagged"]
 
   if not flagCommand and not flagTileStatus:
-    board_object, gameStatus = handle_move(board_object, movePosition)
+    board_object, game_status = handle_move(board_object, move_position)
     handleText(board_object, buttons)
 
-    if gameStatus != 0:
+    if game_status != 0:
       gameStatusText = WINNING_TEXT
 
-      if gameStatus < 0:
+      if game_status < 0:
         gameStatusText = LOSING_TEXT
 
       winLabel.config(text=gameStatusText)
-      handleGameStatus(board_object, buttons, movePosition)
+      handleGameStatus(board_object, buttons, move_position)
 
   elif flagCommand:
-    handleFlagTile(board_object, buttons, movePosition, broccoliCounter)
+    handleFlagTile(board_object, buttons, move_position, broccoliCounter)
 
 
 def createBoardCanvas(root):
