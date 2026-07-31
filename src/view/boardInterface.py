@@ -240,13 +240,13 @@ def create_board_canvas(root):
 
   return game_frame
 
-def create_board_interface(board_object, go_back_func, goToMainMenu):
+def create_board_interface(board_object, go_back_func, go_to_main_menu):
   """Creates the interface of the board
 
   Args:
     board_object (Board): Rhe object containing all of the information about the board
     go_back_func (Func): Function to go back to the previous view
-    goToMainMenu (Func): Function to go back to the main menu view
+    go_to_main_menu (Func): Function to go back to the main menu view
   """
   rows = board_object.total_rows
   columns = board_object.total_columns
@@ -271,8 +271,8 @@ def create_board_interface(board_object, go_back_func, goToMainMenu):
   root.config(menu=menu)
   game_menu = tk.Menu(menu, tearoff=0)
   menu.add_cascade(label="Game", menu=game_menu)
-  game_menu.add_command(label="Main Menu", command=partial(go_back, root, goToMainMenu))
-  game_menu.add_command(label="New Game", command=partial(go_back, root, go_back_func, goToMainMenu))
+  game_menu.add_command(label="Main Menu", command=partial(go_back, root, go_to_main_menu))
+  game_menu.add_command(label="New Game", command=partial(go_back, root, go_back_func, go_to_main_menu))
   game_menu.add_separator()
   game_menu.add_command(label="Exit", command=partial(close_interface, root))
   create_info_menu(tk, menu)
@@ -399,7 +399,7 @@ def create_board_interface(board_object, go_back_func, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,
-            command=partial(go_back, root, goToMainMenu),
+            command=partial(go_back, root, go_to_main_menu),
             justify="center",
             height=1,
             padx=0,
