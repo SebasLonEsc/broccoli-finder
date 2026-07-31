@@ -3,7 +3,7 @@ from functools import partial
 
 from src.view.newGameMenu import newGameMenu
 from src.logic.interfaceTools import centerWindow, closeInterface, createInfoMenu
-from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
+from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
 def handleNewGame(root):
   """Closes the current window and creates the new game menu window.
@@ -35,10 +35,10 @@ def create_main_menu_view():
            ).pack(pady=2)
   
   tk.Button(root,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
+            bg=BUTTON_COLOR,
             command=partial(handleNewGame, root),
             justify="center",
             height=1,
@@ -48,10 +48,10 @@ def create_main_menu_view():
             ).pack(pady=2)
   
   tk.Button(root,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
+            bg=BUTTON_COLOR,
             command= partial(closeInterface, root),
             justify="center",
             height=1,

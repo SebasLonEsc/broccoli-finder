@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random
 
-from .constants.boardValues import BOARDSHAPES, CORNERGUIDE
+from .constants.boardValues import BOARD_SHAPES, CORNER_GUIDE
 
 def shapeWeigher(boardObject):
   """Defines the weight of each avaiable board shape for the randomize.
@@ -16,11 +16,11 @@ def shapeWeigher(boardObject):
   total_rows = boardObject.total_rows
   total_columns = boardObject.total_columns
 
-  boardShapesWeight = np.zeros(shape=[len(BOARDSHAPES)])
+  boardShapesWeight = np.zeros(shape=[len(BOARD_SHAPES)])
   boardShapesWeight[0] = 2
   i = 0
 
-  for shape in BOARDSHAPES:
+  for shape in BOARD_SHAPES:
     if i == 0: # Skiped normal board shape, default weight of 2
       i += 1
       continue
@@ -129,35 +129,35 @@ def cutCornersShaper(boardObject, randomCorners=False):
     startPoint = 0
     endPoint = cornerSizes[i,0]
 
-    if CORNERGUIDE[i][0] == -1:
+    if CORNER_GUIDE[i][0] == -1:
       startPoint = 0 - cornerSizes[i,0]
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tiles_board[j, CORNERGUIDE[i][1]]
+      tile = tiles_board[j, CORNER_GUIDE[i][1]]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      if board[j, CORNERGUIDE[i][1]] == 0:
-        board[j, CORNERGUIDE[i][1]] = -2
-        tiles_board[j, CORNERGUIDE[i][1]] = tile
+      if board[j, CORNER_GUIDE[i][1]] == 0:
+        board[j, CORNER_GUIDE[i][1]] = -2
+        tiles_board[j, CORNER_GUIDE[i][1]] = tile
         null_space_amount += 1
 
     startPoint = 0
     endPoint = cornerSizes[i,1]
 
-    if CORNERGUIDE[i][1] == -1:
+    if CORNER_GUIDE[i][1] == -1:
       startPoint = 0 - cornerSizes[i,1]
       endPoint = 0
 
     for j in range(startPoint, endPoint):
-      tile = tiles_board[CORNERGUIDE[i][0], j]
+      tile = tiles_board[CORNER_GUIDE[i][0], j]
       tile["tileValue"] = "*"
       tile["checked"] = True
 
-      if board[CORNERGUIDE[i][0], j] == 0:
-        board[CORNERGUIDE[i][0], j] = -2
-        tiles_board[CORNERGUIDE[i][0], j] = tile
+      if board[CORNER_GUIDE[i][0], j] == 0:
+        board[CORNER_GUIDE[i][0], j] = -2
+        tiles_board[CORNER_GUIDE[i][0], j] = tile
         null_space_amount += 1
     
   boardObject.change_board(board)
@@ -234,7 +234,7 @@ def board_shaper(boardObject):
     Board: The board object in a randomly selected shape
   """
   boardShapesWeight = shapeWeigher(boardObject)
-  boardShape = random.choices(BOARDSHAPES, boardShapesWeight)[0]
+  boardShape = random.choices(BOARD_SHAPES, boardShapesWeight)[0]
   shapedBoard = boardObject
 
   match boardShape:

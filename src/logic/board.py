@@ -2,7 +2,7 @@ import numpy as np
 
 from .boardShaper import board_shaper
 from .broccoliFiller import board_broccoli_filler
-from .constants.boardValues import BOARDTILEVALUE
+from .constants.boardValues import BOARD_TILE_VALUE
 
 def fill_tiles_board(tiles_board):
   """Fills each tile from the tiles_board attribute with a dictionary.
@@ -14,7 +14,7 @@ def fill_tiles_board(tiles_board):
   """
   for i in range(0, tiles_board.shape[0]):
     for j in range(0, tiles_board.shape[1]):
-      tiles_board[i,j] = BOARDTILEVALUE.copy()
+      tiles_board[i,j] = BOARD_TILE_VALUE.copy()
 
   return tiles_board
 

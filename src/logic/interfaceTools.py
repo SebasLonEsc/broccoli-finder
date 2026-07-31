@@ -1,4 +1,4 @@
-from src.logic.constants.infoMenuContent import CREDITSMENUMESSAGE, ABOUTMENUMESSAGE
+from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE, ABOUT_MENU_MESSAGE
 
 def centerWindow(window, windowWidth, windowHeight):
   """Places the window at the center of the screen.
@@ -72,8 +72,8 @@ def createInfoMenu(tk, menuWidget):
       Just a personal preference for this case
     menuWidget (tk.Widget): The menu widget where the menu is going to be attached
   """
-  aboutMessage = "".join(ABOUTMENUMESSAGE)
-  creditsMessage = "".join(CREDITSMENUMESSAGE)
+  aboutMessage = "".join(ABOUT_MENU_MESSAGE)
+  creditsMessage = "".join(CREDITS_MENU_MESSAGE)
 
   infoMenu = tk.Menu(menuWidget, tearoff=0)
   menuWidget.add_cascade(label="Info", menu=infoMenu)

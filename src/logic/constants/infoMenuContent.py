@@ -1,5 +1,5 @@
 # The message that appears in the about menu
-ABOUTMENUMESSAGE = [
+ABOUT_MENU_MESSAGE = [
   "Welcome to Broccoli Finder!!\n",
   "Don't let the name fool you; you don't actually want to find broccolis in here.\n",
   "In this game, you, the player, are allergic to broccolis, but that's not all!!\n",
@@ -10,7 +10,7 @@ ABOUTMENUMESSAGE = [
   ]
 
 # The message that appears in the credits menu
-CREDITSMENUMESSAGE = [
+CREDITS_MENU_MESSAGE = [
   "Hi there, Sebas here!!\n\n",
   "Thank you for playing this game, a recreation of the classic Minesweeper game\n",
   "I learned programming in college and really like programming and thought\n",

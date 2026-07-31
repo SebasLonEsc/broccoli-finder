@@ -1,5 +1,5 @@
 # Images names for each broccoli proximity number tile
-PROXIMITYNUMBERIMAGES = [
+PROXIMITY_NUMBER_IMAGES = [
   "Disabled_Empty_Tile.png",
   "One_Tile.png",
   "Two_Tile.png",
@@ -12,7 +12,7 @@ PROXIMITYNUMBERIMAGES = [
   ]
 
 # Images names for the board size selector buttons
-BOARDSELECTORIMAGES = {
+BOARD_SELECTOR_IMAGES = {
   "Small": "Small_Sized_Board.png",
   "Medium": "Medium_Sized_Board.png",
   "Big": "Big_Sized_Board.png"
@@ -22,20 +22,20 @@ BOARDSELECTORIMAGES = {
 TILE = "Tile.png"
 
 # Image name for the nullspace tile
-NULLTILE = "Null_Tile.png"
+NULL_TILE_IMAGE = "Null_Tile.png"
 
 # Image name for the flag tile
 # Is used for the unactive flag status button too
-FLAGGEDTILE = "Flag_Tile.png"
+FLAGGED_TILE_IMAGE = "Flag_Tile.png"
 
 # Image name for active flag status button
-ACTIVEFLAGSTATUS = "Active_Flag_Tile.png"
+ACTIVE_FLAG_STATUS_IMAGE = "Active_Flag_Tile.png"
 
 # Image name for the broccoli counter
-GREENBROCCOLIBUTTON = "Green_broccoli_Button.png"
+GREEN_BROCCOLI_BUTTON_IMAGE = "Green_broccoli_Button.png"
 
 # Image name for the green broccoli tile
-GREENBROCCOLITILE = "Green_broccoli_Tile.png"
+GREEN_BROCCOLI_TILE_IMAGE = "Green_broccoli_Tile.png"
 
 # Image name for the red broccoli tile
-REDBROCCOLITILE = "Red_broccoli.png"
+RED_BROCCOLI_TILE_IMAGE = "Red_broccoli.png"

@@ -6,24 +6,24 @@ from PIL import Image, ImageTk
 
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import closeInterface, goBack, createInfoMenu
-from src.logic.constants.gameValues import WINNINGTEXT, LOSINGTEXT
-from src.logic.constants.boardValues import BOARDMAXIMUNSIZEPERCENT, TILEPIXELSIZE
-from src.logic.constants.styleValues import (BROCCOLICOUNTERCOLOR,
-                                             BROCCOLITILECOLOR,
-                                             BUTTONACTIVECOLOR,
-                                             BUTTONCOLOR,
-                                             EATENBROCCOLITILECOLOR,
-                                             NULLSPACETILECOLOR,
-                                             PROXIMITYCOLORS,
-                                             TILEBACKGROUNDCOLOR
+from src.logic.constants.gameValues import WINNING_TEXT, LOSING_TEXT
+from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
+from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
+                                             BROCCOLI_TILE_COLOR,
+                                             BUTTON_ACTIVE_COLOR,
+                                             BUTTON_COLOR,
+                                             EATEN_BROCCOLI_TILE_COLOR,
+                                             NULL_SPACE_TILE_COLOR,
+                                             PROXIMITY_COLORS,
+                                             TILE_BACKGROUND_COLOR
                                              )
-from src.logic.constants.imagesPaths import (ACTIVEFLAGSTATUS,
-                                             FLAGGEDTILE,
-                                             GREENBROCCOLIBUTTON,
-                                             GREENBROCCOLITILE,
-                                             NULLTILE,
-                                             PROXIMITYNUMBERIMAGES,
-                                             REDBROCCOLITILE,
+from src.logic.constants.imagesPaths import (ACTIVE_FLAG_STATUS_IMAGE,
+                                             FLAGGED_TILE_IMAGE,
+                                             GREEN_BROCCOLI_BUTTON_IMAGE,
+                                             GREEN_BROCCOLI_TILE_IMAGE,
+                                             NULL_TILE_IMAGE,
+                                             PROXIMITY_NUMBER_IMAGES,
+                                             RED_BROCCOLI_TILE_IMAGE,
                                              TILE
                                              )
 
@@ -35,10 +35,10 @@ def changeFlagStatus(button):
     button (tk.button): The button widget used for changing the status
   """
   global flagCommand
-  imageName = FLAGGEDTILE
+  imageName = FLAGGED_TILE_IMAGE
 
   if not flagCommand:
-    imageName = ACTIVEFLAGSTATUS
+    imageName = ACTIVE_FLAG_STATUS_IMAGE
 
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / imageName
@@ -75,7 +75,7 @@ def handleFlagTile(boardObject, buttons, movePosition, broccoliCounter):
   imageName = TILE
 
   if newFlaggedStatus:
-    imageName = FLAGGEDTILE
+    imageName = FLAGGED_TILE_IMAGE
     broccoliAmountCounter -= 1
 
   else:
@@ -101,22 +101,22 @@ def handleGameStatus(boardObject, buttons, movePosition):
   """
   tiles_board = boardObject.tiles_board
   currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "images" / GREENBROCCOLITILE
+  imagePath = currentDir.parent / "images" / GREEN_BROCCOLI_TILE_IMAGE
   greenBroccoliImage = tk.PhotoImage(file=str(imagePath))
-  imagePath = currentDir.parent / "images" / REDBROCCOLITILE
+  imagePath = currentDir.parent / "images" / RED_BROCCOLI_TILE_IMAGE
   redBroccoliImage = tk.PhotoImage(file=str(imagePath))
 
   for row in range(0, boardObject.total_rows):
     for column in range(0, boardObject.total_columns):
       checked = tiles_board[row, column]["checked"]
       isBroccoli = tiles_board[row, column]["tileValue"] == "-1"
-      backgroundColor = BROCCOLITILECOLOR
+      backgroundColor = BROCCOLI_TILE_COLOR
 
       buttons[row, column].config(command=lambda: None)
 
       broccoliImage = redBroccoliImage
       if movePosition[0] == row and movePosition[1] == column:
-        backgroundColor = EATENBROCCOLITILECOLOR
+        backgroundColor = EATEN_BROCCOLI_TILE_COLOR
         broccoliImage = greenBroccoliImage
 
       if checked and isBroccoli:
@@ -135,7 +135,7 @@ def createProximityTileImages():
   currentDir = Path(__file__).parent
   tileImages = []
 
-  for path in PROXIMITYNUMBERIMAGES:
+  for path in PROXIMITY_NUMBER_IMAGES:
     imagePath = currentDir.parent / "images" / path
     image = Image.open(imagePath)
     image = image.resize((24, 24), Image.Resampling.BOX)
@@ -163,14 +163,14 @@ def handleText(boardObject, buttons):
     for column in range(0, boardObject.total_columns):
       buttonColor = buttons[row, column].cget("bg")
 
-      if buttonColor != TILEBACKGROUNDCOLOR:
+      if buttonColor != TILE_BACKGROUND_COLOR:
         continue
 
       tileValue = 0
       if tiles_board[row, column]["tileValue"] != " ":
         tileValue = int(tiles_board[row, column]["tileValue"])
 
-      buttonColor = PROXIMITYCOLORS[tileValue]
+      buttonColor = PROXIMITY_COLORS[tileValue]
       checked = tiles_board[row, column]["checked"]
 
       if checked:
@@ -202,10 +202,10 @@ def handleClick(boardObject, buttons, movePosition, winLabel, broccoliCounter):
     handleText(boardObject, buttons)
 
     if gameStatus != 0:
-      gameStatusText = WINNINGTEXT
+      gameStatusText = WINNING_TEXT
 
       if gameStatus < 0:
-        gameStatusText = LOSINGTEXT
+        gameStatusText = LOSING_TEXT
 
       winLabel.config(text=gameStatusText)
       handleGameStatus(boardObject, buttons, movePosition)
@@ -278,11 +278,11 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   createInfoMenu(tk, menu)
 
   currentDir = Path(__file__).parent
-  imagePath = currentDir.parent / "images" / FLAGGEDTILE
+  imagePath = currentDir.parent / "images" / FLAGGED_TILE_IMAGE
   flagButtonImage = tk.PhotoImage(file=str(imagePath))
 
   topFrameColumnSize = columns if columns > 10 else 10
-  topFrameWidth = TILEPIXELSIZE * topFrameColumnSize
+  topFrameWidth = TILE_PIXEL_SIZE * topFrameColumnSize
   topFrame = tk.Frame(root, width=topFrameWidth, height=30, pady=2)
   topFrame.propagate(False)     # Allows to define the width and height of the frame
   topFrame.pack()
@@ -306,10 +306,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
 
   broccoliCounterFrame = tk.Frame(topFrame)
   broccoliCounterFrame.pack(side="right", expand=True)
-  imagePath = currentDir.parent / "images" / GREENBROCCOLIBUTTON
+  imagePath = currentDir.parent / "images" / GREEN_BROCCOLI_BUTTON_IMAGE
   broccoliCounterImage = tk.PhotoImage(file=str(imagePath))
   broccoliCounterLabel = tk.Label(broccoliCounterFrame,
-                                  bg=BUTTONCOLOR,
+                                  bg=BUTTON_COLOR,
                                   image=broccoliCounterImage,
                                   bd=2,
                                   relief="raised"
@@ -321,7 +321,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   broccoliCounter = tk.Label(broccoliCounterFrame,
                              bd=2,
                              relief="raised",
-                             bg=BROCCOLICOUNTERCOLOR,
+                             bg=BROCCOLI_COUNTER_COLOR,
                              text=broccoliAmountCounter,
                              foreground="white",
                              height=22,
@@ -338,8 +338,8 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   gameStatuslabel = tk.Label(lastFrame, text="", anchor="center")
 
   gameFrame = tk.Frame(root, bd=2)
-  boardCalculatedSize = rows * TILEPIXELSIZE
-  createCanvas = (boardCalculatedSize*100 / screenHeight) > BOARDMAXIMUNSIZEPERCENT
+  boardCalculatedSize = rows * TILE_PIXEL_SIZE
+  createCanvas = (boardCalculatedSize*100 / screenHeight) > BOARD_MAXIMUN_SIZE_PERCENT
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
   else:
@@ -347,16 +347,16 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
 
   imagePath = currentDir.parent / "images" / TILE
   tileImage = tk.PhotoImage(file=str(imagePath))
-  imagePath = currentDir.parent / "images" / NULLTILE
+  imagePath = currentDir.parent / "images" / NULL_TILE_IMAGE
   NullTileImage = tk.PhotoImage(file=str(imagePath))
   
   for row in range(0, rows):
-    frame = tk.Frame(gameFrame, bg=TILEBACKGROUNDCOLOR)
+    frame = tk.Frame(gameFrame, bg=TILE_BACKGROUND_COLOR)
     frame.pack()
 
     for column in range(0, columns):
       isNullSpace = tiles_board[row, column]["checked"]
-      backgroundColor = TILEBACKGROUNDCOLOR
+      backgroundColor = TILE_BACKGROUND_COLOR
       buttonCommand = partial(handleClick,
                               boardObject,
                               buttons,
@@ -367,7 +367,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
 
       if isNullSpace:
         buttonCommand = lambda: None
-        backgroundColor = NULLSPACETILECOLOR
+        backgroundColor = NULL_SPACE_TILE_COLOR
 
       button = tk.Button(frame,
                          activebackground="white",
@@ -395,10 +395,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   actionFrame = tk.Frame(root)
   actionFrame.pack(pady=[0,2])
   tk.Button(actionFrame,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
+            bg=BUTTON_COLOR,
             command=partial(goBack, root, goToMainMenu),
             justify="center",
             height=1,
@@ -408,10 +408,10 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             ).pack(side="left", padx=[2,4])
   
   tk.Button(actionFrame,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
+            bg=BUTTON_COLOR,
             command=partial(closeInterface, root),
             justify="center",
             height=1,

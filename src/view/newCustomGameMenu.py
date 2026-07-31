@@ -5,9 +5,9 @@ import math
 from src.logic.board import board_generator
 from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
 from src.view.boardInterface import createBoardInterface
-from src.logic.constants.boardValues import BOARDSIZEVALUES
-from src.logic.constants.gameValues import GAMEBROCCOLIPERCENTS
-from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
+from src.logic.constants.boardValues import BOARD_SIZE_VALUES
+from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
+from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
 def validateInputs(rows, columns, broccoli_amount):
   """Validates if the input values are valid values.
@@ -27,9 +27,9 @@ def validateInputs(rows, columns, broccoli_amount):
     numberOfRows = int(rows.get())
     numberOfColumns = int(columns.get())
     numberOfBroccolis = int(broccoli_amount.get())
-    boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
-    boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
-    broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
+    boardSizeLowerLimit = BOARD_SIZE_VALUES["Small"][0]
+    boardSizeUpperLimit = BOARD_SIZE_VALUES["Big"][1]
+    broccoliPercentLimit = GAME_BROCCOLI_PERCENTS["Big"]["Hard"][1]
     broccoliLimit = math.ceil(numberOfRows
                               * numberOfColumns
                               * broccoliPercentLimit)
@@ -83,7 +83,7 @@ def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGam
   numberOfColumns = int(columns.get())
   numberOfBroccolis = int(broccoli_amount.get())
 
-  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
+  broccoliPercentLimit = GAME_BROCCOLI_PERCENTS["Big"]["Hard"][1]
   broccoli_amountProportion = math.ceil(numberOfRows
                                        * numberOfColumns
                                        * broccoliPercentLimit)
@@ -134,9 +134,9 @@ def createNewGameView(goBackFunc, goToMainMenu):
     text="Customize your Game",
     anchor="center").pack()
 
-  boardSizeLowerLimit = BOARDSIZEVALUES["Small"][0]
-  boardSizeUpperLimit = BOARDSIZEVALUES["Big"][1]
-  broccoliPercentLimit = GAMEBROCCOLIPERCENTS["Big"]["Hard"][1]
+  boardSizeLowerLimit = BOARD_SIZE_VALUES["Small"][0]
+  boardSizeUpperLimit = BOARD_SIZE_VALUES["Big"][1]
+  broccoliPercentLimit = GAME_BROCCOLI_PERCENTS["Big"]["Hard"][1]
   maximumNumberOfBroccolis = math.floor(boardSizeUpperLimit
                                         * boardSizeUpperLimit
                                         * broccoliPercentLimit)
@@ -172,10 +172,10 @@ def createNewGameView(goBackFunc, goToMainMenu):
 
   errorLabel = tk.Label(errorTextFrame, text="", anchor="center")
   tk.Button(buttonFrame,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
+            bg=BUTTON_COLOR,
             command=partial(createNewGame,
                             root,
                             rows,
