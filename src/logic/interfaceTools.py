@@ -1,20 +1,20 @@
 from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE, ABOUT_MENU_MESSAGE
 
-def centerWindow(window, windowWidth, windowHeight):
+def center_window(window, window_width, window_height):
   """Places the window at the center of the screen.
 
   Args:
     window (tk.widget): The root windget, the current window that is being displayed
-    windowWidth (int): The width of the current window
-    windowHeight (int): The height of the current window
+    window_width (int): The width of the current window
+    window_height (int): The height of the current window
   """
-  screenWidth = window.winfo_screenwidth()
-  screenHeight = window.winfo_screenheight()
-  x = (screenWidth - windowWidth) // 2
-  y = (screenHeight - windowHeight) // 2
+  screen_width = window.winfo_screenwidth()
+  screen_height = window.winfo_screenheight()
+  x = (screen_width - window_width) // 2
+  y = (screen_height - window_height) // 2
   window.geometry("+%d+%d" % (x, y))
 
-def closeInterface(root):
+def close_interface(root):
   """Closes the current window.
 
   Args:
@@ -22,24 +22,24 @@ def closeInterface(root):
   """
   root.destroy()
 
-def goBack(root, goBackFunc, previousGoBackFunc=None):
+def go_back(root, go_back_func, previous_go_back_func=None):
   """Closes the current window and creates the new game menu window.
 
   Args:
     root (tk.Tk): The root windget, the current window that is being displayed
-    goBackFunc (Func): The current goBack function.
+    go_back_func (Func): The current go_back function.
       Used to go back to the previous view
-    previousGoBackFunc (Func): The goBack function of the previous view.
+    previous_go_back_func (Func): The go_back function of the previous view.
       Used to go back two views prior (default None)
   """
-  closeInterface(root)
+  close_interface(root)
 
-  if previousGoBackFunc is None:
-    goBackFunc()
+  if previous_go_back_func is None:
+    go_back_func()
   else:
-    goBackFunc(previousGoBackFunc)
+    go_back_func(previous_go_back_func)
 
-def createTopLevel(tk, message, title):
+def create_top_level(tk, message, title):
   """Creates a toplevel widget with a message and title.
 
   Args:
@@ -49,38 +49,38 @@ def createTopLevel(tk, message, title):
     message (str): The message to be displayed on the toplevel
     title (str): The title of the toplevel
   """
-  topLevel = tk.Toplevel()
-  topLevel.title(title)
-  topLevel.geometry("400x250")
+  top_level = tk.Toplevel()
+  top_level.title(title)
+  top_level.geometry("400x250")
 
-  messageWidget = tk.Message(topLevel, text=message)
-  closeButton = tk.Button(topLevel,
+  message_widget = tk.Message(top_level, text=message)
+  close_button = tk.Button(top_level,
                           text="Close",
-                          command=topLevel.destroy
+                          command=top_level.destroy
                           )
 
-  messageWidget.pack()
-  closeButton.pack(pady=[2,0])
-  topLevel.mainloop()
+  message_widget.pack()
+  close_button.pack(pady=[2,0])
+  top_level.mainloop()
 
-def createInfoMenu(tk, menuWidget):
+def create_info_menu(tk, menu_widget):
   """Creates the info menu.
 
   Args:
     tk (tk): The tk library reference.
       Passed as argument to reduce double referencing on this file.
       Just a personal preference for this case
-    menuWidget (tk.Widget): The menu widget where the menu is going to be attached
+    menu_widget (tk.Widget): The menu widget where the menu is going to be attached
   """
-  aboutMessage = "".join(ABOUT_MENU_MESSAGE)
-  creditsMessage = "".join(CREDITS_MENU_MESSAGE)
+  about_message = "".join(ABOUT_MENU_MESSAGE)
+  credits_message = "".join(CREDITS_MENU_MESSAGE)
 
-  infoMenu = tk.Menu(menuWidget, tearoff=0)
-  menuWidget.add_cascade(label="Info", menu=infoMenu)
+  info_menu = tk.Menu(menu_widget, tearoff=0)
+  menu_widget.add_cascade(label="Info", menu=info_menu)
 
-  infoMenu.add_command(label="About",
-                       command=lambda: createTopLevel(tk, aboutMessage, "About")
+  info_menu.add_command(label="About",
+                       command=lambda: create_top_level(tk, about_message, "About")
                        )
-  infoMenu.add_command(label="Credits",
-                       command=lambda: createTopLevel(tk, creditsMessage, "Credits")
+  info_menu.add_command(label="Credits",
+                       command=lambda: create_top_level(tk, credits_message, "Credits")
                        )

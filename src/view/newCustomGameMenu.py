@@ -3,7 +3,7 @@ from functools import partial
 import math
 
 from src.logic.board import board_generator
-from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
+from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu
 from src.view.boardInterface import createBoardInterface
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
@@ -59,7 +59,7 @@ def validateInputs(rows, columns, broccoli_amount):
   except:
     return "Value is not numeric"
 
-def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGameView, goBackFunc):
+def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGameView, go_back_func):
   """Closes the current window and creates the new game interface.
 
   Args:
@@ -69,8 +69,8 @@ def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGam
     broccoli_amount (int): Number of broccolis on the board
     errorLabel (tk.Label): The label widget to display an error message
     createNewGameView (Func): The function that creates the current view/window.
-      Used in the next view for the goBack function
-    goBackFunc (Func): The current goBack function.
+      Used in the next view for the go_back function
+    go_back_func (Func): The current go_back function.
       Used to go back to the previous view (In this case the main menu)
   """
   errorText = validateInputs(rows, columns, broccoli_amount)
@@ -94,15 +94,15 @@ def createNewGame(root, rows, columns, broccoli_amount, errorLabel, createNewGam
     errorLabel.config(text=errorText)
     return
 
-  closeInterface(root)
+  close_interface(root)
   boardObject = board_generator(numberOfRows, numberOfColumns, numberOfBroccolis)
-  createBoardInterface(boardObject, createNewGameView, goBackFunc)
+  createBoardInterface(boardObject, createNewGameView, go_back_func)
 
-def createNewGameView(goBackFunc, goToMainMenu):
+def createNewGameView(go_back_func, goToMainMenu):
   """Creates the new game menu interface.
 
   Args:
-    goBackFunc (Func): The current goBack function.
+    go_back_func (Func): The current go_back function.
       Used to go back to the previous view
     goToMainMenu (Func): Function to go back to the main menu
   """
@@ -115,17 +115,17 @@ def createNewGameView(goBackFunc, goToMainMenu):
   root.title("New Game")
   root.minsize(windowMinWidth, windowMinHeight)
   root.maxsize(windowMaxWidth, windowMaxHeight)
-  centerWindow(root, windowMinWidth, windowMinHeight)
+  center_window(root, windowMinWidth, windowMinHeight)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
   gameMenu = tk.Menu(menu, tearoff=0)
   menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc, goToMainMenu))
-  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
+  gameMenu.add_command(label="New Game", command=partial(go_back, root, go_back_func, goToMainMenu))
+  gameMenu.add_command(label="Main Menu", command=partial(go_back, root, goToMainMenu))
   gameMenu.add_separator()
-  gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
-  createInfoMenu(tk, menu)
+  gameMenu.add_command(label="Exit", command=partial(close_interface, root))
+  create_info_menu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
@@ -182,7 +182,7 @@ def createNewGameView(goBackFunc, goToMainMenu):
                             columns,
                             broccoli_amount,
                             errorLabel,
-                            goBackFunc,
+                            go_back_func,
                             goToMainMenu
                             ),
             justify="center",

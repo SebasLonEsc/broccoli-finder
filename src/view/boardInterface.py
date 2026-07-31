@@ -5,7 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageTk
 
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import closeInterface, goBack, createInfoMenu
+from src.logic.interfaceTools import close_interface, go_back, create_info_menu
 from src.logic.constants.gameValues import WINNING_TEXT, LOSING_TEXT
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
@@ -240,12 +240,12 @@ def createBoardCanvas(root):
 
   return gameFrame
 
-def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
+def createBoardInterface(boardObject, go_back_func, goToMainMenu):
   """Creates the interface of the board
 
   Args:
     boardObject (Board): Rhe object containing all of the information about the board
-    goBackFunc (Func): Function to go back to the previous view
+    go_back_func (Func): Function to go back to the previous view
     goToMainMenu (Func): Function to go back to the main menu view
   """
   rows = boardObject.total_rows
@@ -262,20 +262,20 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
   root = tk.Tk()
   root.title("Broccoli")
   root.grid_columnconfigure(0, weight=1)
-  screenWidth = root.winfo_screenwidth()
-  screenHeight = root.winfo_screenheight()
-  root.maxsize(screenWidth, screenHeight)
-  root.geometry("+%d+%d" % ((screenWidth // 4), 0))
+  screen_width = root.winfo_screenwidth()
+  screen_height = root.winfo_screenheight()
+  root.maxsize(screen_width, screen_height)
+  root.geometry("+%d+%d" % ((screen_width // 4), 0))
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
   gameMenu = tk.Menu(menu, tearoff=0)
   menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goToMainMenu))
-  gameMenu.add_command(label="New Game", command=partial(goBack, root, goBackFunc, goToMainMenu))
+  gameMenu.add_command(label="Main Menu", command=partial(go_back, root, goToMainMenu))
+  gameMenu.add_command(label="New Game", command=partial(go_back, root, go_back_func, goToMainMenu))
   gameMenu.add_separator()
-  gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
-  createInfoMenu(tk, menu)
+  gameMenu.add_command(label="Exit", command=partial(close_interface, root))
+  create_info_menu(tk, menu)
 
   currentDir = Path(__file__).parent
   imagePath = currentDir.parent / "images" / FLAGGED_TILE_IMAGE
@@ -339,7 +339,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
 
   gameFrame = tk.Frame(root, bd=2)
   boardCalculatedSize = rows * TILE_PIXEL_SIZE
-  createCanvas = (boardCalculatedSize*100 / screenHeight) > BOARD_MAXIMUN_SIZE_PERCENT
+  createCanvas = (boardCalculatedSize*100 / screen_height) > BOARD_MAXIMUN_SIZE_PERCENT
   if(createCanvas):
     gameFrame = createBoardCanvas(root)
   else:
@@ -399,7 +399,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,
-            command=partial(goBack, root, goToMainMenu),
+            command=partial(go_back, root, goToMainMenu),
             justify="center",
             height=1,
             padx=0,
@@ -412,7 +412,7 @@ def createBoardInterface(boardObject, goBackFunc, goToMainMenu):
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,
-            command=partial(closeInterface, root),
+            command=partial(close_interface, root),
             justify="center",
             height=1,
             width=8,

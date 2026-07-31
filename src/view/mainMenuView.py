@@ -2,7 +2,7 @@ import tkinter as tk
 from functools import partial
 
 from src.view.newGameMenu import newGameMenu
-from src.logic.interfaceTools import centerWindow, closeInterface, createInfoMenu
+from src.logic.interfaceTools import center_window, close_interface, create_info_menu
 from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
 def handleNewGame(root):
@@ -11,23 +11,23 @@ def handleNewGame(root):
   Args:
     root (tk.TK): The root windget, the current window that is being displayed
   """
-  closeInterface(root)
+  close_interface(root)
   newGameMenu(create_main_menu_view)
 
 def create_main_menu_view():
   """Creates the main menu window."""
-  windowWidth = 220
-  windowHeight = 80
+  window_width = 220
+  window_height = 80
 
   root = tk.Tk()
   root.title("Broccolis")
-  root.minsize(windowWidth, windowHeight)
-  root.maxsize(windowWidth, windowHeight)
-  centerWindow(root, windowWidth, windowHeight)
+  root.minsize(window_width, window_height)
+  root.maxsize(window_width, window_height)
+  center_window(root, window_width, window_height)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  createInfoMenu(tk, menu)
+  create_info_menu(tk, menu)
 
   tk.Label(root,
            text="Broccoli Finder",
@@ -52,7 +52,7 @@ def create_main_menu_view():
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,
-            command= partial(closeInterface, root),
+            command= partial(close_interface, root),
             justify="center",
             height=1,
             width=8,
