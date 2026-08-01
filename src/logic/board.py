@@ -9,7 +9,7 @@ def fill_tiles_board(tiles_board):
   
   Args:
     tiles_board (np.ndarray): Matrix containing each tiles of the board
-  Output:
+  Returns:
     np.ndarray: Filled tiles_board matrix with dictionaries, one for each tile on the board
   """
   for i in range(0, tiles_board.shape[0]):

@@ -202,12 +202,12 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
     handle_text(board_object, buttons)
 
     if game_status != 0:
-      gameStatusText = WINNING_TEXT
+      game_status_text = WINNING_TEXT
 
       if game_status < 0:
-        gameStatusText = LOSING_TEXT
+        game_status_text = LOSING_TEXT
 
-      win_label.config(text=gameStatusText)
+      win_label.config(text=game_status_text)
       handle_game_status(board_object, buttons, move_position)
 
   elif flag_command:

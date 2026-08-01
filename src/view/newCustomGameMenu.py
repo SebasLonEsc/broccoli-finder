@@ -167,10 +167,10 @@ def create_new_game_view(go_back_func, go_to_main_menu):
 
   button_frame = tk.Frame(root)
   button_frame.pack(pady=[2,2], expand=True)
-  error_textFrame = tk.Frame(root)
-  error_textFrame.pack(pady=[2,2], expand=True)
+  error_text_frame = tk.Frame(root)
+  error_text_frame.pack(pady=[2,2], expand=True)
 
-  error_label = tk.Label(error_textFrame, text="", anchor="center")
+  error_label = tk.Label(error_text_frame, text="", anchor="center")
   tk.Button(button_frame,
             activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",

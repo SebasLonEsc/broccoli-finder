@@ -43,9 +43,9 @@ def create_top_level(tk, message, title):
   """Creates a toplevel widget with a message and title.
 
   Args:
-    tk (tk): The tk library reference
-      (passed as argument to reduce double referencing on this file.
-      Just a personal preference for this case)
+    tk (tk): The tk library reference.
+      Passed as argument to reduce double referencing on this file.
+      Just a personal preference for this case
     message (str): The message to be displayed on the toplevel
     title (str): The title of the toplevel
   """

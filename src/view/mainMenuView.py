@@ -9,7 +9,7 @@ def handle_new_game(root):
   """Closes the current window and creates the new game menu window.
   
   Args:
-    root (tk.TK): The root windget, the current window that is being displayed
+    root (tk.Tk): The root windget, the current window that is being displayed
   """
   close_interface(root)
   new_game_menu(create_main_menu_view)
