@@ -77,13 +77,11 @@ def check_valid_move(board, tiles_board, move_position, board_row_limit, board_c
       column >= board_column_limit):
     return False
   
-  if board[row, column] == -2:
-    return False
-  
-  if tiles_board[row, column]["checked"]:
+  if board[row, column] == -2:  # Is a nullspace
     return False
 
-  if tiles_board[row, column]["flagged"]:
+  tile_value = tiles_board[row, column]
+  if tile_value["checked"] or tile_value["flagged"]: # Already checked or is flagged
     return False
 
   return True
