@@ -1,42 +1,42 @@
-from src.view.printBoard import printBoardOnConsole
-from src.view.mainMenuView import createMainMenuView
-from src.logic.board import boardGenerator
+from src.view.printBoard import print_board_on_console
+from src.view.mainMenuView import create_main_menu_view
+from src.logic.board import board_generator
 
-# Handles the generation of the Board and redirects to the specific game interface
-# Input:
-#   gameType: The type of interface used for the game
-#     1: Play the game in console
-#     2: Play the game in an interface
-# Output:
-#   Nothing
-def selectGameType(gameType):
-  if gameType == 1:
+def select_game_type(game_type):
+  """Handles the generation of the Board and redirects to the specific game interface.
+
+  Args:
+    game_type (int): The type of interface used for the game
+      1 -> Play the game in console
+      2 -> Play the game in an interface
+  """
+  if game_type == 1:
     rows = int(input("Enter the rows:"))
     columns = int(input("Enter the columns:"))
-    broccoliAmount = int(input("Enter the number of broccolis:"))
-    boardObject = boardGenerator(rows, columns, broccoliAmount)
-    printBoardOnConsole(boardObject)
+    broccoli_amount = int(input("Enter the number of broccolis:"))
+    board_object = board_generator(rows, columns, broccoli_amount)
+    print_board_on_console(board_object)
 
   else:
-    createMainMenuView()
+    create_main_menu_view()
 
 def main():
-  invalidGameType = True
-  gameType = -1
+  invalid_game_type = True
+  game_type = -1
 
-  while(invalidGameType):
+  while(invalid_game_type):
     print("-------------------")
     print("Select a game type:")
     print("1: console game")
     print("2: interface game")
     print("-------------------")
-    gameType = int(input("Enter the game type:"))
+    game_type = int(input("Enter the game type:"))
 
-    if gameType == 1 or gameType == 2:
-      invalidGameType = False
+    if game_type == 1 or game_type == 2:
+      invalid_game_type = False
     else:
       print("\nInvalid game type")
 
-  selectGameType(gameType)
+  select_game_type(game_type)
 
 main()

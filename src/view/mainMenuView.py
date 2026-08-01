@@ -1,67 +1,64 @@
 import tkinter as tk
 from functools import partial
-from src.view.newGameMenu import newGameMenu
-from src.logic.interfaceTools import centerWindow, closeInterface, createInfoMenu
-from src.logic.constants.styleValues import BUTTONCOLOR, BUTTONACTIVECOLOR
 
-# Closes the current window and creates the new game menu window
-# Input:
-#   root: the root windget, the current window that is being displayed
-# Output:
-#   Nothing
-def handleNewGame(root):
-  closeInterface(root)
-  newGameMenu(createMainMenuView)
+from src.view.newGameMenu import new_game_menu
+from src.logic.interfaceTools import center_window, close_interface, create_info_menu
+from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
-# Creates the main menu window
-# Input:
-#   Nothing
-# Output:
-#   Nothing
-def createMainMenuView():
-  windowWidth = 220
-  windowHeight = 80
+def handle_new_game(root):
+  """Closes the current window and creates the new game menu window.
+  
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+  """
+  close_interface(root)
+  new_game_menu(create_main_menu_view)
+
+def create_main_menu_view():
+  """Creates the main menu window."""
+  window_width = 220
+  window_height = 80
 
   root = tk.Tk()
   root.title("Broccolis")
-  root.minsize(windowWidth, windowHeight)
-  root.maxsize(windowWidth, windowHeight)
-  centerWindow(root, windowWidth, windowHeight)
+  root.minsize(window_width, window_height)
+  root.maxsize(window_width, window_height)
+  center_window(root, window_width, window_height)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  createInfoMenu(tk, menu)
+  create_info_menu(tk, menu)
 
-  tk.Label(
-    root,
-    text="Broccoli Finder",
-    anchor="center").pack(pady=2)
+  tk.Label(root,
+           text="Broccoli Finder",
+           anchor="center"
+           ).pack(pady=2)
   
   tk.Button(root,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
-            command= partial(handleNewGame, root),
+            bg=BUTTON_COLOR,
+            command=partial(handle_new_game, root),
             justify="center",
             height=1,
             padx=0,
             pady=0,
-            text= "New Game"
+            text="New Game"
             ).pack(pady=2)
   
   tk.Button(root,
-            activebackground=BUTTONACTIVECOLOR,
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
-            command= partial(closeInterface, root),
+            bg=BUTTON_COLOR,
+            command= partial(close_interface, root),
             justify="center",
             height=1,
             width=8,
             padx=0,
             pady=0,
-            text= "Exit",
+            text="Exit",
             ).pack(pady=[4,8])
   
   root.mainloop()

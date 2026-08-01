@@ -1,43 +1,52 @@
 import random
-from .broccoliProximity import broccoliProximity
 
-# Calculates a valid random position for a broccoli
-# Input:
-#   board: the board matrix containg the information about nullspaces, broccoli position and proximity
-#   boardObject: the object containing all of the information about the board
-# Output:
-#   Returns an array of [row, column] position of a broccoli
-def defineBroccoliPositions(board, boardObject):
+from .broccoliProximity import broccoli_proximity
+
+def define_broccoli_positions(board, board_object):
+  """Calculates a valid random position for a broccoli.
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about:
+      nullspaces, broccoli position and proximity
+    board_object (Board): The object containing all of the information about the board
+  Returns:
+    array[int]: An array of [row, column] position of a broccoli
+  """
   pos = [0,0]
-  invalidPosition = True
+  invalid_position = True
 
-  while invalidPosition:
-    pos = [random.randrange(0, boardObject.totalRows), random.randrange(0, boardObject.totalColumns)]
+  while invalid_position:
+    pos = [
+      random.randrange(0, board_object.total_rows),
+      random.randrange(0, board_object.total_columns)
+      ]
     if board[pos[0], pos[1]] >= 0:
-      invalidPosition = False
+      invalid_position = False
   
   return pos
 
-# Fills a board with a specific number of broccolis
-# Input:
-#   boardObject: the object containing all of the information about the board
-#   broccoliAmount (optional): the number of broccolis on the board (default value is 1)
-# Output:
-#   Returns the boardObject with the board matrix filled with the specified amount of broccolis
-def boardBroccoliFiller(boardObject, broccoliAmount = 1):
-  board = boardObject.board
-  totalRows = boardObject.totalRows
-  totalColumns = boardObject.totalColumns
+def board_broccoli_filler(board_object, broccoli_amount=1):
+  """Fills a board with a specific number of broccolis.
 
-  if broccoliAmount >= boardObject.availableSpace:
-    broccoliAmount = boardObject.availableSpace - 1
+  Args:
+    board_object (Board): The object containing all of the information about the board
+    broccoli_amount (int): The number of broccolis on the board (default 1)
+  Returns:
+    Board: The board object with the board matrix filled the specified amount of broccolis
+  """
+  board = board_object.board
+  total_rows = board_object.total_rows
+  total_columns = board_object.total_columns
 
-  for _ in range(broccoliAmount):
-    pos = defineBroccoliPositions(board, boardObject)
+  if broccoli_amount >= board_object.available_space:
+    broccoli_amount = board_object.available_space - 1
+
+  for _ in range(broccoli_amount):
+    pos = define_broccoli_positions(board, board_object)
     board[pos[0], pos[1]] = -1
-    board = broccoliProximity(board, pos, totalRows, totalColumns)
+    board = broccoli_proximity(board, pos, total_rows, total_columns)
 
-  boardObject.changeBoard(board)
-  boardObject.changeBroccoliAmount(broccoliAmount)
+  board_object.change_board(board)
+  board_object.change_broccoli_amount(broccoli_amount)
 
-  return boardObject
+  return board_object

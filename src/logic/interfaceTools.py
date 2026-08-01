@@ -1,72 +1,86 @@
-from src.logic.constants.infoMenuContent import CREDITSMENUMESSAGE, ABOUTMENUMESSAGE
+from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE, ABOUT_MENU_MESSAGE
 
-# Closes the current window
-# Input:
-#   window: the root windget, the current window that is being displayed
-#   windowWidth: the width of the current window
-#   windowHeight: the height of the current window
-# Output:
-#   Nothing
-def centerWindow(window, windowWidth, windowHeight):
-  screenWidth = window.winfo_screenwidth()
-  screenHeight = window.winfo_screenheight()
-  x = (screenWidth - windowWidth) // 2
-  y = (screenHeight - windowHeight) // 2
+def center_window(window, window_width, window_height):
+  """Places the window at the center of the screen.
+
+  Args:
+    window (tk.widget): The root windget, the current window that is being displayed
+    window_width (int): The width of the current window
+    window_height (int): The height of the current window
+  """
+  screen_width = window.winfo_screenwidth()
+  screen_height = window.winfo_screenheight()
+  x = (screen_width - window_width) // 2
+  y = (screen_height - window_height) // 2
   window.geometry("+%d+%d" % (x, y))
 
-# Closes the current window
-# Input:
-#   root: the root windget, the current window that is being displayed
-# Output:
-#   Nothing
-def closeInterface(root):
+def close_interface(root):
+  """Closes the current window.
+
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+  """
   root.destroy()
 
-# Closes the current window and creates the new game menu window
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: The current goBack function. Used to go back to the previous view
-#   previousGoBackFunc (optional): The goBack function of the previous view. Used to go back two views prior
-# Output:
-#   Nothing
-def goBack(root, goBackFunc, previousGoBackFunc = None):
-  closeInterface(root)
+def go_back(root, go_back_func, previous_go_back_func=None):
+  """Closes the current window and creates the new game menu window.
 
-  if previousGoBackFunc is None:
-    goBackFunc()
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    go_back_func (Func): The current go_back function.
+      Used to go back to the previous view
+    previous_go_back_func (Func): The go_back function of the previous view.
+      Used to go back two views prior (default None)
+  """
+  close_interface(root)
+
+  if previous_go_back_func is None:
+    go_back_func()
   else:
-    goBackFunc(previousGoBackFunc)
+    go_back_func(previous_go_back_func)
 
-# Creates a toplevel widget with a message and title
-# Input:
-#   tk: The tk library reference (passed as argument to reduce double referencing on this file. Just a personal preference for this case)
-#   message: The message to be displayed on the toplevel
-#   title: The title of the toplevel
-# Output:
-#   Nothing
-def createTopLevel(tk, message, title):
-  topLevel = tk.Toplevel()
-  topLevel.title(title)
-  topLevel.geometry("400x250")
+def create_top_level(tk, message, title):
+  """Creates a toplevel widget with a message and title.
 
-  messageWidget = tk.Message(topLevel, text = message)
-  closeButton = tk.Button(topLevel, text = "Close", command = topLevel.destroy)
+  Args:
+    tk (tk): The tk library reference.
+      Passed as argument to reduce double referencing on this file.
+      Just a personal preference for this case
+    message (str): The message to be displayed on the toplevel
+    title (str): The title of the toplevel
+  """
+  top_level = tk.Toplevel()
+  top_level.title(title)
+  top_level.geometry("400x250")
 
-  messageWidget.pack()
-  closeButton.pack(pady=[2,0])
-  topLevel.mainloop()
+  message_widget = tk.Message(top_level, text=message)
+  close_button = tk.Button(top_level,
+                           text="Close",
+                           command=top_level.destroy
+                           )
 
-# Creates the info menu
-# Input:
-#   tk: The tk library reference (passed as argument to reduce double referencing on this file. Just a personal preference for this case)
-#   mmenuWidget: The menu widget where the menu is going to be attached
-# Output:
-#   Nothing
-def createInfoMenu(tk, menuWidget):
-  aboutMessage = "".join(ABOUTMENUMESSAGE)
-  creditsMessage = "".join(CREDITSMENUMESSAGE)
+  message_widget.pack()
+  close_button.pack(pady=[2,0])
+  top_level.mainloop()
 
-  infoMenu = tk.Menu(menuWidget, tearoff=0)
-  menuWidget.add_cascade(label="Info", menu=infoMenu)
-  infoMenu.add_command(label="About", command=lambda: createTopLevel(tk, aboutMessage, "About"))
-  infoMenu.add_command(label="Credits", command=lambda: createTopLevel(tk, creditsMessage, "Credits"))
+def create_info_menu(tk, menu_widget):
+  """Creates the info menu.
+
+  Args:
+    tk (tk): The tk library reference.
+      Passed as argument to reduce double referencing on this file.
+      Just a personal preference for this case
+    menu_widget (tk.Widget): The menu widget where the menu is going to be attached
+  """
+  about_message = "".join(ABOUT_MENU_MESSAGE)
+  credits_message = "".join(CREDITS_MENU_MESSAGE)
+
+  info_menu = tk.Menu(menu_widget, tearoff=0)
+  menu_widget.add_cascade(label="Info", menu=info_menu)
+
+  info_menu.add_command(label="About",
+                        command=lambda: create_top_level(tk, about_message, "About")
+                        )
+  info_menu.add_command(label="Credits",
+                        command=lambda: create_top_level(tk, credits_message, "Credits")
+                        )

@@ -2,119 +2,128 @@ import tkinter as tk
 from tkinter import ttk
 from functools import partial
 from pathlib import Path
-from PIL import Image, ImageTk
 import random
 import math
-from src.logic.interfaceTools import centerWindow, closeInterface, goBack, createInfoMenu
-from src.logic.board import boardGenerator
-from src.view.boardInterface import createBoardInterface
-from src.logic.constants.boardValues import BOARDSIZEVALUES
-from src.logic.constants.gameValues import GAMEDIFFICULTIES, GAMEBROCCOLIPERCENTS
-from src.logic.constants.styleValues import BOARDBUTTONSIZES, BUTTONCOLOR, BUTTONACTIVECOLOR
-from src.logic.constants.imagesPaths import BOARDSELECTORIMAGES
-from src.view.newCustomGameMenu import createNewGameView
+from PIL import Image, ImageTk
 
-# Closes the current window and creates the custom game window
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-# Output:
-#   Nothing
-def openCustomGameView(root, goBackFunc, previousGoBackFunc):
-  closeInterface(root)
-  createNewGameView(goBackFunc, previousGoBackFunc)
+from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu
+from src.logic.board import board_generator
+from src.view.boardInterface import create_board_interface
+from src.view.newCustomGameMenu import create_new_game_view
+from src.logic.constants.boardValues import BOARD_SIZE_VALUES, BOARD_SIZES
+from src.logic.constants.gameValues import GAME_DIFFICULTIES, GAME_BROCCOLI_PERCENTS
+from src.logic.constants.styleValues import BOARD_BUTTON_SIZES, BUTTON_COLOR, BUTTON_ACTIVE_COLOR
+from src.logic.constants.imagesPaths import BOARD_SELECTOR_IMAGES
 
-# Closes the current window and creates the new game window
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-#   gameDifficulty: The game difficulty combobox
-#   boardSize: The selected board size
-# Output:
-#   Nothing
-def createGame(root, goBackFunc, previousGoBackFunc, difficulty, boardSize):
-  gameDifficulty = difficulty.get()
+def open_custom_game_view(root, go_back_func, previous_go_back_func):
+  """Closes the current window and creates the custom game window.
 
-  broccoliPercent = GAMEBROCCOLIPERCENTS[boardSize][gameDifficulty]
-  boardSizes = BOARDSIZEVALUES[boardSize]
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    go_back_func (func): Function to go back to the current view
+    previous_go_back_func (func): Function to go back to the previous view
+  """
+  close_interface(root)
+  create_new_game_view(go_back_func, previous_go_back_func)
 
-  rows = random.randint(boardSizes[0], boardSizes[1])
-  columns = random.randint(boardSizes[0], boardSizes[1])
-  boardSize = rows * columns
-  broccoliLowerLimit = math.ceil(boardSize * broccoliPercent[0])
-  broccoliUpperLimit = math.floor(boardSize * broccoliPercent[1])
-  broccoliAmount = broccoliLowerLimit
+def create_game(root, go_back_func, previous_go_back_func, difficulty, board_size):
+  """Closes the current window and creates the new game window.
 
-  if broccoliLowerLimit != broccoliUpperLimit and broccoliLowerLimit < broccoliUpperLimit:
-    broccoliAmount = random.randint(broccoliLowerLimit, broccoliUpperLimit)
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    go_back_func (Func): Function to go back to the current view
+    previous_go_back_func (Func): Function to go back to the previous view
+    difficulty (int): The game difficulty combobox
+    board_size (str): The selected board size
+  """
+  game_difficulty = difficulty.get()
 
-  closeInterface(root)
-  boardObject = boardGenerator(rows, columns, broccoliAmount)
-  createBoardInterface(boardObject, goBackFunc, previousGoBackFunc)
+  broccoli_percent = GAME_BROCCOLI_PERCENTS[board_size][game_difficulty]
+  board_sizes = BOARD_SIZE_VALUES[board_size]
 
-# Creates a board size button
-# Input:
-#   root: the root windget, the current window that is being displayed
-#   goBackFunc: Function to go back to the current view
-#   previousGoBackfunc: Function to go back to the previous view
-#   masterWidget: The widget where the button is being placed
-#   gameDifficulty: The game difficulty combobox
-#   boardSize: The selected board size
-# Output:
-#   Nothing
-def createBoardSizeButton(root, goBackFunc, previousGoBackFunc, masterWidget, difficulty, size = "Small"):
-  currentDir = Path(__file__).parent
-  imageName = BOARDSELECTORIMAGES[size]
-  imageSize = BOARDBUTTONSIZES[size]
-  imagePath = currentDir.parent / "images" / imageName
+  rows = random.randint(board_sizes[0], board_sizes[1])
+  columns = random.randint(board_sizes[0], board_sizes[1])
+  board_size = rows * columns
+  broccoli_lower_limit = math.ceil(board_size * broccoli_percent[0])
+  broccoli_upper_limit = math.floor(board_size * broccoli_percent[1])
+  broccoli_amount = broccoli_lower_limit
 
-  image = Image.open(imagePath)
-  image = image.resize(imageSize, Image.Resampling.LANCZOS)
-  boardImage = ImageTk.PhotoImage(image)
+  if (broccoli_lower_limit != broccoli_upper_limit and
+      broccoli_lower_limit < broccoli_upper_limit):
+    broccoli_amount = random.randint(broccoli_lower_limit, broccoli_upper_limit)
+
+  close_interface(root)
+  board_object = board_generator(rows, columns, broccoli_amount)
+  create_board_interface(board_object, go_back_func, previous_go_back_func)
+
+def create_board_size_selector_button(root, go_back_func, previous_go_back_func, master_widget, difficulty, size = "Small"):
+  """Creates a board size selector button.
+
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    go_back_func (Func): Function to go back to the current view
+    previous_go_back_func (Func): Function to go back to the previous view
+    master_widget (tk.Widget): The widget where the button is being placed
+    difficulty (int): The game difficulty combobox
+    board_size (str): The selected board size
+  """
+  current_dir = Path(__file__).parent
+  image_name = BOARD_SELECTOR_IMAGES[size]
+  image_size = BOARD_BUTTON_SIZES[size]
+  image_path = current_dir.parent / "images" / image_name
+
+  image = Image.open(image_path)
+  image = image.resize(image_size, Image.Resampling.LANCZOS)
+  board_image = ImageTk.PhotoImage(image)
   
-  button = tk.Button(masterWidget,
-                      activebackground=BUTTONACTIVECOLOR,
-                      anchor="center",
-                      bd=1,
-                      bg=BUTTONCOLOR,
-                      command= partial(createGame, root, goBackFunc, previousGoBackFunc, difficulty, size),
-                      justify="center",
-                      width=imageSize[0]+10,
-                      height=imageSize[1]+20,
-                      padx=4,
-                      pady=0,
-                      text=size,
-                      image=boardImage,
-                      compound="bottom"
-  )
-  button.image = boardImage
+  button = tk.Button(master_widget,
+                     activebackground=BUTTON_ACTIVE_COLOR,
+                     anchor="center",
+                     bd=1,
+                     bg=BUTTON_COLOR,
+                     command=partial(create_game,
+                                     root,
+                                     go_back_func,
+                                     previous_go_back_func,
+                                     difficulty,
+                                     size
+                                     ),
+                     justify="center",
+                     width=image_size[0] + 10, #Leave space for padding
+                     height=image_size[1] + 20, #Leave space for padding
+                     padx=4,
+                     pady=0,
+                     text=size,
+                     image=board_image,
+                     compound="bottom"
+                     )
+  button.image = board_image
   
   return button
 
-# Creates the new game selector menu interface
-# Input:
-#   goBackFunc: The current goBack function. Used to go back to the previous view (In this case the main menu)
-# Output:
-#   Nothing
-def newGameMenu(goBackFunc):
-  windowWidth = 786
-  windowHeight = 380
+def new_game_menu(go_back_func):
+  """Creates the new game selector menu interface.
+
+  Args:
+    go_back_func (Func): The current go_back function.
+      Used to go back to the previous view (In this case the main menu)
+  """
+  window_width = 786
+  window_height = 380
 
   root = tk.Tk()
   root.title("New Game")
-  root.minsize(windowWidth, windowHeight)
-  centerWindow(root, windowWidth, windowHeight)
+  root.minsize(window_width, window_height)
+  center_window(root, window_width, window_height)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  gameMenu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label="Game", menu=gameMenu)
-  gameMenu.add_command(label="Main Menu", command=partial(goBack, root, goBackFunc))
-  gameMenu.add_separator()
-  gameMenu.add_command(label="Exit", command=partial(closeInterface, root))
-  createInfoMenu(tk, menu)
+  game_menu = tk.Menu(menu, tearoff=0)
+  menu.add_cascade(label="Game", menu=game_menu)
+  game_menu.add_command(label="Main Menu", command=partial(go_back, root, go_back_func))
+  game_menu.add_separator()
+  game_menu.add_command(label="Exit", command=partial(close_interface, root))
+  create_info_menu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
@@ -125,21 +134,27 @@ def newGameMenu(goBackFunc):
   
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
-  tk.Label(
-    frame,
-    text="Difficulty",
-    anchor="center").pack(side="left", padx=[2,2])
-  gameDifficulty = ttk.Combobox(frame,
-                                values=GAMEDIFFICULTIES,
-                                state="readonly")
-  gameDifficulty.pack(side="left", padx=[2,4])
-  gameDifficulty.set(GAMEDIFFICULTIES[0])
+  tk.Label(frame,
+           text="Difficulty",
+           anchor="center"
+           ).pack(side="left", padx=[2,2])
+  game_difficulty = ttk.Combobox(frame,
+                                 values=GAME_DIFFICULTIES,
+                                 state="readonly")
+  game_difficulty.pack(side="left", padx=[2,4])
+  game_difficulty.set(GAME_DIFFICULTIES[0])
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Small").pack(side="left", padx=[4,4], anchor="n")
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Medium").pack(side="left", padx=[4,4], anchor="n")
-  createBoardSizeButton(root, newGameMenu, goBackFunc, frame, gameDifficulty, "Big").pack(side="left", padx=[4,4], anchor="n")
+
+  for size in BOARD_SIZES:
+    create_board_size_selector_button(root,
+                                      new_game_menu,
+                                      go_back_func,
+                                      frame,
+                                      game_difficulty,
+                                      size
+                                      ).pack(side="left", padx=[4,4], anchor="n")
 
   frame = tk.Frame(root)
   frame.pack(pady=[8,2], expand=True)
@@ -147,14 +162,18 @@ def newGameMenu(goBackFunc):
             activebackground="white",
             anchor="center",
             bd=1,
-            bg=BUTTONCOLOR,
-            command= partial(openCustomGameView, root, newGameMenu, goBackFunc),
+            bg=BUTTON_COLOR,
+            command=partial(open_custom_game_view,
+                            root,
+                            new_game_menu,
+                            go_back_func
+                            ),
             justify="center",
             height=1,
             width=10,
             padx=4,
             pady=0,
             text="Custom Game"
-  ).pack(pady=[0,4])
+            ).pack(pady=[0,4])
 
   root.mainloop()
