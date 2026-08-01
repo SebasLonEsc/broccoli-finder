@@ -112,7 +112,7 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   window_max_height = 200
 
   root = tk.Tk()
-  root.title("New Game")
+  root.title("Broccoli Finder")
   root.minsize(window_min_width, window_min_height)
   root.maxsize(window_max_width, window_max_height)
   center_window(root, window_min_width, window_min_height)

@@ -112,7 +112,7 @@ def new_game_menu(go_back_func):
   window_height = 380
 
   root = tk.Tk()
-  root.title("New Game")
+  root.title("Broccoli Finder")
   root.minsize(window_width, window_height)
   center_window(root, window_width, window_height)
 
@@ -159,7 +159,7 @@ def new_game_menu(go_back_func):
   frame = tk.Frame(root)
   frame.pack(pady=[8,2], expand=True)
   tk.Button(frame,
-            activebackground="white",
+            activebackground=BUTTON_ACTIVE_COLOR,
             anchor="center",
             bd=1,
             bg=BUTTON_COLOR,

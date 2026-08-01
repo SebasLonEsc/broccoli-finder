@@ -260,7 +260,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   flag_command = False
 
   root = tk.Tk()
-  root.title("Broccoli")
+  root.title("Broccoli Finder")
   root.grid_columnconfigure(0, weight=1)
   screen_width = root.winfo_screenwidth()
   screen_height = root.winfo_screenheight()

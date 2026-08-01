@@ -20,7 +20,7 @@ def create_main_menu_view():
   window_height = 80
 
   root = tk.Tk()
-  root.title("Broccolis")
+  root.title("Broccoli Finder")
   root.minsize(window_width, window_height)
   root.maxsize(window_width, window_height)
   center_window(root, window_width, window_height)
