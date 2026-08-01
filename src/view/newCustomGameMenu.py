@@ -56,7 +56,7 @@ def validate_inputs(rows, columns, broccoli_amount):
                     + "\nfor the current board size")
     
     return error_text
-  except:
+  except ValueError:
     return "Value is not numeric"
 
 def create_new_game(root, rows, columns, broccoli_amount, error_label, create_new_game_view, go_back_func):
