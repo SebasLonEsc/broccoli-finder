@@ -381,7 +381,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
                          width=22,
                          padx=0,
                          pady=0,
-                         image=tile_image if not is_null_space else null_tile_image,
+                         image=null_tile_image if is_null_space else tile_image,
                          compound="center"
                          )
             
