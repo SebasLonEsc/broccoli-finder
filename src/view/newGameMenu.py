@@ -6,6 +6,7 @@ import random
 import math
 from PIL import Image, ImageTk
 
+import src.lang.language as Lg
 from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu
 from src.logic.board import board_generator
 from src.view.boardInterface import create_board_interface
@@ -36,7 +37,7 @@ def create_game(root, go_back_func, previous_go_back_func, difficulty, board_siz
     difficulty (int): The game difficulty combobox
     board_size (str): The selected board size
   """
-  game_difficulty = difficulty.get()
+  game_difficulty = Lg.lang[difficulty.get()]
 
   broccoli_percent = GAME_BROCCOLI_PERCENTS[board_size][game_difficulty]
   board_sizes = BOARD_SIZE_VALUES[board_size]
@@ -93,7 +94,7 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
                      height=image_size[1] + 20, #Leave space for padding
                      padx=4,
                      pady=0,
-                     text=size,
+                     text=Lg.lang[size],
                      image=board_image,
                      compound="bottom"
                      )
@@ -112,37 +113,37 @@ def new_game_menu(go_back_func):
   window_height = 380
 
   root = tk.Tk()
-  root.title("Broccoli Finder")
+  root.title(Lg.lang["GameTitle"])
   root.minsize(window_width, window_height)
   center_window(root, window_width, window_height)
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
   game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label="Game", menu=game_menu)
-  game_menu.add_command(label="Main Menu", command=partial(go_back, root, go_back_func))
+  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
+  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_back_func))
   game_menu.add_separator()
-  game_menu.add_command(label="Exit", command=partial(close_interface, root))
+  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
   create_info_menu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
   tk.Label(
     frame,
-    text="New Game",
+    text=Lg.lang["NewGame"],
     anchor="center").pack()
   
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
   tk.Label(frame,
-           text="Difficulty",
+           text=Lg.lang["Difficulty"],
            anchor="center"
            ).pack(side="left", padx=[2,2])
   game_difficulty = ttk.Combobox(frame,
-                                 values=GAME_DIFFICULTIES,
+                                 values=Lg.lang["GameDifficulties"],
                                  state="readonly")
   game_difficulty.pack(side="left", padx=[2,4])
-  game_difficulty.set(GAME_DIFFICULTIES[0])
+  game_difficulty.set(Lg.lang["GameDifficulties"][0])
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
@@ -173,7 +174,7 @@ def new_game_menu(go_back_func):
             width=10,
             padx=4,
             pady=0,
-            text="Custom Game"
+            text=Lg.lang["CustomGameButton"]
             ).pack(pady=[0,4])
 
   root.mainloop()
