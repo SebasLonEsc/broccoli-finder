@@ -17,7 +17,7 @@ spanish = {
 
   # MENU
   "GameTabMenu": "Juego",
-  "MainMenuLabel": "Menu Principal",
+  "MainMenuLabel": "Menú Principal",
   "InfoTabMenu": "Info",
   "AboutMenuLabel": "Acerca",
   "AboutMessage": ABOUT_MENU_MESSAGE_SPA,

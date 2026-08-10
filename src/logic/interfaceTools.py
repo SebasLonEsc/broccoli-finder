@@ -51,7 +51,7 @@ def create_top_level(tk, message, title):
   """
   top_level = tk.Toplevel()
   top_level.title(title)
-  top_level.geometry("400x250")
+  top_level.geometry("400x280")
 
   message_widget = tk.Message(top_level, text=message)
   close_button = tk.Button(top_level,
