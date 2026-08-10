@@ -1,4 +1,4 @@
-from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE, ABOUT_MENU_MESSAGE
+import src.lang.language as Lg
 
 def center_window(window, window_width, window_height):
   """Places the window at the center of the screen.
@@ -72,15 +72,15 @@ def create_info_menu(tk, menu_widget):
       Just a personal preference for this case
     menu_widget (tk.Widget): The menu widget where the menu is going to be attached
   """
-  about_message = "".join(ABOUT_MENU_MESSAGE)
-  credits_message = "".join(CREDITS_MENU_MESSAGE)
+  about_message = "".join(Lg.lang["AboutMessage"])
+  credits_message = "".join(Lg.lang["CreditsMessage"])
 
   info_menu = tk.Menu(menu_widget, tearoff=0)
-  menu_widget.add_cascade(label="Info", menu=info_menu)
+  menu_widget.add_cascade(label=Lg.lang["InfoTabMenu"], menu=info_menu)
 
-  info_menu.add_command(label="About",
-                        command=lambda: create_top_level(tk, about_message, "About")
+  info_menu.add_command(label=Lg.lang["AboutMenuLabel"],
+                        command=lambda: create_top_level(tk, about_message, Lg.lang["AboutMenuLabel"])
                         )
-  info_menu.add_command(label="Credits",
-                        command=lambda: create_top_level(tk, credits_message, "Credits")
+  info_menu.add_command(label=Lg.lang["CreditsMenuLabel"],
+                        command=lambda: create_top_level(tk, credits_message, Lg.lang["CreditsMenuLabel"])
                         )
