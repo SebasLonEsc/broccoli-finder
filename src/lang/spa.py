@@ -34,6 +34,7 @@ spanish = {
   "AboutMessage": ABOUT_MENU_MESSAGE_SPA,
   "CreditsMenuLabel": "Créditos",
   "CreditsMessage": CREDITS_MENU_MESSAGE_SPA,
+  "NewGameLabel": "Nuevo Juego",
 
   # NEW GAME VIEW
   "NewGame": "Nuevo Juego",

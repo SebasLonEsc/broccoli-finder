@@ -34,6 +34,7 @@ english = {
   "AboutMessage": ABOUT_MENU_MESSAGE_ENG,
   "CreditsMenuLabel": "Credits",
   "CreditsMessage": CREDITS_MENU_MESSAGE_ENG,
+  "NewGameLabel": "New Game",
 
   # NEW GAME VIEW
   "NewGame": "New Game",

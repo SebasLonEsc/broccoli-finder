@@ -62,7 +62,7 @@ def create_main_menu_view():
   lang_button = tk.Button(lang_frame,
                           activebackground=BUTTON_ACTIVE_COLOR,
                           anchor="center",
-                          bd=2,
+                          bd=1,
                           relief="raised",
                           bg=BUTTON_COLOR,
                           justify="center",
