@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import close_interface, go_back, create_info_menu
-from src.logic.constants.gameValues import WINNING_TEXT, LOSING_TEXT
+from src.logic.constants.gameValues import get_winning_text, get_losing_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
@@ -202,10 +202,10 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
     handle_text(board_object, buttons)
 
     if game_status != 0:
-      game_status_text = WINNING_TEXT
+      game_status_text = get_winning_text()
 
       if game_status < 0:
-        game_status_text = LOSING_TEXT
+        game_status_text = get_losing_text()
 
       win_label.config(text=game_status_text)
       handle_game_status(board_object, buttons, move_position)

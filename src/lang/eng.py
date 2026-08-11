@@ -2,18 +2,29 @@ from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE_ENG, ABOUT_
 
 english = {
   # CONSOLE TEXT
-  "InputRows": "Enter the rows:",
-  "InputColumns": "Enter the columns:",
-  "InputBroccolis": "Enter the number of broccolis:",
+  "InputTotalRows": "Enter the rows:",
+  "InputTotalColumns": "Enter the columns:",
+  "InputTotalBroccolis": "Enter the number of broccolis:",
   "GameTypeSelectTitle": "Select a game type:",
   "ConsoleTypeSelect": "1: console game",
   "UITypeSelect": "2: interface game",
   "GameTypeInput": "Enter the game type:",
   "InvalidGameType": "Invalid game type",
+  "InputRow": "Enter the row:",
+  "InputColumn": "Enter the column:",
+  "InvalidRowColumn": "Invalid Row or column value",
 
   # UI
   "GameTitle": "Broccoli Finder",
   "Exit": "Exit",
+  "Winning_Texts": ["CONGRATULATIONS\nYou Won the Game!!",
+                    "You did it!!!",
+                    "That was awesome!",
+                    "Impresive skills"],
+  "Losing_Texts": ["Sorry you lost",
+                   "Please try again :(",
+                   "Next time for sure",
+                   "You did your best"],
 
   # MENU
   "GameTabMenu": "Game",

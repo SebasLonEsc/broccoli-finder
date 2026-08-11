@@ -12,9 +12,9 @@ def select_game_type(game_type):
       2 -> Play the game in an interface
   """
   if game_type == 1:
-    rows = int(input(Lg.lang["InputRows"]))
-    columns = int(input(Lg.lang["InputColumns"]))
-    broccoli_amount = int(input(Lg.lang["InputBroccolis"]))
+    rows = int(input(Lg.lang["InputTotalRows"]))
+    columns = int(input(Lg.lang["InputTotalColumns"]))
+    broccoli_amount = int(input(Lg.lang["InputTotalBroccolis"]))
     board_object = board_generator(rows, columns, broccoli_amount)
     print_board_on_console(board_object)
 

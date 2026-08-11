@@ -1,5 +1,6 @@
+import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.constants.gameValues import LOSING_TEXT, WINNING_TEXT
+from src.logic.constants.gameValues import get_losing_text, get_winning_text
 
 def printing(board_object):
   """Handles the printing of the board on console.
@@ -50,23 +51,23 @@ def print_board_on_console(board_object):
   printing(board_object)
 
   while game_status == 0:
-    row = int(input("Enter the row:")) - 1
-    column = int(input("Enter the column:")) - 1
+    row = int(input(Lg.lang["InputRow"])) - 1
+    column = int(input(Lg.lang["InputColumn"])) - 1
 
     if (row < 0 or
         row >= row_limit or
         column < 0 or
         column >= column_limit):
-      print("Invalid Row or column value")
+      print(Lg.lang["InvalidRowColumn"])
       continue
 
     board_object, game_status = handle_move(board_object, [row, column])
     printing(board_object)
 
   if game_status == 1:
-    print(WINNING_TEXT)
+    print(get_winning_text())
     return 0
   
   if game_status == -1:
-    print(LOSING_TEXT)
+    print(get_losing_text())
     return 0
