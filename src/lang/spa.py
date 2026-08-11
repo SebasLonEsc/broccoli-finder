@@ -50,5 +50,22 @@ spanish = {
   "Small": "Pequeño",
   "Medium": "Mediano",
   "Big": "Grande",
-  "CustomGameButton": "Customizar",
+  "CustomGameButton": "Personalizar",
+
+  # CUSTOM GAME VIEW
+  "InputErrorText": "Los siguientes campos no son válidos:",
+  "InvalidRowLowerLimit": "# Filas no puede ser menor a ",
+  "InvalidRowUpperLimit": "# Filas no puede ser mayor a ",
+  "InvalidColumnLowerLimit": "# Columnas no puede ser menor a ",
+  "InvalidColumnUpperLimit": "# Columnas no puede ser mayor a ",
+  "ZeroBroccolisError": "# Brocolis no puede ser menor a 1",
+  "BroccoliErrorLimit1": "# Brocolis no puede ser mayor a ",
+  "BroccoliErrorLimit2": "para el tamaño actual del tablero",
+  "InvalidNumericValue": "Valor no númerico",
+  "TooManyBroccolisError": "Reduzca la cantidad de brocolis a no mayor de ",
+  "CustomGameTitle": "Personaliza tu juego",
+  "InputRowNumber": "# Filas",
+  "InputColumnNumber": "# Columnas",
+  "InputBroccoliNumber": "# Brocolis",
+  "PlayButton": "Jugar",
 }
