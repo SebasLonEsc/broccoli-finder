@@ -4,9 +4,10 @@ from functools import partial
 from pathlib import Path
 from PIL import Image, ImageTk
 
+import src.lang.language as Lg
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import close_interface, go_back, create_info_menu
-from src.logic.constants.gameValues import WINNING_TEXT, LOSING_TEXT
+from src.logic.constants.gameValues import get_winning_text, get_losing_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
@@ -202,10 +203,10 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
     handle_text(board_object, buttons)
 
     if game_status != 0:
-      game_status_text = WINNING_TEXT
+      game_status_text = get_winning_text()
 
       if game_status < 0:
-        game_status_text = LOSING_TEXT
+        game_status_text = get_losing_text()
 
       win_label.config(text=game_status_text)
       handle_game_status(board_object, buttons, move_position)
@@ -260,7 +261,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   flag_command = False
 
   root = tk.Tk()
-  root.title("Broccoli Finder")
+  root.title(Lg.lang["GameTitle"])
   root.grid_columnconfigure(0, weight=1)
   screen_width = root.winfo_screenwidth()
   screen_height = root.winfo_screenheight()
@@ -270,11 +271,11 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
   game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label="Game", menu=game_menu)
-  game_menu.add_command(label="Main Menu", command=partial(go_back, root, go_to_main_menu))
-  game_menu.add_command(label="New Game", command=partial(go_back, root, go_back_func, go_to_main_menu))
+  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
+  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_to_main_menu))
+  game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, go_back_func, go_to_main_menu))
   game_menu.add_separator()
-  game_menu.add_command(label="Exit", command=partial(close_interface, root))
+  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
   create_info_menu(tk, menu)
 
   current_dir = Path(__file__).parent
@@ -302,7 +303,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   button.image = flag_button_image
   button.pack(side="left", expand=True)
 
-  tk.Label(top_frame, text="Broccoli Finder").pack(side="left", expand=True)
+  tk.Label(top_frame, text=Lg.lang["GameTitle"]).pack(side="left", expand=True)
 
   broccoli_counter_frame = tk.Frame(top_frame)
   broccoli_counter_frame.pack(side="right", expand=True)
@@ -404,7 +405,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
             height=1,
             padx=0,
             pady=0,
-            text="Main Menu",
+            text=Lg.lang["MainMenuLabel"],
             ).pack(side="left", padx=[2,4])
   
   tk.Button(action_frame,
@@ -418,7 +419,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
             width=8,
             padx=0,
             pady=0,
-            text="Exit",
+            text=Lg.lang["Exit"],
             ).pack(side="left", padx=[4,2])
   
   root.mainloop()

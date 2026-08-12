@@ -1,8 +1,40 @@
-# Display text when winning the game
-WINNING_TEXT = "CONGRATULATIONS\nYou Won the Game!!"
+import random
 
-# Display text when losing the game
-LOSING_TEXT = "Sorry you lost"
+import src.lang.language as Lg
+
+def get_endgame_text(texts):
+  """ Returns a random text from a list of strings
+
+  Args:
+    texts (array[str]): An array of strings
+  
+  Returns:
+    str: A random string from the texts argument
+  """
+  text_position = random.randint(0, len(texts)-1)
+  return texts[text_position]
+
+def get_winning_text():
+  """Returns the text upon winning the game
+
+  Returns:
+    str: The congratulations text
+  """
+  if len(Lg.lang["Winning_Texts"]) == 1:
+    return Lg.lang["Winning_Texts"][0]
+
+  return get_endgame_text(Lg.lang["Winning_Texts"])
+
+def get_losing_text():
+  """Returns the text upon losing the game
+
+  Returns:
+    str: The losing text
+  """
+  if len(Lg.lang["Losing_Texts"]) == 1:
+    return Lg.lang["Losing_Texts"][0]
+
+  return get_endgame_text(Lg.lang["Losing_Texts"])
 
 # Game Difficulties types
 GAME_DIFFICULTIES = [
