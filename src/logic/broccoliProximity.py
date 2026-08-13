@@ -2,9 +2,9 @@ def out_of_bounds_validation(current_pos, pos, limit = 0):
   """Validates if the current position is out of bounds.
 
   Args:
-   current_pos (array[int]): The new position that is being evaluated
-   pos (array[int]): The previous position
-   limit (int): The limit value that the position can have (default 0)
+    current_pos (array[int]): The new position that is being evaluated
+    pos (array[int]): The previous position
+    limit (int): The limit value that the position can have (default 0)
   Returns:
     array[int]: Returns the current_pos if the position is not out of bounds.
       Returns pos argument otherwise
@@ -77,5 +77,42 @@ def broccoli_proximity(board, pos, total_rows, total_columns):
         continue
 
       board[i,j] += 1
+
+  return board
+
+def update_proximity_numbers_for_rainbow_broccoli(board, pos, total_rows, total_columns):
+  """Updates the proximity number around rainbow broccoli
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    pos (array[int,int]): The rainbow broccoli position
+    total_rows (int): The amount of rows on the board
+    total_columns (int): The amount of columns on the board
+  Returns:
+    np.ndarray: The board matrix with the proximity numbers.
+      Which indicate the amount of broccolis next to each tile
+  """
+  first_pos = [pos[0]-1, pos[1]-1]
+  last_pos = [pos[0]+2, pos[1]+2] # +2 to include position
+
+  if first_pos[0] < 0:
+    first_pos[0] = 0
+
+  if first_pos[1] < 0:
+    first_pos[1] = 0
+
+  if last_pos[0] > total_rows:
+    last_pos[0] = total_rows - 1
+
+  if last_pos[1] > total_columns:
+    last_pos[1] = total_columns - 1
+
+  for row in range(first_pos[0], last_pos[0]):
+    for column in range(first_pos[1], last_pos[1]):
+      if board[row, column] > 0:
+        # Proximity numbers for rainbow broccoli starts from 11 to 18
+        # 11 being the same as 1 and 18 the same as 8
+        board[row, column] += 10 
 
   return board
