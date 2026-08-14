@@ -1,28 +1,22 @@
 import random
 
-def reveal_all_broccolis(board, tiles_board, broccoli_amount):
+def reveal_all_broccolis(board, tiles_board, broccoli_positions):
   """Reveals all of the broccolis of the board when LOSING the game.
 
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
     tiles_board (np.ndarray): Matrix containing each tiles of the board
-    broccoli_amount (int): The amount of broccolis on the board
+    broccoli_positions (array[array[int,int]]): The positions of the broccolis
   Returns:
     np.ndarray: The tiles board matrix with the revealed borccolis
   """
-  counted_broccolis = 0
-
-  for row in range(0, tiles_board.shape[0]):
-    for column in range(0, tiles_board.shape[1]):
-      if board[row, column] == -1 or board[row, column] == -3:
-        tiles_board[row, column]["checked"] = True
-        tiles_board[row, column]["tileValue"] = str(board[row, column])
-        counted_broccolis += 1
-
-      if counted_broccolis == broccoli_amount:
-        break
-  
+  for pos in broccoli_positions:
+    row = pos[0]
+    column = pos[1]
+    tiles_board[row, column]["checked"] = True
+    tiles_board[row, column]["tileValue"] = str(board[row, column])
+      
   return tiles_board
 
 def check_game_status(board, tiles_board, move_position, broccoli_amount):
@@ -69,7 +63,7 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
     tiles_board (np.ndarray): Matrix containing each tiles of the board
-    broccoli_positions (array[array[int,int]]): The previous position
+    broccoli_positions (array[array[int,int]]): The positions of the broccolis
   Returns:
     np.array: Updated tileBoard matrix after the player move if valid.
       Returns the unchanged matrix otherwise
@@ -139,7 +133,7 @@ def make_move(board, tiles_board, move_position, board_row_limit, board_column_l
     move_position (array): An array [row, column] of the current move made by the player
     board_row_limit (int): The amount of rows on the board
     board_column_limit (int): The amount of columns on the board
-    broccoli_positions (array[array[int,int]]): The previous position
+    broccoli_positions (array[array[int,int]]): The positions of the broccolis
   Returns:
     np.array: Updated tileBoard matrix after the player move if valid.
       Returns the unchanged matrix otherwise
@@ -235,7 +229,8 @@ def handle_move(board_object, move_position):
                                   )
 
   if game_status < 0: 
-    tiles_board = reveal_all_broccolis(board, tiles_board, broccoli_amount)
+    broccoli_positions = board_object.broccoli_positions
+    tiles_board = reveal_all_broccolis(board, tiles_board, broccoli_positions)
     board_object.change_tiles_board(tiles_board)
   
   return board_object, game_status

@@ -105,6 +105,7 @@ def handle_game_status(board_object, buttons, move_position):
     move_position (array): An array [row, column] of the current move made by the player
   """
   tiles_board = board_object.tiles_board
+  broccoli_positions = board_object.broccoli_positions
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / "images" / GREEN_BROCCOLI_TILE_IMAGE
   green_broccoli_image = tk.PhotoImage(file=str(image_path))
@@ -113,30 +114,27 @@ def handle_game_status(board_object, buttons, move_position):
   image_path = current_dir.parent / "images" / RAINBOW_BROCCOLI_TILE_IMAGE
   rainbow_broccoli_image = tk.PhotoImage(file=str(image_path))
 
-  for row in range(0, board_object.total_rows):
-    for column in range(0, board_object.total_columns):
-      checked = tiles_board[row, column]["checked"]
-      is_broccoli = (tiles_board[row, column]["tileValue"] == "-1" or
-                     tiles_board[row, column]["tileValue"] == "-3")
-      is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
-      background_color = BROCCOLI_TILE_COLOR
+  for pos in broccoli_positions:
+    row = pos[0]
+    column = pos[1]
+    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
+    background_color = BROCCOLI_TILE_COLOR
 
-      buttons[row, column].config(command=lambda: None)
+    buttons[row, column].config(command=lambda: None)
 
-      broccoli_image = red_broccoli_image
-      if move_position[0] == row and move_position[1] == column:
-        background_color = EATEN_BROCCOLI_TILE_COLOR
-        broccoli_image = green_broccoli_image
+    broccoli_image = red_broccoli_image
+    if move_position[0] == row and move_position[1] == column:
+      background_color = EATEN_BROCCOLI_TILE_COLOR
+      broccoli_image = green_broccoli_image
 
-      if is_rainbow_broccoli:
-        broccoli_image = rainbow_broccoli_image
+    if is_rainbow_broccoli:
+      broccoli_image = rainbow_broccoli_image
 
-      if checked and is_broccoli:
-        buttons[row, column].config(bg=background_color,
-                                    text="",
-                                    image=broccoli_image
-                                    )
-        buttons[row, column].image = broccoli_image
+    buttons[row, column].config(bg=background_color,
+                                text="",
+                                image=broccoli_image
+                                )
+    buttons[row, column].image = broccoli_image
 
 def create_proximity_tile_images(images_array):
   """Creates an array of images for each proximity tile number
