@@ -94,10 +94,9 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   buttons[row, column].image = tile_image
   broccoli_counter.config(text=broccoli_counter_value)
 
-def handle_game_status(board_object, buttons, move_position):
-  """Updates the interface when winning or losing the game.
-
-  Disables all buttons and reveal all broccolis if is a lost game.
+def handle_reveal_broccolis(board_object, buttons, move_position):
+  """Reveal all of the broccolis on the board
+  
   Args:
     board_object (Board): The object containing all of the information about the board
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
@@ -120,8 +119,6 @@ def handle_game_status(board_object, buttons, move_position):
     is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
     background_color = BROCCOLI_TILE_COLOR
 
-    buttons[row, column].config(command=lambda: None)
-
     broccoli_image = red_broccoli_image
     if move_position[0] == row and move_position[1] == column:
       background_color = EATEN_BROCCOLI_TILE_COLOR
@@ -135,6 +132,23 @@ def handle_game_status(board_object, buttons, move_position):
                                 image=broccoli_image
                                 )
     buttons[row, column].image = broccoli_image
+
+def handle_game_status(board_object, buttons, move_position):
+  """Updates the interface when winning or losing the game.
+
+  Disables all buttons and reveal all broccolis if is a lost game.
+  Args:
+    board_object (Board): The object containing all of the information about the board
+    buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
+      Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
+    move_position (array): An array [row, column] of the current move made by the player
+  """
+  for row in range(0, board_object.total_rows):
+    for column in range(0, board_object.total_columns):
+      buttons[row, column].config(command=lambda: None)
+
+  handle_reveal_broccolis(board_object, buttons, move_position)
+  
 
 def create_proximity_tile_images(images_array):
   """Creates an array of images for each proximity tile number
@@ -375,8 +389,8 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
                      anchor="center",
                      bd=0,
                      justify="center",
-                     height=22,
-                     width=22,
+                     height=TILE_PIXEL_SIZE,
+                     width=TILE_PIXEL_SIZE,
                      padx=0,
                      pady=0,
                      image=flag_button_image
