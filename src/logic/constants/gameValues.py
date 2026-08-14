@@ -11,7 +11,7 @@ def get_endgame_text(texts):
   Returns:
     str: A random string from the texts argument
   """
-  text_position = random.randint(0, len(texts)-1)
+  text_position = random.randrange(0, len(texts))
   return texts[text_position]
 
 def get_winning_text():

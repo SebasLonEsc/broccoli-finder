@@ -150,8 +150,8 @@ def create_proximity_tile_images(images_array):
   for path in images_array:
     image_path = current_dir.parent / "images" / path
     image = Image.open(image_path)
-    image = image.resize((24, 24), Image.Resampling.BOX)
-    tile_image = ImageTk.PhotoImage(image, size=[24,24])
+    image = image.resize((TILE_PIXEL_SIZE, TILE_PIXEL_SIZE), Image.Resampling.BOX)
+    tile_image = ImageTk.PhotoImage(image, size=[TILE_PIXEL_SIZE, TILE_PIXEL_SIZE])
     tile_images.append(tile_image)
 
   return tile_images  
@@ -433,6 +433,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
 
   image_path = current_dir.parent / "images" / TILE
   tile_image = tk.PhotoImage(file=str(image_path))
+
   image_path = current_dir.parent / "images" / NULL_TILE_IMAGE
   null_tile_image = tk.PhotoImage(file=str(image_path))
   
@@ -463,8 +464,8 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
                          command=button_command,
                          disabledforeground="white",
                          justify="center",
-                         height=22,
-                         width=22,
+                         height=TILE_PIXEL_SIZE-2,
+                         width=TILE_PIXEL_SIZE-2,
                          padx=0,
                          pady=0,
                          image=null_tile_image if is_null_space else tile_image,

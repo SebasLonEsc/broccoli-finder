@@ -72,4 +72,4 @@ BOARD_SIZE_VALUES = {
 BOARD_MAXIMUN_SIZE_PERCENT = 70
 
 # Pixel size of a tile in the board
-TILE_PIXEL_SIZE = 24
+TILE_PIXEL_SIZE = 28
