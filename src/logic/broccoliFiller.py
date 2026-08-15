@@ -28,7 +28,7 @@ def add_rainbow_broccoli(board, broccoli_positions, total_rows, total_columns):
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
-    broccoli_positions (array[array[int,int]]): The previous position
+    broccoli_positions (array[array[int,int]]): The positions of the broccolis
     total_rows (int): The amount of rows on the board
     total_columns (int): The amount of columns on the board
   Returns:
@@ -38,7 +38,7 @@ def add_rainbow_broccoli(board, broccoli_positions, total_rows, total_columns):
   pos = broccoli_positions[0]
 
   if len(broccoli_positions) > 1:
-    array_position = random.randint(0, len(broccoli_positions))
+    array_position = random.randrange(0, len(broccoli_positions))
     pos = broccoli_positions[array_position]
 
   board[pos[0], pos[1]] = -3
