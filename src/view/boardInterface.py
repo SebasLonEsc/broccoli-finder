@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import close_interface, go_back, create_info_menu
-from src.logic.constants.gameValues import get_winning_text, get_losing_text
+from src.logic.constants.gameValues import get_winning_text, get_game_over_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
@@ -133,7 +133,7 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
                                 )
     buttons[row, column].image = broccoli_image
 
-def handle_game_status(board_object, buttons, move_position):
+def handle_game_status(board_object, buttons, move_position, game_over):
   """Updates the interface when winning or losing the game.
 
   Disables all buttons and reveal all broccolis if is a lost game.
@@ -142,12 +142,14 @@ def handle_game_status(board_object, buttons, move_position):
     buttons (np.ndarray): A matrix in the shape [[tk.button, tk.button], [tk.button]].
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     move_position (array): An array [row, column] of the current move made by the player
+    game_over (bool): Indicates if is a game over or not
   """
   for row in range(0, board_object.total_rows):
     for column in range(0, board_object.total_columns):
       buttons[row, column].config(command=lambda: None)
 
-  handle_reveal_broccolis(board_object, buttons, move_position)
+  if game_over:
+    handle_reveal_broccolis(board_object, buttons, move_position)
   
 
 def create_proximity_tile_images(images_array):
@@ -302,11 +304,12 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
     if game_status != 0:
       game_status_text = get_winning_text()
 
-      if game_status < 0:
-        game_status_text = get_losing_text()
+      game_over = game_status < 0
+      if game_over:
+        game_status_text = get_game_over_text()
 
       win_label.config(text=game_status_text)
-      handle_game_status(board_object, buttons, move_position)
+      handle_game_status(board_object, buttons, move_position, game_over)
 
   elif flag_command:
     handle_flag_tile(board_object, buttons, move_position, broccoli_counter)
