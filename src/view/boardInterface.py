@@ -3,11 +3,10 @@ import tkinter as tk
 import numpy as np
 from functools import partial
 from pathlib import Path
-from PIL import Image, ImageTk
 
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import close_interface, go_back, create_info_menu
+from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image
 from src.logic.constants.gameValues import get_winning_text, get_game_over_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
@@ -107,16 +106,19 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
   broccoli_positions = board_object.broccoli_positions
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / "images" / GREEN_BROCCOLI_TILE_IMAGE
-  green_broccoli_image = tk.PhotoImage(file=str(image_path))
+  green_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
   image_path = current_dir.parent / "images" / RED_BROCCOLI_TILE_IMAGE
-  red_broccoli_image = tk.PhotoImage(file=str(image_path))
+  red_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
   image_path = current_dir.parent / "images" / RAINBOW_BROCCOLI_TILE_IMAGE
-  rainbow_broccoli_image = tk.PhotoImage(file=str(image_path))
+  rainbow_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
+  image_path = current_dir.parent / "images" / FLOWERING_BROCCOLI_TILE_IMAGE
+  flowering_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
 
   for pos in broccoli_positions:
     row = pos[0]
     column = pos[1]
     is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
+    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == "-4"
     background_color = BROCCOLI_TILE_COLOR
 
     broccoli_image = red_broccoli_image
@@ -126,6 +128,9 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
 
     if is_rainbow_broccoli:
       broccoli_image = rainbow_broccoli_image
+
+    if is_flowering_broccoli:
+      broccoli_image = flowering_broccoli_image
 
     buttons[row, column].config(bg=background_color,
                                 text="",
@@ -163,9 +168,7 @@ def create_proximity_tile_images(images_array):
 
   for path in images_array:
     image_path = current_dir.parent / "images" / path
-    image = Image.open(image_path)
-    image = image.resize((TILE_PIXEL_SIZE, TILE_PIXEL_SIZE), Image.Resampling.BOX)
-    tile_image = ImageTk.PhotoImage(image, size=[TILE_PIXEL_SIZE, TILE_PIXEL_SIZE])
+    tile_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
     tile_images.append(tile_image)
 
   return tile_images  
