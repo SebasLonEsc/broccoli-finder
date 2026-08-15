@@ -155,6 +155,9 @@ def make_move(board, tiles_board, move_position, board_row_limit, board_column_l
   tiles_board[row, column]["checked"] = True
   tiles_board[row, column]["tileValue"] = str(board[row, column])
 
+  if board[row, column] == -1:
+    return tiles_board, board
+  
   if board[row, column] > 0:
     return tiles_board, board
 
