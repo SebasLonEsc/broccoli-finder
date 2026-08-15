@@ -1,4 +1,21 @@
+from PIL import Image, ImageTk
+
 import src.lang.language as Lg
+
+def open_pillow_image(image_path, width, height):
+  """Opens an image with pillow library
+
+  Args:
+    image_path (Path): The path of the image
+    width (int): The width of the image
+    height (int): The height of the image
+  Returns:
+    PhotoImage: Returns an image in tkinter format
+  """
+  image = Image.open(image_path)
+  image = image.resize((width, height), Image.Resampling.BOX)
+  tile_image = ImageTk.PhotoImage(image, size=[width, height])
+  return tile_image
 
 def center_window(window, window_width, window_height):
   """Places the window at the center of the screen.
