@@ -11,6 +11,18 @@ PROXIMITY_NUMBER_IMAGES = [
   "Eight_Tile.png"
   ]
 
+# Images names for proximity number tiles for the rainbow broccoli
+RAINBOW_PROXIMITY_NUMBER_IMAGES = [
+  "Rainbow_One_Tile.png",
+  "Rainbow_Two_Tile.png",
+  "Rainbow_Three_Tile.png",
+  "Rainbow_Four_Tile.png",
+  "Rainbow_Five_Tile.png",
+  "Rainbow_Six_Tile.png",
+  "Rainbow_Seven_Tile.png",
+  "Rainbow_Eight_Tile.png"
+  ]
+
 # Images names for the board size selector buttons
 BOARD_SELECTOR_IMAGES = {
   "Small": "Small_Sized_Board.png",
@@ -39,3 +51,9 @@ GREEN_BROCCOLI_TILE_IMAGE = "Green_broccoli_Tile.png"
 
 # Image name for the red broccoli tile
 RED_BROCCOLI_TILE_IMAGE = "Red_broccoli.png"
+
+# Image name for the rainbow broccoli tile
+RAINBOW_BROCCOLI_TILE_IMAGE = "Rainbow_Broccoli_Tile.png"
+
+# Image name for the flowering broccoli tile
+FLOWERING_BROCCOLI_TILE_IMAGE = "Flowering_Broccoli_Tile.png"

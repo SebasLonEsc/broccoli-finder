@@ -1,6 +1,6 @@
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.constants.gameValues import get_losing_text, get_winning_text
+from src.logic.constants.gameValues import get_game_over_text, get_winning_text
 
 def printing(board_object):
   """Handles the printing of the board on console.
@@ -69,5 +69,5 @@ def print_board_on_console(board_object):
     return 0
   
   if game_status == -1:
-    print(get_losing_text())
+    print(get_game_over_text())
     return 0

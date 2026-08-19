@@ -11,7 +11,7 @@ def get_endgame_text(texts):
   Returns:
     str: A random string from the texts argument
   """
-  text_position = random.randint(0, len(texts)-1)
+  text_position = random.randrange(0, len(texts))
   return texts[text_position]
 
 def get_winning_text():
@@ -25,16 +25,16 @@ def get_winning_text():
 
   return get_endgame_text(Lg.lang["Winning_Texts"])
 
-def get_losing_text():
+def get_game_over_text():
   """Returns the text upon losing the game
 
   Returns:
-    str: The losing text
+    str: The game over text
   """
-  if len(Lg.lang["Losing_Texts"]) == 1:
-    return Lg.lang["Losing_Texts"][0]
+  if len(Lg.lang["Game_Over_Text"]) == 1:
+    return Lg.lang["Game_Over_Text"][0]
 
-  return get_endgame_text(Lg.lang["Losing_Texts"])
+  return get_endgame_text(Lg.lang["Game_Over_Text"])
 
 # Game Difficulties types
 GAME_DIFFICULTIES = [
@@ -62,3 +62,7 @@ GAME_BROCCOLI_PERCENTS = {
     "Hard": [0.18, 0.2]
   }
   }
+
+RAINBOW_BROCCOLI_PROPORTION_CHANCES = [[0.1, 0.2], [0.2, 0.25], [0.25, 0.35]]
+
+RAINBOW_BROCCOLI_PERCENT = [0.3, 0.4, 0.6]

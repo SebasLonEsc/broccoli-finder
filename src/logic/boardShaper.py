@@ -174,9 +174,9 @@ def cross_shaper(board_object):
   The row and column of the cross are selected randomly.
   Without including the first and last row/column
   Args:
-     board_object (Board): The object containing all of the information about the board
-    Returns:
-      Board: The board object with the updated information of the cross shape
+    board_object (Board): The object containing all of the information about the board
+  Returns:
+    Board: The board object with the updated information of the cross shape
   """
   total_rows = board_object.total_rows
   total_columns = board_object.total_columns

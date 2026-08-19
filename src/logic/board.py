@@ -38,6 +38,7 @@ class Board:
     self.broccoli_amount = 0
     self.available_space = rows * columns
     self.null_space_amount = 0
+    self.broccoli_positions = []
   
   def board_size(self):
     return self.total_rows * self.total_columns
@@ -64,6 +65,9 @@ class Board:
     tiles_board[row, column] = tile
 
     self.change_tiles_board(tiles_board)
+
+  def add_broccoli_positions(self, position):
+    self.broccoli_positions.append(position)
 
 def board_generator(rows, columns, broccoli_amount):
   """Generates the Board Object, defines it shape and fills it with broccolis.

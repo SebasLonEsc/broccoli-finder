@@ -2,9 +2,9 @@ def out_of_bounds_validation(current_pos, pos, limit = 0):
   """Validates if the current position is out of bounds.
 
   Args:
-   current_pos (array[int]): The new position that is being evaluated
-   pos (array[int]): The previous position
-   limit (int): The limit value that the position can have (default 0)
+    current_pos (array[int]): The new position that is being evaluated
+    pos (array[int]): The previous position
+    limit (int): The limit value that the position can have (default 0)
   Returns:
     array[int]: Returns the current_pos if the position is not out of bounds.
       Returns pos argument otherwise
@@ -77,5 +77,110 @@ def broccoli_proximity(board, pos, total_rows, total_columns):
         continue
 
       board[i,j] += 1
+
+  return board
+
+def validate_new_position_values(new_pos_value, limit, comparator):
+  """Validates if the new pos coordinate is within the board limits
+
+  Args:
+    new_pos_value (int): Position coordinate
+    limit (int): The limit value that the new_pos_value is within the limits
+    compartor (int): Used to validate the row/column limits using the lesser than in both cases
+      For limits equal 0 the step is negative so the comparison is done with positive numbers (step * -1)
+      For limits bigger than board size the step is positive,
+        so the comparison is done with negative numbers (step * -1)
+        that way the new pos is lesser than the limit in the comparison
+        in that sense, it validates that pos is greater by doing the lesser than operator
+  Returns:
+    bool: True if the new position is valid, False otherwise
+  """
+  if new_pos_value*comparator > limit*comparator:
+    return True
+
+  return False
+
+def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row_limit, column_limit, continue_signal = True):
+  """Validates if the current pos is a nullspace to find
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    step (int): Indicates to increase or decrease the position in case of nullspace
+    pos (array[int,int]): The rainbow broccoli position
+    row_limit (int): The limit the first value on pos can take
+    column_limit (int): The limit the second value on pos can take
+    continue_signal (bool): Controls the recursion to only execute the function twice (default True)
+      indicates if continue the recursion once in case of a nullspace
+  Returns:
+    Array [int, int]: The new position to valdiate the ranbow proximity numbers
+  """
+  if board[pos[0], pos[1]] != -2:
+    return pos
+
+  # Check validate_new_position_values function docstring on comparator arg
+  limit_comparator = step * -1
+
+  # Checks if nullspace is in a row direction   
+  if (validate_new_position_values(previous_pos[0]+step, row_limit, limit_comparator) and
+      board[previous_pos[0]+step, previous_pos[1]] == -2):
+    pos = [pos[0]+step, pos[1]]
+
+  # Checks if nullspace is in a column direction
+  if (validate_new_position_values(previous_pos[1]+step, column_limit, limit_comparator) and 
+      board[previous_pos[0], previous_pos[1]+step] == -2):
+    pos = [pos[0], pos[1]+step]
+
+  # Validates if the new row position (after nullspace validation or not) is valid
+  if not validate_new_position_values(pos[0], row_limit, limit_comparator):
+    pos[0] = row_limit - 1 if row_limit is not 0 else 0
+
+  # Validates if the new column position (after nullspace validation or not) is valid
+  if not validate_new_position_values(pos[1], column_limit, limit_comparator):
+    pos[1] = column_limit - 1 if column_limit is not 0 else 0
+
+  # Recalculates a new position one more time if the current position is a nullspace
+  if board[pos[0], pos[1]] == -2 and continue_signal:
+    return validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row_limit, column_limit, False)
+
+  return pos
+
+def update_proximity_numbers_for_rainbow_broccoli(board, pos, total_rows, total_columns):
+  """Updates the proximity number around rainbow broccoli
+
+  Args:
+    board (np.ndarray): The board matrix containg the information about
+      nullspaces, broccoli position and proximity
+    pos (array[int,int]): The rainbow broccoli position
+    total_rows (int): The amount of rows on the board
+    total_columns (int): The amount of columns on the board
+  Returns:
+    np.ndarray: The board matrix with the proximity numbers.
+      Which indicate the amount of broccolis next to each tile
+  """
+  first_pos = [pos[0]-1, pos[1]-1]
+  last_pos = [pos[0]+1, pos[1]+1]
+
+  if first_pos[0] < 0:
+    first_pos[0] = 0
+
+  if first_pos[1] < 0:
+    first_pos[1] = 0
+
+  if last_pos[0] >= total_rows:
+    last_pos[0] = total_rows - 1
+
+  if last_pos[1] >= total_columns:
+    last_pos[1] = total_columns - 1
+
+  first_pos = validate_nullspaces_for_rainbow_broccoli(board, first_pos, pos, -1, 0, 0)
+  last_pos = validate_nullspaces_for_rainbow_broccoli(board, last_pos, pos, 1, total_rows, total_columns)
+  
+  for row in range(first_pos[0], last_pos[0]+1): # +1 to include last position
+    for column in range(first_pos[1], last_pos[1]+1): # +1 to include last position
+      if board[row, column] > 0:
+        # Proximity numbers for rainbow broccoli starts from 11 to 18
+        # 11 being the same as 1 and 18 the same as 8
+        board[row, column] += 10 
 
   return board

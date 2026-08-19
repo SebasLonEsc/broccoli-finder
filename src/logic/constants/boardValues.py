@@ -2,7 +2,9 @@
 BOARD_VALUES_GUIDE = {
   0: "blankSpace",
   -1: "broccoli",
-  -2: "nullSpace"
+  -2: "nullSpace",
+  -3: "rainbowBroccoli",
+  -4: "floweringBroccoli"
   }
 
 # Each tile in the tiles_board matrix has a checked and tileValue value.
@@ -70,4 +72,4 @@ BOARD_SIZE_VALUES = {
 BOARD_MAXIMUN_SIZE_PERCENT = 70
 
 # Pixel size of a tile in the board
-TILE_PIXEL_SIZE = 24
+TILE_PIXEL_SIZE = 28
