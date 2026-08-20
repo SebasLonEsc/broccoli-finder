@@ -6,7 +6,7 @@ from pathlib import Path
 
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image
+from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image, create_help_menu
 from src.logic.constants.gameValues import get_winning_text, get_game_over_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
@@ -380,6 +380,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   game_menu.add_separator()
   game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
   create_info_menu(tk, menu)
+  create_help_menu(tk, menu)
 
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / "images" / FLAGGED_TILE_IMAGE

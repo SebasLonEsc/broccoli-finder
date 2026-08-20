@@ -3,7 +3,7 @@ from functools import partial
 import math
 
 from src.logic.board import board_generator
-from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu
+from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu, create_help_menu
 from src.view.boardInterface import create_board_interface
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
@@ -126,6 +126,7 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   game_menu.add_separator()
   game_menu.add_command(label="Exit", command=partial(close_interface, root))
   create_info_menu(tk, menu)
+  create_help_menu(tk, menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=[2,2], expand=True)
