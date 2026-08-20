@@ -18,7 +18,7 @@ BOARD_VALUES_GUIDE = {
 #     A Flagged tile indicates a possible broccoli
 BOARD_TILE_VALUE = {
   "checked": False,
-  "tileValue": " ",
+  "tileValue": 0,
   "flagged": False
   }
 

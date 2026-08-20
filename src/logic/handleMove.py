@@ -15,7 +15,7 @@ def reveal_all_broccolis(board, tiles_board, broccoli_positions):
     row = pos[0]
     column = pos[1]
     tiles_board[row, column]["checked"] = True
-    tiles_board[row, column]["tileValue"] = str(board[row, column])
+    tiles_board[row, column]["tileValue"] = board[row, column]
       
   return tiles_board
 
@@ -47,8 +47,8 @@ def check_game_status(board, tiles_board, move_position, broccoli_amount):
         unchecked_tiles += 1
 
       if (tiles_board[i,j]["checked"] == True and
-          (tiles_board[i,j]["tileValue"] == "-3" or
-           tiles_board[i,j]["tileValue"] == "-4")):
+          (tiles_board[i,j]["tileValue"] == -3 or
+           tiles_board[i,j]["tileValue"] == -4)):
         unchecked_tiles += 1
 
   if unchecked_tiles != broccoli_amount:
@@ -87,7 +87,7 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     invalid_position = False
 
   tiles_board[pos[0], pos[1]]["checked"] = True
-  tiles_board[pos[0], pos[1]]["tileValue"] = "-4"
+  tiles_board[pos[0], pos[1]]["tileValue"] = -4
   board[pos[0], pos[1]] = -4
 
   return tiles_board, board
@@ -153,7 +153,7 @@ def make_move(board, tiles_board, move_position, board_row_limit, board_column_l
     return tiles_board, board
 
   tiles_board[row, column]["checked"] = True
-  tiles_board[row, column]["tileValue"] = str(board[row, column])
+  tiles_board[row, column]["tileValue"] = board[row, column]
 
   if board[row, column] == -1:
     return tiles_board, board

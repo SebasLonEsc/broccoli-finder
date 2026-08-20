@@ -133,11 +133,11 @@ def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row
 
   # Validates if the new row position (after nullspace validation or not) is valid
   if not validate_new_position_values(pos[0], row_limit, limit_comparator):
-    pos[0] = row_limit - 1 if row_limit is not 0 else 0
+    pos[0] = row_limit - 1 if row_limit != 0 else 0
 
   # Validates if the new column position (after nullspace validation or not) is valid
   if not validate_new_position_values(pos[1], column_limit, limit_comparator):
-    pos[1] = column_limit - 1 if column_limit is not 0 else 0
+    pos[1] = column_limit - 1 if column_limit != 0 else 0
 
   # Recalculates a new position one more time if the current position is a nullspace
   if board[pos[0], pos[1]] == -2 and continue_signal:

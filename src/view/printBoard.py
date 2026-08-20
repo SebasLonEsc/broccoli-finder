@@ -29,7 +29,20 @@ def printing(board_object):
 
     row = complement + str(i + 1) + " | "
     for j in range(board_object.tiles_board[i].shape[0]):
-      row += board_object.tiles_board[i,j]["tileValue"] + "  "
+      tile = board_object.tiles_board[i,j]
+      tile_value = str(tile["tileValue"])
+      checked = tile["checked"]
+
+      if tile_value == "-2":
+        tile_value = "*"
+
+      if tile_value == "0":
+        tile_value = " "
+
+        if checked:
+          tile_value = "-"
+
+      row += tile_value + "  "
 
     row += "| " + str(i + 1)
     print(row)

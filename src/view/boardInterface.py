@@ -6,7 +6,7 @@ from pathlib import Path
 
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image
+from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image, create_help_menu
 from src.logic.constants.gameValues import get_winning_text, get_game_over_text
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
@@ -117,8 +117,8 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
   for pos in broccoli_positions:
     row = pos[0]
     column = pos[1]
-    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
-    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == "-4"
+    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == -3
+    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == -4
     background_color = BROCCOLI_TILE_COLOR
 
     broccoli_image = red_broccoli_image
@@ -196,10 +196,7 @@ def handle_revealed_tiles(board_object, buttons):
       if button_color != TILE_BACKGROUND_COLOR:
         continue
 
-      tile_value = 0
-      if tiles_board[row, column]["tileValue"] != " ":
-        tile_value = int(tiles_board[row, column]["tileValue"])
-
+      tile_value = tiles_board[row, column]["tileValue"]
       checked = tiles_board[row, column]["checked"]
 
       if checked:
@@ -380,6 +377,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   game_menu.add_separator()
   game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
   create_info_menu(tk, menu)
+  create_help_menu(tk, menu)
 
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / "images" / FLAGGED_TILE_IMAGE

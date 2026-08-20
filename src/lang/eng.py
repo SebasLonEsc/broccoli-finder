@@ -1,4 +1,5 @@
 from src.logic.constants.infoMenuContent import CREDITS_MENU_MESSAGE_ENG, ABOUT_MENU_MESSAGE_ENG
+from src.logic.constants.helpMenuContent import HOW_TO_PLAY_MENU_MESSAGE_ENG, SPECIAL_BROCCOLIS_MENU_MESSAGE_ENG
 
 english = {
   # CONSOLE TEXT
@@ -30,12 +31,19 @@ english = {
   # MENU
   "GameTabMenu": "Game",
   "MainMenuLabel": "Main Menu",
+  "NewGameLabel": "New Game",
+
   "InfoTabMenu": "Info",
   "AboutMenuLabel": "About",
   "AboutMessage": ABOUT_MENU_MESSAGE_ENG,
   "CreditsMenuLabel": "Credits",
   "CreditsMessage": CREDITS_MENU_MESSAGE_ENG,
-  "NewGameLabel": "New Game",
+
+  "HelpTabMenu": "Help",
+  "HowToPlayMenuLabel": "How to play",
+  "HowToPlayMessage": HOW_TO_PLAY_MENU_MESSAGE_ENG,
+  "SpecialBroccolisMenuLabel": "Special Broccolis",
+  "SpecialBroccolisMessage": SPECIAL_BROCCOLIS_MENU_MESSAGE_ENG,
 
   # NEW GAME VIEW
   "NewGame": "New Game",
