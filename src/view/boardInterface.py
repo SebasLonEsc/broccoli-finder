@@ -117,8 +117,8 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
   for pos in broccoli_positions:
     row = pos[0]
     column = pos[1]
-    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == "-3"
-    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == "-4"
+    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == -3
+    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == -4
     background_color = BROCCOLI_TILE_COLOR
 
     broccoli_image = red_broccoli_image
@@ -196,10 +196,7 @@ def handle_revealed_tiles(board_object, buttons):
       if button_color != TILE_BACKGROUND_COLOR:
         continue
 
-      tile_value = 0
-      if tiles_board[row, column]["tileValue"] != " ":
-        tile_value = int(tiles_board[row, column]["tileValue"])
-
+      tile_value = tiles_board[row, column]["tileValue"]
       checked = tiles_board[row, column]["checked"]
 
       if checked:
