@@ -11,8 +11,8 @@ spanish = {
   "UITypeSelect": "2: Interfaz gráfica",
   "GameTypeInput": "Ingrese # del tipo de juego:",
   "InvalidGameType": "Número inválido",
-  "InputRow": "",
-  "InputColumn": "",
+  "InputRow": "Ingrese la fila:",
+  "InputColumn": "Ingrese la columna:",
   "InvalidRowColumn": "Columna o fila inválida",
 
   # UI
