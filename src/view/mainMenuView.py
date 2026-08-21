@@ -1,5 +1,6 @@
 import tkinter as tk
 from functools import partial
+from pathlib import Path
 
 import src.lang.language as Lg
 from src.lang.eng import english
@@ -7,6 +8,7 @@ from src.lang.spa import spanish
 from src.view.newGameMenu import new_game_menu
 from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
+from src.logic.constants.imagesPaths import IMAGES_FOLDER, BROCCOLI_ICON
 
 def change_selected_language(lang_button,
                              game_title_label,
@@ -61,6 +63,11 @@ def create_main_menu_view():
   root.minsize(window_width, window_height)
   root.maxsize(window_width, window_height)
   center_window(root, window_width, window_height)
+
+  current_dir = Path(__file__).parent
+  image_path = current_dir.parent / IMAGES_FOLDER / BROCCOLI_ICON
+  icon = tk.PhotoImage(file=str(image_path))
+  root.iconphoto(True, icon)
 
   create_menu(root=root,
               add_game_menu=False,

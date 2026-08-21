@@ -1,6 +1,9 @@
 # The images folder name
 IMAGES_FOLDER = "images"
 
+# The window icon
+BROCCOLI_ICON = "Broccoli_Icon.png"
+
 # Images names for each broccoli proximity number tile
 PROXIMITY_NUMBER_IMAGES = [
   "Disabled_Empty_Tile.png",
