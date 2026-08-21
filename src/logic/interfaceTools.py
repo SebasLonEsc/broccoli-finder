@@ -1,4 +1,6 @@
 from PIL import Image, ImageTk
+from functools import partial
+import tkinter as tk
 
 import src.lang.language as Lg
 
@@ -56,13 +58,10 @@ def go_back(root, go_back_func, previous_go_back_func=None):
   else:
     go_back_func(previous_go_back_func)
 
-def create_top_level(tk, message, title, width, height):
+def create_top_level(message, title, width, height):
   """Creates a toplevel widget with a message and title.
 
   Args:
-    tk (tk): The tk library reference.
-      Passed as argument to reduce double referencing on this file.
-      Just a personal preference for this case
     message (str): The message to be displayed on the toplevel
     title (str): The title of the toplevel
   """
@@ -80,13 +79,10 @@ def create_top_level(tk, message, title, width, height):
   close_button.pack(pady=[2,0])
   top_level.mainloop()
 
-def create_info_menu(tk, menu_widget):
+def create_info_menu(menu_widget):
   """Creates the info menu.
 
   Args:
-    tk (tk): The tk library reference.
-      Passed as argument to reduce double referencing on this file.
-      Just a personal preference for this case
     menu_widget (tk.Widget): The menu widget where the menu is going to be attached
   """
   info_menu = tk.Menu(menu_widget, tearoff=0)
@@ -94,15 +90,15 @@ def create_info_menu(tk, menu_widget):
 
   about_message = "".join(Lg.lang["AboutMessage"])
   info_menu.add_command(label=Lg.lang["AboutMenuLabel"],
-                        command=lambda: create_top_level(tk, about_message, Lg.lang["AboutMenuLabel"], 420, 270)
+                        command=lambda: create_top_level(about_message, Lg.lang["AboutMenuLabel"], 420, 270)
                         )
 
   credits_message = "".join(Lg.lang["CreditsMessage"])
   info_menu.add_command(label=Lg.lang["CreditsMenuLabel"],
-                        command=lambda: create_top_level(tk, credits_message, Lg.lang["CreditsMenuLabel"], 400, 280)
+                        command=lambda: create_top_level(credits_message, Lg.lang["CreditsMenuLabel"], 400, 280)
                         )
 
-def create_help_menu(tk, menu_widget):
+def create_help_menu(menu_widget):
   """Creates the help menu.
   
   Args:
@@ -116,10 +112,47 @@ def create_help_menu(tk, menu_widget):
 
   how_to_play_message = "".join(Lg.lang["HowToPlayMessage"])
   help_menu.add_command(label=Lg.lang["HowToPlayMenuLabel"],
-                        command=lambda: create_top_level(tk, how_to_play_message, Lg.lang["HowToPlayMenuLabel"], 620, 440)
+                        command=lambda: create_top_level(how_to_play_message, Lg.lang["HowToPlayMenuLabel"], 620, 440)
                         )
 
   rainbow_broccoli_message = "".join(Lg.lang["SpecialBroccolisMessage"])
   help_menu.add_command(label=Lg.lang["SpecialBroccolisMenuLabel"],
-                        command=lambda: create_top_level(tk, rainbow_broccoli_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350)
+                        command=lambda: create_top_level(rainbow_broccoli_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350)
                         )
+
+def create_menu(root,
+                add_main_menu_shortcut,
+                main_menu_shortcut,
+                add_new_game_shortcut = False,
+                new_game_shortcut = None,
+                add_info_menu = False,
+                add_help_menu = False
+                ):
+  """
+  """
+  menu = tk.Menu(root, tearoff=0)
+  root.config(menu=menu)
+  game_menu = tk.Menu(menu, tearoff=0)
+  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
+
+  separator = False
+  if(add_new_game_shortcut and
+     new_game_shortcut is not None and
+     main_menu_shortcut is not None):
+    game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, new_game_shortcut, main_menu_shortcut))
+    separator = True
+
+  if (add_main_menu_shortcut and main_menu_shortcut is not None):
+    game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, main_menu_shortcut))
+    separator = True
+
+  if separator:
+    game_menu.add_separator()
+
+  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
+
+  if add_info_menu:
+    create_info_menu(menu)
+
+  if add_help_menu:
+    create_help_menu(menu)
