@@ -129,7 +129,7 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   create_help_menu(tk, menu)
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
   tk.Label(
     frame,
     text="Customize your Game",
@@ -143,7 +143,7 @@ def create_new_game_view(go_back_func, go_to_main_menu):
                                            * broccoli_percent_limit)
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
   tk.Label(frame, text="# Rows").pack(side="left", padx=[0,20])
   rows = tk.Spinbox(frame,
                     from_=board_size_lower_limit,
@@ -152,7 +152,7 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   rows.pack(side="left", pady=2)
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
   tk.Label(frame, text="# Columns").pack(side="left")
   columns = tk.Spinbox(frame,
                        from_=board_size_lower_limit,
@@ -161,15 +161,15 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   columns.pack(side="left", pady=2)
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
   tk.Label(frame, text="# Broccolis").pack(side="left")
   broccoli_amount = tk.Spinbox(frame, from_=1, to=maximum_number_of_broccolis)
   broccoli_amount.pack(side="left", pady=2)
 
   button_frame = tk.Frame(root)
-  button_frame.pack(pady=[2,2], expand=True)
+  button_frame.pack(pady=2, expand=True)
   error_text_frame = tk.Frame(root)
-  error_text_frame.pack(pady=[2,2], expand=True)
+  error_text_frame.pack(pady=2, expand=True)
 
   error_label = tk.Label(error_text_frame, text="", anchor="center")
   tk.Button(button_frame,
