@@ -60,4 +60,21 @@ english = {
   "Medium": "Medium",
   "Big": "Big",
   "CustomGameButton": "Custom Game",
+
+  # CUSTOM GAME VIEW
+  "InputErrorText": "The following values are invalid:",
+  "InvalidRowLowerLimit": "# Rows can't be less than ",
+  "InvalidRowUpperLimit": "# Rows can't be more than ",
+  "InvalidColumnLowerLimit": "# Columns can't be less than ",
+  "InvalidColumnUpperLimit": "# Columns can't be more than ",
+  "ZeroBroccolisError": "# Broccolis can't be less than 1",
+  "BroccoliErrorLimit1": "Number of Broccolis can't be more than ",
+  "BroccoliErrorLimit2": "for the current board size",
+  "InvalidNumericValue": "Value is not numeric",
+  "TooManyBroccolisError": "Please reduce the amount of Broccolis to no more than ",
+  "CustomGameTitle": "Customize your Game",
+  "InputRowNumber": "# Rows",
+  "InputColumnNumber": "# Columns",
+  "InputBroccoliNumber": "# Broccolis",
+  "PlayButton": "Play",
 }
