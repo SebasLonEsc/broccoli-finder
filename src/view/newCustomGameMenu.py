@@ -127,8 +127,8 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_to_main_menu))
   game_menu.add_separator()
   game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(tk, menu)
-  create_help_menu(tk, menu)
+  create_info_menu(menu)
+  create_help_menu(menu)
 
   frame = tk.Frame(root)
   frame.pack(pady=2, expand=True)

@@ -55,8 +55,8 @@ def create_main_menu_view():
 
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  create_info_menu(tk, menu)
-  create_help_menu(tk, menu)
+  create_info_menu(menu)
+  create_help_menu(menu)
 
   lang_frame = tk.Frame(root)
   lang_frame.pack(expand=True, fill="both", padx=4)

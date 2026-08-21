@@ -382,8 +382,8 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, go_back_func, go_to_main_menu))
   game_menu.add_separator()
   game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(tk, menu)
-  create_help_menu(tk, menu)
+  create_info_menu(menu)
+  create_help_menu(menu)
 
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / IMAGES_FOLDER / FLAGGED_TILE_IMAGE
