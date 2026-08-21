@@ -36,6 +36,29 @@ def get_game_over_text():
 
   return get_endgame_text(Lg.lang["Game_Over_Text"])
 
+# Game types represented as numbers
+GAME_TYPES = {
+  1: "Console",
+  2: "UI"
+}
+
+# The current game status after a move is done
+# -1 -> Indicates a game over.
+# 0 -> Indicate the game is still on.
+# 1 -> Indicates a won game
+GAME_STATUS = {
+  -1: "Game Over",
+  0: "Play",
+  1: "Win"
+}
+
+# Returns the numeric equivalent for the game status
+GET_GAME_STATUS = {
+  "Game Over": -1,
+  "Play": 0,
+  "Win": 1
+}
+
 # Game Difficulties types
 GAME_DIFFICULTIES = [
   "Easy",
