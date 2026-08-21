@@ -90,8 +90,8 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
                                      size
                                      ),
                      justify="center",
-                     width=image_size[0] + 10, #Leave space for padding
-                     height=image_size[1] + 20, #Leave space for padding
+                     width=image_size[0] + 10, # Increasing space for text
+                     height=image_size[1] + 20, # Increasing space for text
                      padx=4,
                      pady=0,
                      text=Lg.lang[size],
@@ -125,10 +125,9 @@ def new_game_menu(go_back_func):
 
   frame = tk.Frame(root)
   frame.pack(pady=2, expand=True)
-  tk.Label(
-    frame,
-    text=Lg.lang["NewGame"],
-    anchor="center").pack()
+  tk.Label(frame,
+           text=Lg.lang["NewGame"],
+           anchor="center").pack()
   
   frame = tk.Frame(root)
   frame.pack(pady=2, expand=True)
@@ -136,6 +135,7 @@ def new_game_menu(go_back_func):
            text=Lg.lang["Difficulty"],
            anchor="center"
            ).pack(side="left", padx=2)
+  
   game_difficulty = ttk.Combobox(frame,
                                  values=Lg.lang["GameDifficulties"],
                                  state="readonly")
