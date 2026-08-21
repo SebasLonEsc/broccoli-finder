@@ -1,6 +1,7 @@
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
 from src.logic.constants.gameValues import get_game_over_text, get_winning_text, GAME_STATUS
+from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.styleValues import CONSOLE_NULLSPACE, CONSOLE_EMPTY_CHECKED_TILE, CONSOLE_EMPTY_UNCHECKED_TILE
 
 def printing(board_object):
@@ -34,10 +35,10 @@ def printing(board_object):
       tile_value = str(tile["tileValue"])
       checked = tile["checked"]
 
-      if tile_value == "-2":
+      if tile_value == str(GET_BOARD_VALUE["nullSpace"]):
         tile_value = CONSOLE_NULLSPACE
 
-      if tile_value == "0":
+      if tile_value == str(GET_BOARD_VALUE["blankSpace"]):
         tile_value = CONSOLE_EMPTY_UNCHECKED_TILE
 
         if checked:
@@ -80,8 +81,6 @@ def print_board_on_console(board_object):
 
   if GAME_STATUS[game_status] == "Win":
     print(get_winning_text())
-    return 0
   
   if GAME_STATUS[game_status] == "Game Over":
     print(get_game_over_text())
-    return 0
