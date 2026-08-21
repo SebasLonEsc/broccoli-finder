@@ -1,3 +1,12 @@
+# The value to print on console for nullspaces
+CONSOLE_NULLSPACE = "*"
+
+# The value to print on console for empty unchecked tiles
+CONSOLE_EMPTY_UNCHECKED_TILE = " "
+
+# The value to print on console for empty checked tiles
+CONSOLE_EMPTY_CHECKED_TILE = "-"
+
 # The broccoli proximity number tile colors
 PROXIMITY_COLORS = [
   "#ffffff",
