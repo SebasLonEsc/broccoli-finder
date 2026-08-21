@@ -7,7 +7,7 @@ import math
 from PIL import Image, ImageTk
 
 import src.lang.language as Lg
-from src.logic.interfaceTools import center_window,close_interface, go_back, create_info_menu, create_help_menu
+from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.board import board_generator
 from src.view.boardInterface import create_board_interface
 from src.view.newCustomGameMenu import create_new_game_view
@@ -117,15 +117,11 @@ def new_game_menu(go_back_func):
   root.minsize(window_width, window_height)
   center_window(root, window_width, window_height)
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
-  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_back_func))
-  game_menu.add_separator()
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(menu)
-  create_help_menu(menu)
+  create_menu(root=root,
+              add_main_menu_shortcut=True,
+              main_menu_shortcut=go_back_func,
+              add_info_menu=True,
+              add_help_menu=True)
 
   frame = tk.Frame(root)
   frame.pack(pady=2, expand=True)

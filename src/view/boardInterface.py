@@ -6,7 +6,7 @@ from pathlib import Path
 
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image, create_help_menu
+from src.logic.interfaceTools import close_interface, go_back, open_pillow_image, create_menu
 from src.logic.constants.gameValues import get_winning_text, get_game_over_text, GAME_STATUS
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE, BOARD_VALUES_GUIDE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
@@ -374,16 +374,13 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   root.maxsize(screen_width, screen_height)
   root.geometry("+%d+%d" % ((screen_width // 4), 0))
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
-  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_to_main_menu))
-  game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, go_back_func, go_to_main_menu))
-  game_menu.add_separator()
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(menu)
-  create_help_menu(menu)
+  create_menu(root=root,
+              add_main_menu_shortcut=True,
+              main_menu_shortcut=go_to_main_menu,
+              add_new_game_shortcut=True,
+              new_game_shortcut=go_back_func,
+              add_info_menu=True,
+              add_help_menu=True)
 
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / IMAGES_FOLDER / FLAGGED_TILE_IMAGE

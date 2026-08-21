@@ -4,7 +4,7 @@ import math
 
 import src.lang.language as Lg
 from src.logic.board import board_generator
-from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu, create_help_menu
+from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.view.boardInterface import create_board_interface
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
@@ -119,17 +119,14 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   root.maxsize(window_max_width, window_max_height)
   center_window(root, window_min_width, window_min_height)
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
-  game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, go_back_func, go_to_main_menu))
-  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_to_main_menu))
-  game_menu.add_separator()
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(menu)
-  create_help_menu(menu)
-
+  create_menu(root=root,
+              add_main_menu_shortcut=True,
+              main_menu_shortcut=go_to_main_menu,
+              add_new_game_shortcut=True,
+              new_game_shortcut=go_back_func,
+              add_info_menu=True,
+              add_help_menu=True)
+ 
   frame = tk.Frame(root)
   frame.pack(pady=2, expand=True)
   tk.Label(

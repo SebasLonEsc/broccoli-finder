@@ -102,9 +102,6 @@ def create_help_menu(menu_widget):
   """Creates the help menu.
   
   Args:
-    tk (tk): The tk library reference.
-      Passed as argument to reduce double referencing on this file.
-      Just a personal preference for this case
     menu_widget (tk.Widget): The menu widget where the menu is going to be attached
   """
   help_menu = tk.Menu(menu_widget, tearoff=0)
@@ -121,35 +118,52 @@ def create_help_menu(menu_widget):
                         )
 
 def create_menu(root,
-                add_main_menu_shortcut,
-                main_menu_shortcut,
+                add_game_menu = True,
+                add_main_menu_shortcut = False,
+                main_menu_shortcut = None,
                 add_new_game_shortcut = False,
                 new_game_shortcut = None,
                 add_info_menu = False,
                 add_help_menu = False
                 ):
-  """
+  """Creates the top menu.
+
+  Args:
+    root (tk.Tk): The root windget, the current window that is being displayed
+    add_game_menu (bool): Indicates if the game menu needs to be added (default: True)
+    add_main_menu_shortcut (bool): Indicates if the main menu shortcut needs to be added.
+      Requires the add_game_menu to be True (default False)
+    main_menu_shortcut (Func): The function to go to the main menu.
+      Requires the add_game_menu and add_main_menu_shortcut to be True (default None)
+    add_new_game_shortcut (bool): Indicates if the new game shortcut needs to be added.
+      Requires the add_game_menu to be True (default False)
+    new_game_shortcut (Func): The function to go to the new game screen.
+      Requires the add_game_menu and add_new_game_shortcut to be True (default None)
+    add_info_menu (bool): Indicates if the info menu needs to be added (default False)
+    add_help_menu (bool): Indicates if the help menu needs to be added (default False)
   """
   menu = tk.Menu(root, tearoff=0)
   root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
 
-  separator = False
-  if(add_new_game_shortcut and
-     new_game_shortcut is not None and
-     main_menu_shortcut is not None):
-    game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, new_game_shortcut, main_menu_shortcut))
-    separator = True
+  if add_game_menu:
+    game_menu = tk.Menu(menu, tearoff=0)
+    menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
 
-  if (add_main_menu_shortcut and main_menu_shortcut is not None):
-    game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, main_menu_shortcut))
-    separator = True
+    separator = False
+    if(add_new_game_shortcut and
+      new_game_shortcut is not None and
+      main_menu_shortcut is not None):
+      game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, new_game_shortcut, main_menu_shortcut))
+      separator = True
 
-  if separator:
-    game_menu.add_separator()
+    if (add_main_menu_shortcut and main_menu_shortcut is not None):
+      game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, main_menu_shortcut))
+      separator = True
 
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
+    if separator:
+      game_menu.add_separator()
+
+    game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
 
   if add_info_menu:
     create_info_menu(menu)

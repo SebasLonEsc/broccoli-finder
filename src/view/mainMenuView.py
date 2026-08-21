@@ -5,7 +5,7 @@ import src.lang.language as Lg
 from src.lang.eng import english
 from src.lang.spa import spanish
 from src.view.newGameMenu import new_game_menu
-from src.logic.interfaceTools import center_window, close_interface, create_info_menu, create_help_menu
+from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.constants.styleValues import BUTTON_COLOR, BUTTON_ACTIVE_COLOR
 
 def change_selected_language(lang_button,
@@ -53,10 +53,10 @@ def create_main_menu_view():
   root.maxsize(window_width, window_height)
   center_window(root, window_width, window_height)
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  create_info_menu(menu)
-  create_help_menu(menu)
+  create_menu(root=root,
+              add_game_menu=False,
+              add_info_menu=True,
+              add_help_menu=True)
 
   lang_frame = tk.Frame(root)
   lang_frame.pack(expand=True, fill="both", padx=4)
