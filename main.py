@@ -1,7 +1,8 @@
+import src.lang.language as Lg
 from src.view.printBoard import print_board_on_console
 from src.view.mainMenuView import create_main_menu_view
 from src.logic.board import board_generator
-import src.lang.language as Lg
+from src.logic.constants.gameValues import GAME_TYPES
 
 def select_game_type(game_type):
   """Handles the generation of the Board and redirects to the specific game interface.
@@ -11,7 +12,7 @@ def select_game_type(game_type):
       1 -> Play the game in console
       2 -> Play the game in an interface
   """
-  if game_type == 1:
+  if GAME_TYPES[game_type] == "Console":
     rows = int(input(Lg.lang["InputTotalRows"]))
     columns = int(input(Lg.lang["InputTotalColumns"]))
     broccoli_amount = int(input(Lg.lang["InputTotalBroccolis"]))
@@ -23,7 +24,7 @@ def select_game_type(game_type):
 
 def main():
   invalid_game_type = True
-  game_type = -1
+  game_type = -1 # Placeholder value
 
   while(invalid_game_type):
     print("-------------------")
@@ -33,7 +34,7 @@ def main():
     print("-------------------")
     game_type = int(input(Lg.lang["GameTypeInput"]))
 
-    if game_type == 1 or game_type == 2:
+    if game_type in GAME_TYPES:
       invalid_game_type = False
     else:
       print("\n", Lg.lang["InvalidGameType"])

@@ -2,6 +2,7 @@ import random
 
 from .broccoliProximity import broccoli_proximity, update_proximity_numbers_for_rainbow_broccoli
 from src.logic.constants.gameValues import RAINBOW_BROCCOLI_PROPORTION_CHANCES, RAINBOW_BROCCOLI_PERCENT
+from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   """Validates at random to add or not a rainbow broccoli
@@ -41,7 +42,7 @@ def add_rainbow_broccoli(board, broccoli_positions, total_rows, total_columns):
     array_position = random.randrange(0, len(broccoli_positions))
     pos = broccoli_positions[array_position]
 
-  board[pos[0], pos[1]] = -3
+  board[pos[0], pos[1]] = GET_BOARD_VALUE["rainbowBroccoli"]
   board = update_proximity_numbers_for_rainbow_broccoli(board, pos, total_rows, total_columns)
 
   return board
@@ -87,7 +88,7 @@ def board_broccoli_filler(board_object, broccoli_amount=1):
 
   for _ in range(broccoli_amount):
     pos = define_broccoli_positions(board, board_object)
-    board[pos[0], pos[1]] = -1
+    board[pos[0], pos[1]] = GET_BOARD_VALUE["broccoli"]
     board_object.add_broccoli_positions(pos)
     board = broccoli_proximity(board, pos, total_rows, total_columns)
 

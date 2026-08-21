@@ -1,3 +1,5 @@
+from src.logic.constants.boardValues import BOARD_VALUES_GUIDE, GET_BOARD_VALUE
+
 def out_of_bounds_validation(current_pos, pos, limit = 0):
   """Validates if the current position is out of bounds.
 
@@ -37,14 +39,16 @@ def check_null_spaces(board, pos, h_increment, v_increment, h_limit=0, v_limit=0
   """
   h_position = out_of_bounds_validation(pos[0] + h_increment, pos[0], h_limit) # h_position: horizontal position
   v_position = out_of_bounds_validation(pos[1] + v_increment, pos[1], v_limit) # v_position: vertical position
-
-  if board[h_position, v_position] == -2:
+  
+  if (board[h_position, v_position] in BOARD_VALUES_GUIDE and
+      BOARD_VALUES_GUIDE[board[h_position, v_position]] == "nullSpace"):
     new_horizontal_position = out_of_bounds_validation(h_position + h_increment,
                                                        h_position, h_limit)
     new_vertical_position = out_of_bounds_validation(v_position + v_increment,
                                                      v_position, v_limit)
 
-    if board[new_horizontal_position, new_vertical_position] == -2:
+    if (board[new_horizontal_position, new_vertical_position] in BOARD_VALUES_GUIDE and
+        BOARD_VALUES_GUIDE[board[new_horizontal_position, new_vertical_position]] == "nullSpace"):
       new_horizontal_position = h_position
       new_vertical_position = v_position
 
@@ -115,7 +119,8 @@ def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row
   Returns:
     Array [int, int]: The new position to valdiate the ranbow proximity numbers
   """
-  if board[pos[0], pos[1]] != -2:
+  null_space_value = GET_BOARD_VALUE["nullSpace"]
+  if board[pos[0], pos[1]] != null_space_value:
     return pos
 
   # Check validate_new_position_values function docstring on comparator arg
@@ -123,12 +128,12 @@ def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row
 
   # Checks if nullspace is in a row direction   
   if (validate_new_position_values(previous_pos[0]+step, row_limit, limit_comparator) and
-      board[previous_pos[0]+step, previous_pos[1]] == -2):
+      board[previous_pos[0]+step, previous_pos[1]] == null_space_value):
     pos = [pos[0]+step, pos[1]]
 
   # Checks if nullspace is in a column direction
   if (validate_new_position_values(previous_pos[1]+step, column_limit, limit_comparator) and 
-      board[previous_pos[0], previous_pos[1]+step] == -2):
+      board[previous_pos[0], previous_pos[1]+step] == null_space_value):
     pos = [pos[0], pos[1]+step]
 
   # Validates if the new row position (after nullspace validation or not) is valid
@@ -140,7 +145,7 @@ def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row
     pos[1] = column_limit - 1 if column_limit != 0 else 0
 
   # Recalculates a new position one more time if the current position is a nullspace
-  if board[pos[0], pos[1]] == -2 and continue_signal:
+  if board[pos[0], pos[1]] == null_space_value and continue_signal:
     return validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row_limit, column_limit, False)
 
   return pos

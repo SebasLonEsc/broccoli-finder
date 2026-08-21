@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random
 
-from .constants.boardValues import BOARD_SHAPES, CORNER_GUIDE
+from .constants.boardValues import BOARD_SHAPES, CORNER_GUIDE, GET_BOARD_VALUE, BOARD_VALUES_GUIDE
 
 def shapes_weight_definer(board_object):
   """Defines the weight of each avaiable board shape for the randomize.
@@ -135,11 +135,11 @@ def cut_corners_shaper(board_object, random_corners=False):
 
     for j in range(start_point, end_point):
       tile = tiles_board[j, CORNER_GUIDE[i][1]]
-      tile["tileValue"] = -2
+      tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
       tile["checked"] = True
 
       if board[j, CORNER_GUIDE[i][1]] == 0:
-        board[j, CORNER_GUIDE[i][1]] = -2
+        board[j, CORNER_GUIDE[i][1]] = GET_BOARD_VALUE["nullSpace"]
         tiles_board[j, CORNER_GUIDE[i][1]] = tile
         null_space_amount += 1
 
@@ -152,11 +152,11 @@ def cut_corners_shaper(board_object, random_corners=False):
 
     for j in range(start_point, end_point):
       tile = tiles_board[CORNER_GUIDE[i][0], j]
-      tile["tileValue"] = -2
+      tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
       tile["checked"] = True
 
       if board[CORNER_GUIDE[i][0], j] == 0:
-        board[CORNER_GUIDE[i][0], j] = -2
+        board[CORNER_GUIDE[i][0], j] = GET_BOARD_VALUE["nullSpace"]
         tiles_board[CORNER_GUIDE[i][0], j] = tile
         null_space_amount += 1
     
@@ -199,22 +199,23 @@ def cross_shaper(board_object):
 
   for column in range(total_columns):
     tile = tiles_board[cross_row, column]
-    tile["tileValue"] = -2
+    tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
     tile["checked"] = True
     
-    board[cross_row, column] = -2
+    board[cross_row, column] = GET_BOARD_VALUE["nullSpace"]
     tiles_board[cross_row, column] = tile
     null_space_amount += 1
 
   for row in range(total_rows):
-    if board[row, cross_column] == -2:
+    if (board[row, cross_column] in BOARD_VALUES_GUIDE and
+        BOARD_VALUES_GUIDE[board[row, cross_column]] == "nullSpace"):
       continue
 
     tile = tiles_board[row, cross_column]
-    tile["tileValue"] = -2
+    tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
     tile["checked"] = True
 
-    board[row, cross_column] = -2
+    board[row, cross_column] = GET_BOARD_VALUE["nullSpace"]
     tiles_board[row, cross_column] = tile
     null_space_amount += 1
 
