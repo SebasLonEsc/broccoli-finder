@@ -1,7 +1,11 @@
 import random
 
 from .broccoliProximity import broccoli_proximity, update_proximity_numbers_for_rainbow_broccoli
-from src.logic.constants.gameValues import RAINBOW_BROCCOLI_PROPORTION_CHANCES, RAINBOW_BROCCOLI_PERCENT
+from src.logic.constants.gameValues import (RAINBOW_BROCCOLI_PROPORTION_CHANCES,
+                                            RAINBOW_BROCCOLI_CHANCE,
+                                            MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI
+                                            )
+from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   """Validates at random to add or not a rainbow broccoli
@@ -12,13 +16,14 @@ def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   Returns:
     bool: True to add rainbow broccoli, false otherwise
   """
-  if broccoli_amount == 1:
+  if broccoli_amount < MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI:
     return False
 
   for i in range(len(RAINBOW_BROCCOLI_PROPORTION_CHANCES)):
     if (broccoli_proportion >= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][0] and
         broccoli_proportion <= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][1]):
-      return random.random() <= RAINBOW_BROCCOLI_PERCENT[i]
+      chance = random.randint(1, 100) / 100
+      return chance <= RAINBOW_BROCCOLI_CHANCE[i]
 
   return False
 
@@ -35,13 +40,10 @@ def add_rainbow_broccoli(board, broccoli_positions, total_rows, total_columns):
     np.ndarray: The board matrix with the proximity numbers.
       Which indicate the amount of broccolis next to each tile
   """
-  pos = broccoli_positions[0]
+  array_position = random.randrange(0, len(broccoli_positions))
+  pos = broccoli_positions[array_position]
 
-  if len(broccoli_positions) > 1:
-    array_position = random.randrange(0, len(broccoli_positions))
-    pos = broccoli_positions[array_position]
-
-  board[pos[0], pos[1]] = -3
+  board[pos[0], pos[1]] = GET_BOARD_VALUE["rainbowBroccoli"]
   board = update_proximity_numbers_for_rainbow_broccoli(board, pos, total_rows, total_columns)
 
   return board
@@ -60,11 +62,12 @@ def define_broccoli_positions(board, board_object):
   invalid_position = True
 
   while invalid_position:
-    pos = [
-      random.randrange(0, board_object.total_rows),
-      random.randrange(0, board_object.total_columns)
-      ]
-    if board[pos[0], pos[1]] >= 0:
+    pos = [random.randrange(0, board_object.total_rows),
+           random.randrange(0, board_object.total_columns)]
+    is_blank_space = board[pos[0], pos[1]] == GET_BOARD_VALUE["blankSpace"]
+    is_proximity_number = board[pos[0], pos[1]] >= 1
+    
+    if is_blank_space or is_proximity_number:
       invalid_position = False
   
   return pos
@@ -87,7 +90,7 @@ def board_broccoli_filler(board_object, broccoli_amount=1):
 
   for _ in range(broccoli_amount):
     pos = define_broccoli_positions(board, board_object)
-    board[pos[0], pos[1]] = -1
+    board[pos[0], pos[1]] = GET_BOARD_VALUE["broccoli"]
     board_object.add_broccoli_positions(pos)
     board = broccoli_proximity(board, pos, total_rows, total_columns)
 

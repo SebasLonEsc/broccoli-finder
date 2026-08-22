@@ -1,4 +1,3 @@
-import random
 import tkinter as tk
 import numpy as np
 from functools import partial
@@ -6,9 +5,9 @@ from pathlib import Path
 
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.interfaceTools import close_interface, go_back, create_info_menu, open_pillow_image, create_help_menu
-from src.logic.constants.gameValues import get_winning_text, get_game_over_text
-from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE
+from src.logic.interfaceTools import close_interface, go_back, open_pillow_image, create_menu
+from src.logic.constants.gameValues import get_winning_text, get_game_over_text, GAME_STATUS
+from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE, BOARD_VALUES_GUIDE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
                                              BUTTON_ACTIVE_COLOR,
@@ -18,7 +17,8 @@ from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              PROXIMITY_COLORS,
                                              TILE_BACKGROUND_COLOR
                                              )
-from src.logic.constants.imagesPaths import (ACTIVE_FLAG_STATUS_IMAGE,
+from src.logic.constants.imagesPaths import (IMAGES_FOLDER,
+                                             ACTIVE_FLAG_STATUS_IMAGE,
                                              FLAGGED_TILE_IMAGE,
                                              GREEN_BROCCOLI_BUTTON_IMAGE,
                                              GREEN_BROCCOLI_TILE_IMAGE,
@@ -45,7 +45,7 @@ def change_flag_status(button):
     image_name = ACTIVE_FLAG_STATUS_IMAGE
 
   current_dir = Path(__file__).parent
-  image_path = current_dir.parent / "images" / image_name
+  image_path = current_dir.parent / IMAGES_FOLDER / image_name
   flag_button_image = tk.PhotoImage(file=str(image_path))
 
   flag_command = not flag_command
@@ -86,7 +86,7 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
     broccoli_counter_value += 1
 
   current_dir = Path(__file__).parent
-  image_path = current_dir.parent / "images" / image_name
+  image_path = current_dir.parent / IMAGES_FOLDER / image_name
   tile_image = tk.PhotoImage(file=str(image_path))
 
   buttons[row, column].config(image=tile_image)
@@ -104,21 +104,25 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
   """
   tiles_board = board_object.tiles_board
   broccoli_positions = board_object.broccoli_positions
+
   current_dir = Path(__file__).parent
-  image_path = current_dir.parent / "images" / GREEN_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / GREEN_BROCCOLI_TILE_IMAGE
   green_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
-  image_path = current_dir.parent / "images" / RED_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / RED_BROCCOLI_TILE_IMAGE
   red_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
-  image_path = current_dir.parent / "images" / RAINBOW_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / RAINBOW_BROCCOLI_TILE_IMAGE
   rainbow_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
-  image_path = current_dir.parent / "images" / FLOWERING_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / FLOWERING_BROCCOLI_TILE_IMAGE
   flowering_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
 
   for pos in broccoli_positions:
     row = pos[0]
     column = pos[1]
-    is_rainbow_broccoli = tiles_board[row, column]["tileValue"] == -3
-    is_flowering_broccoli = tiles_board[row, column]["tileValue"] == -4
+    tile_value = tiles_board[row, column]["tileValue"]
+    is_rainbow_broccoli = (tile_value in BOARD_VALUES_GUIDE and
+                           BOARD_VALUES_GUIDE[tile_value] == "rainbowBroccoli")
+    is_flowering_broccoli = (tile_value in BOARD_VALUES_GUIDE and
+                             BOARD_VALUES_GUIDE[tile_value] == "floweringBroccoli")
     background_color = BROCCOLI_TILE_COLOR
 
     broccoli_image = red_broccoli_image
@@ -155,7 +159,6 @@ def handle_game_status(board_object, buttons, move_position, game_over):
 
   if game_over:
     handle_reveal_broccolis(board_object, buttons, move_position)
-  
 
 def create_proximity_tile_images(images_array):
   """Creates an array of images for each proximity tile number
@@ -167,7 +170,7 @@ def create_proximity_tile_images(images_array):
   tile_images = []
 
   for path in images_array:
-    image_path = current_dir.parent / "images" / path
+    image_path = current_dir.parent / IMAGES_FOLDER / path
     tile_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
     tile_images.append(tile_image)
 
@@ -203,7 +206,7 @@ def handle_revealed_tiles(board_object, buttons):
         image = tile_images[0]
         button_color = PROXIMITY_COLORS[0]
 
-        if tile_value >= 0 and tile_value <= 8:
+        if tile_value >= 0 and tile_value <= 8: # Is a normal proximity number
           button_color = PROXIMITY_COLORS[tile_value]
           image = tile_images[tile_value]
 
@@ -232,7 +235,7 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
     broccoli_counter (tk.Label): Broccoli counter widget
   """
   current_dir = Path(__file__).parent
-  image_path = current_dir.parent / "images" / RAINBOW_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / RAINBOW_BROCCOLI_TILE_IMAGE
   rainbow_broccoli_image = tk.PhotoImage(file=str(image_path))
 
   buttons[move_position[0], move_position[1]].config(bg=PROXIMITY_COLORS[0],
@@ -244,21 +247,18 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
 
   broccoli_positions = board_object.broccoli_positions
   board = board_object.board
-  invalid_position = True
-  pos = []
+  flowering_broccoli_pos = []
 
-  if len(broccoli_positions) == 1:
-    invalid_position = False
-    pos = broccoli_positions[0]
+  for pos in broccoli_positions:
+    if (board[pos[0], pos[1]] in BOARD_VALUES_GUIDE and
+        BOARD_VALUES_GUIDE[board[pos[0], pos[1]]] == "floweringBroccoli"):
+      flowering_broccoli_pos = pos
+      break
 
-  while invalid_position:
-    pos_index = random.randrange(0, len(broccoli_positions))
-    pos = broccoli_positions[pos_index]
+  if len(flowering_broccoli_pos) != 2:
+    return
 
-    if board[pos[0], pos[1]] == -4:
-      invalid_position = False
-
-  image_path = current_dir.parent / "images" / FLOWERING_BROCCOLI_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / FLOWERING_BROCCOLI_TILE_IMAGE
   flowering_broccoli_image = tk.PhotoImage(file=str(image_path))
 
   buttons[pos[0], pos[1]].config(bg=PROXIMITY_COLORS[0],
@@ -298,13 +298,14 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
     handle_revealed_tiles(board_object, buttons)
     board = board_object.board
 
-    if board[move_position[0], move_position[1]] == -3:
+    if (board[move_position[0], move_position[1]] in BOARD_VALUES_GUIDE and
+        BOARD_VALUES_GUIDE[board[move_position[0], move_position[1]]] == "rainbowBroccoli"):
       handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccoli_counter)
 
     if game_status != 0:
       game_status_text = get_winning_text()
 
-      game_over = game_status < 0
+      game_over = GAME_STATUS[game_status] == "Game Over"
       if game_over:
         game_status_text = get_game_over_text()
 
@@ -334,10 +335,10 @@ def create_board_canvas(root):
 
   game_frame = tk.Frame(board_canvas)
   game_frame.bind("<Configure>",
-                 lambda _: board_canvas.configure(scrollregion=board_canvas.bbox("all")))
+                  lambda _: board_canvas.configure(scrollregion=board_canvas.bbox("all")))
   canvas_window_id = board_canvas.create_window((0,0), window=game_frame, anchor="center")
   board_canvas.bind("<Configure>",
-                   lambda _: board_canvas.itemconfig(canvas_window_id, width=canvas_frame.winfo_width()))
+                    lambda _: board_canvas.itemconfig(canvas_window_id, width=canvas_frame.winfo_width()))
 
   return game_frame
 
@@ -368,22 +369,20 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   root.maxsize(screen_width, screen_height)
   root.geometry("+%d+%d" % ((screen_width // 4), 0))
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
-  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_to_main_menu))
-  game_menu.add_command(label=Lg.lang["NewGameLabel"], command=partial(go_back, root, go_back_func, go_to_main_menu))
-  game_menu.add_separator()
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(tk, menu)
-  create_help_menu(tk, menu)
+  create_menu(root=root,
+              add_main_menu_shortcut=True,
+              main_menu_shortcut=go_to_main_menu,
+              add_new_game_shortcut=True,
+              new_game_shortcut=go_back_func,
+              add_info_menu=True,
+              add_help_menu=True)
 
   current_dir = Path(__file__).parent
-  image_path = current_dir.parent / "images" / FLAGGED_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / FLAGGED_TILE_IMAGE
   flag_button_image = tk.PhotoImage(file=str(image_path))
 
-  top_frame_column_size = columns if columns > 10 else 10
+  top_frame_min_width_size = 10 # This value is aprox the minimun size req for the frame contents
+  top_frame_column_size = columns if columns > top_frame_min_width_size else top_frame_min_width_size
   top_frame_width = TILE_PIXEL_SIZE * top_frame_column_size
   top_frame = tk.Frame(root, width=top_frame_width, height=30, pady=2)
   top_frame.propagate(False)     # Allows to define the width and height of the frame
@@ -408,7 +407,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
 
   broccoli_counter_frame = tk.Frame(top_frame)
   broccoli_counter_frame.pack(side="right", expand=True)
-  image_path = current_dir.parent / "images" / GREEN_BROCCOLI_BUTTON_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / GREEN_BROCCOLI_BUTTON_IMAGE
   broccoli_counter_image = tk.PhotoImage(file=str(image_path))
   broccoli_counter_label = tk.Label(broccoli_counter_frame,
                                     bg=BUTTON_COLOR,
@@ -417,7 +416,7 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
                                     relief="raised"
                                     )
   broccoli_counter_label.image = broccoli_counter_image
-  broccoli_counter_label.pack(side="left", padx=[2,2])
+  broccoli_counter_label.pack(side="left", padx=2)
 
   empty_image = tk.PhotoImage(file="", width=1, height=1)
   broccoli_counter = tk.Label(broccoli_counter_frame,
@@ -447,10 +446,10 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
   else:
     game_frame.pack()
 
-  image_path = current_dir.parent / "images" / TILE
+  image_path = current_dir.parent / IMAGES_FOLDER / TILE
   tile_image = tk.PhotoImage(file=str(image_path))
 
-  image_path = current_dir.parent / "images" / NULL_TILE_IMAGE
+  image_path = current_dir.parent / IMAGES_FOLDER / NULL_TILE_IMAGE
   null_tile_image = tk.PhotoImage(file=str(image_path))
   
   for row in range(0, rows):

@@ -36,6 +36,29 @@ def get_game_over_text():
 
   return get_endgame_text(Lg.lang["Game_Over_Text"])
 
+# Game types represented as numbers
+GAME_TYPES = {
+  1: "Console",
+  2: "UI"
+}
+
+# The current game status after a move is done
+# -1 -> Indicates a game over.
+# 0 -> Indicate the game is still on.
+# 1 -> Indicates a won game
+GAME_STATUS = {
+  -1: "Game Over",
+  0: "Play",
+  1: "Win"
+}
+
+# Returns the numeric equivalent for the game status
+GET_GAME_STATUS = {
+  "Game Over": -1,
+  "Play": 0,
+  "Win": 1
+}
+
 # Game Difficulties types
 GAME_DIFFICULTIES = [
   "Easy",
@@ -63,6 +86,11 @@ GAME_BROCCOLI_PERCENTS = {
   }
   }
 
+# The chances to appear a rainbow broccoli based on the broccoli proportions
 RAINBOW_BROCCOLI_PROPORTION_CHANCES = [[0.1, 0.2], [0.2, 0.25], [0.25, 0.35]]
 
-RAINBOW_BROCCOLI_PERCENT = [0.3, 0.4, 0.6]
+# The probability of adding a rainbow broccoli for each proportion group
+RAINBOW_BROCCOLI_CHANCE = [0.35, 0.45, 0.65]
+
+# The minimun amount of broccolis needed to add a rainbow broccoli
+MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI = 4

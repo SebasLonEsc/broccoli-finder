@@ -1,6 +1,8 @@
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.constants.gameValues import get_game_over_text, get_winning_text
+from src.logic.constants.gameValues import get_game_over_text, get_winning_text, GAME_STATUS
+from src.logic.constants.boardValues import GET_BOARD_VALUE
+from src.logic.constants.styleValues import CONSOLE_NULLSPACE, CONSOLE_EMPTY_CHECKED_TILE, CONSOLE_EMPTY_UNCHECKED_TILE
 
 def printing(board_object):
   """Handles the printing of the board on console.
@@ -33,14 +35,14 @@ def printing(board_object):
       tile_value = str(tile["tileValue"])
       checked = tile["checked"]
 
-      if tile_value == "-2":
-        tile_value = "*"
+      if tile_value == str(GET_BOARD_VALUE["nullSpace"]):
+        tile_value = CONSOLE_NULLSPACE
 
-      if tile_value == "0":
-        tile_value = " "
+      if tile_value == str(GET_BOARD_VALUE["blankSpace"]):
+        tile_value = CONSOLE_EMPTY_UNCHECKED_TILE
 
         if checked:
-          tile_value = "-"
+          tile_value = CONSOLE_EMPTY_CHECKED_TILE
 
       row += tile_value + "  "
 
@@ -63,7 +65,7 @@ def print_board_on_console(board_object):
   column_limit = board_object.total_columns
   printing(board_object)
 
-  while game_status == 0:
+  while GAME_STATUS[game_status] == "Play":
     row = int(input(Lg.lang["InputRow"])) - 1
     column = int(input(Lg.lang["InputColumn"])) - 1
 
@@ -77,10 +79,8 @@ def print_board_on_console(board_object):
     board_object, game_status = handle_move(board_object, [row, column])
     printing(board_object)
 
-  if game_status == 1:
+  if GAME_STATUS[game_status] == "Win":
     print(get_winning_text())
-    return 0
   
-  if game_status == -1:
+  if GAME_STATUS[game_status] == "Game Over":
     print(get_game_over_text())
-    return 0

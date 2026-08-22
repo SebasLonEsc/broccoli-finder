@@ -7,14 +7,14 @@ import math
 from PIL import Image, ImageTk
 
 import src.lang.language as Lg
-from src.logic.interfaceTools import center_window, close_interface, go_back, create_info_menu, create_help_menu
+from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.board import board_generator
 from src.view.boardInterface import create_board_interface
 from src.view.newCustomGameMenu import create_new_game_view
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES, BOARD_SIZES
-from src.logic.constants.gameValues import GAME_DIFFICULTIES, GAME_BROCCOLI_PERCENTS
+from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
 from src.logic.constants.styleValues import BOARD_BUTTON_SIZES, BUTTON_COLOR, BUTTON_ACTIVE_COLOR
-from src.logic.constants.imagesPaths import BOARD_SELECTOR_IMAGES
+from src.logic.constants.imagesPaths import BOARD_SELECTOR_IMAGES, IMAGES_FOLDER
 
 def open_custom_game_view(root, go_back_func, previous_go_back_func):
   """Closes the current window and creates the custom game window.
@@ -71,7 +71,7 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
   current_dir = Path(__file__).parent
   image_name = BOARD_SELECTOR_IMAGES[size]
   image_size = BOARD_BUTTON_SIZES[size]
-  image_path = current_dir.parent / "images" / image_name
+  image_path = current_dir.parent / IMAGES_FOLDER / image_name
 
   image = Image.open(image_path)
   image = image.resize(image_size, Image.Resampling.LANCZOS)
@@ -90,8 +90,8 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
                                      size
                                      ),
                      justify="center",
-                     width=image_size[0] + 10, #Leave space for padding
-                     height=image_size[1] + 20, #Leave space for padding
+                     width=image_size[0] + 10, # Increasing space for text
+                     height=image_size[1] + 20, # Increasing space for text
                      padx=4,
                      pady=0,
                      text=Lg.lang[size],
@@ -117,29 +117,25 @@ def new_game_menu(go_back_func):
   root.minsize(window_width, window_height)
   center_window(root, window_width, window_height)
 
-  menu = tk.Menu(root, tearoff=0)
-  root.config(menu=menu)
-  game_menu = tk.Menu(menu, tearoff=0)
-  menu.add_cascade(label=Lg.lang["GameTabMenu"], menu=game_menu)
-  game_menu.add_command(label=Lg.lang["MainMenuLabel"], command=partial(go_back, root, go_back_func))
-  game_menu.add_separator()
-  game_menu.add_command(label=Lg.lang["Exit"], command=partial(close_interface, root))
-  create_info_menu(tk, menu)
-  create_help_menu(tk, menu)
+  create_menu(root=root,
+              add_main_menu_shortcut=True,
+              main_menu_shortcut=go_back_func,
+              add_info_menu=True,
+              add_help_menu=True)
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
-  tk.Label(
-    frame,
-    text=Lg.lang["NewGame"],
-    anchor="center").pack()
+  frame.pack(pady=2, expand=True)
+  tk.Label(frame,
+           text=Lg.lang["NewGame"],
+           anchor="center").pack()
   
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
   tk.Label(frame,
            text=Lg.lang["Difficulty"],
            anchor="center"
-           ).pack(side="left", padx=[2,2])
+           ).pack(side="left", padx=2)
+  
   game_difficulty = ttk.Combobox(frame,
                                  values=Lg.lang["GameDifficulties"],
                                  state="readonly")
@@ -147,7 +143,7 @@ def new_game_menu(go_back_func):
   game_difficulty.set(Lg.lang["GameDifficulties"][0])
 
   frame = tk.Frame(root)
-  frame.pack(pady=[2,2], expand=True)
+  frame.pack(pady=2, expand=True)
 
   for size in BOARD_SIZES:
     create_board_size_selector_button(root,
@@ -156,7 +152,7 @@ def new_game_menu(go_back_func):
                                       frame,
                                       game_difficulty,
                                       size
-                                      ).pack(side="left", padx=[4,4], anchor="n")
+                                      ).pack(side="left", padx=4, anchor="n")
 
   frame = tk.Frame(root)
   frame.pack(pady=[8,2], expand=True)

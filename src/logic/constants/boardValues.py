@@ -7,6 +7,15 @@ BOARD_VALUES_GUIDE = {
   -4: "floweringBroccoli"
   }
 
+# Constant to get the numeric values for the BOARD_VALUES_GUIDE constant 
+GET_BOARD_VALUE = {
+  "blankSpace": 0,
+  "broccoli": -1,
+  "nullSpace": -2,
+  "rainbowBroccoli": -3,
+  "floweringBroccoli": -4  
+}
+
 # Each tile in the tiles_board matrix has a checked and tileValue value.
 #   checked: defines if the specific tile has been click before, is a null space or 
 #     if it was revealed by clicking another empty tile in the proximity
