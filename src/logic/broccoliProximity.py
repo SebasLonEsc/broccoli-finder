@@ -19,42 +19,40 @@ def out_of_bounds_validation(current_pos, pos, limit = 0):
   
   return current_pos
 
-def check_null_spaces(board, pos, h_increment, v_increment, h_limit=0, v_limit=0):
+def check_null_spaces(board, pos, r_increment, c_increment, r_limit=0, c_limit=0):
   """Verifies if there are null spaces on the current position.
 
   In case of null space, moves the position on a tile farder.
-  In horizontal or vertical direction based on increments.
+  In row or column direction based on increments.
   Args:
     board (np.ndarray): The board matrix containg the information about
       nullspaces, broccoli position and proximity
     pos (array[int]): The previous position
-    h_increment (int): The horizontal increment to select the next position
-    v_increment (int): The vertical increment to select the next position
-    h_limit (int): The horizontal limit that the row position value can take (default 0)
-    v_limit (int): The vertical limit that the column position value can take (default 0)
+    r_increment (int): The row increment to select the next position
+    c_increment (int): The column increment to select the next position
+    r_limit (int): The row limit that the row position value can take (default 0)
+    c_limit (int): The column limit that the column position value can take (default 0)
   Returns:
     array[int]: An array of [newRow, newColumn] position if the position is a nullSpace.
       This [newRow, newColumn] position is a position beyond the null space (if possible).
       If it isn't a nullSpace, return the [row, position] of the next position (position with the increment)
   """
-  h_position = out_of_bounds_validation(pos[0] + h_increment, pos[0], h_limit) # h_position: horizontal position
-  v_position = out_of_bounds_validation(pos[1] + v_increment, pos[1], v_limit) # v_position: vertical position
+  row = out_of_bounds_validation(pos[0] + r_increment, pos[0], r_limit)
+  column = out_of_bounds_validation(pos[1] + c_increment, pos[1], c_limit)
   
-  if (board[h_position, v_position] in BOARD_VALUES_GUIDE and
-      BOARD_VALUES_GUIDE[board[h_position, v_position]] == "nullSpace"):
-    new_horizontal_position = out_of_bounds_validation(h_position + h_increment,
-                                                       h_position, h_limit)
-    new_vertical_position = out_of_bounds_validation(v_position + v_increment,
-                                                     v_position, v_limit)
+  if (board[row, column] in BOARD_VALUES_GUIDE and
+      BOARD_VALUES_GUIDE[board[row, column]] == "nullSpace"):
+    new_row = out_of_bounds_validation(row + r_increment, row, r_limit)
+    new_column = out_of_bounds_validation(column + c_increment, column, c_limit)
 
-    if (board[new_horizontal_position, new_vertical_position] in BOARD_VALUES_GUIDE and
-        BOARD_VALUES_GUIDE[board[new_horizontal_position, new_vertical_position]] == "nullSpace"):
-      new_horizontal_position = h_position
-      new_vertical_position = v_position
+    if (board[new_row, new_column] in BOARD_VALUES_GUIDE and
+        BOARD_VALUES_GUIDE[board[new_row, new_column]] == "nullSpace"): # Is a corner
+      new_row = row
+      new_column = column
 
-    return [new_horizontal_position, new_vertical_position]
+    return [new_row, new_column]
   
-  return [h_position, v_position]
+  return [row, column]
 
 def broccoli_proximity(board, pos, total_rows, total_columns):
   """Checks and registers the proximity values of the broccolis on the board matrix.
@@ -70,13 +68,13 @@ def broccoli_proximity(board, pos, total_rows, total_columns):
     np.ndarray: The board matrix with the proximity numbers.
       Which indicate the amount of broccolis next to each tile
   """
-  horizontal_start = check_null_spaces(board, pos, -1, 0)[0]
-  horizontal_end = check_null_spaces(board, pos, 1, 0, total_rows)[0]
-  vertical_start = check_null_spaces(board, pos, 0, -1)[1]
-  vertical_end = check_null_spaces(board, pos, 0, 1, 0, total_columns)[1]
+  staring_row = check_null_spaces(board, pos, -1, 0)[0] # Decrease on row direction
+  ending_row = check_null_spaces(board, pos, 1, 0, total_rows)[0] # Increment on row direction
+  starting_column = check_null_spaces(board, pos, 0, -1)[1] # Decrease on column direction
+  ending_column = check_null_spaces(board, pos, 0, 1, 0, total_columns)[1] # Increment on column direction
 
-  for i in range(horizontal_start, horizontal_end + 1):
-    for j in range(vertical_start, vertical_end + 1):
+  for i in range(staring_row, ending_row + 1):
+    for j in range(starting_column, ending_column + 1):
       if board[i,j] < 0:
         continue
 
@@ -183,7 +181,7 @@ def update_proximity_numbers_for_rainbow_broccoli(board, pos, total_rows, total_
   
   for row in range(first_pos[0], last_pos[0]+1): # +1 to include last position
     for column in range(first_pos[1], last_pos[1]+1): # +1 to include last position
-      if board[row, column] > 0:
+      if board[row, column] > 0 and board[row, column] <= 8: # Proximity numbers from 1 to 8
         # Proximity numbers for rainbow broccoli starts from 11 to 18
         # 11 being the same as 1 and 18 the same as 8
         board[row, column] += 10 
