@@ -27,18 +27,22 @@ def shapes_weight_definer(board_object):
 
     if ((total_rows == 2 or total_columns == 2) and
         (shape == "cutCorners" or shape == "randomCutcorners")):
+      # No cut cornes shapes on 2x2 boards
       board_shapes_weight[i] = 0
       i += 1
       continue
 
     if shape == "cross":
-      if total_rows == 2 or total_columns == 2: # A two-lenght side will be reduce to one lenght on cross-shape
+      if total_rows == 2 or total_columns == 2:
+        # A two-length side will be reduce to one unit the board length on cross-shape
         board_shapes_weight[i] = 0
         i += 1
         continue
 
       board_size = total_rows * total_columns
-      if board_size < 16:  # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
+      if board_size < 16:  
+        # Cross-shaped Boards smaller than 16 size, had very little amount of playable tiles
+        # Around 44%-57% less playable space
         board_shapes_weight[i] = 0
         i += 1
         continue
@@ -67,10 +71,10 @@ def define_corner_sizes(board_object, random_corners):
   horizontal_corner_size_limit = math.floor(total_rows / 2)
   vertical_corner_size_limit = math.floor(total_columns / 2)
 
-  if total_rows % 2 == 0 and total_rows == 4:
+  if total_rows % 2 == 0:
     horizontal_corner_size_limit -= 1
 
-  if total_columns % 2 == 0 and total_columns == 4:
+  if total_columns % 2 == 0:
     vertical_corner_size_limit -= 1
 
   if total_rows <= 2 or total_columns <= 2:
@@ -85,12 +89,10 @@ def define_corner_sizes(board_object, random_corners):
   if not random_corners:
     horizontal_size = random.randint(1, horizontal_corner_size_limit)
     vertical_size = random.randint(1, vertical_corner_size_limit)
-    corner_size = 1
+    corner_size = vertical_size
 
-    if(horizontal_size <= vertical_size):
+    if(horizontal_size <= vertical_size): # Chooses the smaller size
       corner_size = horizontal_size
-    else:
-      corner_size = vertical_size
 
     for i in range(len(corner_sizes)):
       corner_sizes[i] = [corner_size, corner_size]
@@ -108,6 +110,9 @@ def cut_corners_shaper(board_object, random_corners=False):
   0 0 0
   
   c2 0 c3
+
+  c0 = [ 0, 0]  c1 = [ 0, -1]
+  c2 = [-1, 0]  c3 = [-1, -1]
 
   Each position is an array of two values [r,c]
   r:row or horizontal
@@ -130,6 +135,9 @@ def cut_corners_shaper(board_object, random_corners=False):
     end_point = corner_sizes[i,0]
 
     if CORNER_GUIDE[i][0] == -1:
+      # Checks for corners on the bottom
+      # In this case goes from negative size to 0
+      # Using array negative access
       start_point = 0 - corner_sizes[i,0]
       end_point = 0
 
@@ -147,6 +155,9 @@ def cut_corners_shaper(board_object, random_corners=False):
     end_point = corner_sizes[i,1]
 
     if CORNER_GUIDE[i][1] == -1:
+      # Checks for corners on the right
+      # In this case goes from negative size to 0
+      # Using array negative access
       start_point = 0 - corner_sizes[i,1]
       end_point = 0
 
