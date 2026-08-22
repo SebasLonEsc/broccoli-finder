@@ -1,4 +1,3 @@
-import random
 import tkinter as tk
 import numpy as np
 from functools import partial
@@ -105,6 +104,7 @@ def handle_reveal_broccolis(board_object, buttons, move_position):
   """
   tiles_board = board_object.tiles_board
   broccoli_positions = board_object.broccoli_positions
+
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / IMAGES_FOLDER / GREEN_BROCCOLI_TILE_IMAGE
   green_broccoli_image = open_pillow_image(image_path, TILE_PIXEL_SIZE, TILE_PIXEL_SIZE)
@@ -159,7 +159,6 @@ def handle_game_status(board_object, buttons, move_position, game_over):
 
   if game_over:
     handle_reveal_broccolis(board_object, buttons, move_position)
-  
 
 def create_proximity_tile_images(images_array):
   """Creates an array of images for each proximity tile number
@@ -248,20 +247,16 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
 
   broccoli_positions = board_object.broccoli_positions
   board = board_object.board
-  invalid_position = True
-  pos = []
+  flowering_broccoli_pos = []
 
-  if len(broccoli_positions) == 1:
-    invalid_position = False
-    pos = broccoli_positions[0]
-
-  while invalid_position:
-    pos_index = random.randrange(0, len(broccoli_positions))
-    pos = broccoli_positions[pos_index]
-
+  for pos in broccoli_positions:
     if (board[pos[0], pos[1]] in BOARD_VALUES_GUIDE and
         BOARD_VALUES_GUIDE[board[pos[0], pos[1]]] == "floweringBroccoli"):
-      invalid_position = False
+      flowering_broccoli_pos = pos
+      break
+
+  if len(flowering_broccoli_pos) != 2:
+    return
 
   image_path = current_dir.parent / IMAGES_FOLDER / FLOWERING_BROCCOLI_TILE_IMAGE
   flowering_broccoli_image = tk.PhotoImage(file=str(image_path))
@@ -340,10 +335,10 @@ def create_board_canvas(root):
 
   game_frame = tk.Frame(board_canvas)
   game_frame.bind("<Configure>",
-                 lambda _: board_canvas.configure(scrollregion=board_canvas.bbox("all")))
+                  lambda _: board_canvas.configure(scrollregion=board_canvas.bbox("all")))
   canvas_window_id = board_canvas.create_window((0,0), window=game_frame, anchor="center")
   board_canvas.bind("<Configure>",
-                   lambda _: board_canvas.itemconfig(canvas_window_id, width=canvas_frame.winfo_width()))
+                    lambda _: board_canvas.itemconfig(canvas_window_id, width=canvas_frame.winfo_width()))
 
   return game_frame
 
