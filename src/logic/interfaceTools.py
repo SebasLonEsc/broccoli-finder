@@ -29,8 +29,8 @@ def center_window(window, window_width, window_height):
   """
   screen_width = window.winfo_screenwidth()
   screen_height = window.winfo_screenheight()
-  x = (screen_width - window_width) // 2
-  y = (screen_height - window_height) // 2
+  x = (screen_width - window_width) // 2 # Screen center
+  y = (screen_height - window_height) // 2 # Screen center
   window.geometry("+%d+%d" % (x, y))
 
 def close_interface(root):
