@@ -2,7 +2,7 @@ import random
 
 from .broccoliProximity import broccoli_proximity, update_proximity_numbers_for_rainbow_broccoli
 from src.logic.constants.gameValues import (RAINBOW_BROCCOLI_PROPORTION_CHANCES,
-                                            RAINBOW_BROCCOLI_PERCENT,
+                                            RAINBOW_BROCCOLI_CHANCE,
                                             MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI
                                             )
 from src.logic.constants.boardValues import GET_BOARD_VALUE
@@ -22,7 +22,8 @@ def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   for i in range(len(RAINBOW_BROCCOLI_PROPORTION_CHANCES)):
     if (broccoli_proportion >= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][0] and
         broccoli_proportion <= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][1]):
-      return random.random() <= RAINBOW_BROCCOLI_PERCENT[i]
+      chance = random.randint(1, 100) / 100
+      return chance <= RAINBOW_BROCCOLI_CHANCE[i]
 
   return False
 

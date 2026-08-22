@@ -90,7 +90,7 @@ GAME_BROCCOLI_PERCENTS = {
 RAINBOW_BROCCOLI_PROPORTION_CHANCES = [[0.1, 0.2], [0.2, 0.25], [0.25, 0.35]]
 
 # The probability of adding a rainbow broccoli for each proportion group
-RAINBOW_BROCCOLI_PERCENT = [0.3, 0.4, 0.6]
+RAINBOW_BROCCOLI_CHANCE = [0.35, 0.45, 0.65]
 
 # The minimun amount of broccolis needed to add a rainbow broccoli
 MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI = 4
