@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.logic.board import Board
+from src.logic.board import Board, board_generator
 
 class test_board_class(unittest.TestCase):
   def setUp(self):
@@ -111,5 +111,16 @@ class test_board_class(unittest.TestCase):
                      len(self.board_object.broccoli_positions),
                      "Broccoli positions array should have 3 elements")
 
+class test_board_generation(unittest.TestCase):
+  def setUp(self):
+    self.board_object = board_generator(8, 6, 10)
+
+  def test_board_class(self):
+    self.assertIsInstance(self.board_object, Board, "The generated object is not a Board object")
+
+  def test_broccoli_filled_board(self):
+    self.assertNotEqual(0, self.board_object.broccoli_amount, "Broccoli amount should not be 0")
+    self.assertNotEqual(0, len(self.board_object.broccoli_positions), "Broccoli positions array should have at least 1 element")
+
 if __name__ == '__main__':
-    unittest.main()
+  unittest.main()
