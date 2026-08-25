@@ -1,8 +1,9 @@
 import unittest
 import numpy as np
+
 from src.logic.board import Board, board_generator
 
-class test_board_class(unittest.TestCase):
+class TestBoardClass(unittest.TestCase):
   def setUp(self):
     self.rows = 8
     self.columns = 6
@@ -111,7 +112,7 @@ class test_board_class(unittest.TestCase):
                      len(self.board_object.broccoli_positions),
                      "Broccoli positions array should have 3 elements")
 
-class test_board_generation(unittest.TestCase):
+class TestBoardGeneration(unittest.TestCase):
   def setUp(self):
     self.board_object = board_generator(8, 6, 10)
 
