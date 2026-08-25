@@ -4,7 +4,8 @@ from unittest.mock import patch, Mock
 
 from src.logic.board import Board
 from src.logic.boardFiller import (validate_rainbow_broccoli_chance,
-                                   add_rainbow_broccoli)
+                                   add_rainbow_broccoli,
+                                   define_broccoli_positions)
 from src.logic.constants.gameValues import (RAINBOW_BROCCOLI_PROPORTION_CHANCES,
                                             RAINBOW_BROCCOLI_CHANCE,
                                             MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI
@@ -67,3 +68,39 @@ class TestAddRainbowBroccoli(unittest.TestCase):
     self.assertEqual(GET_BOARD_VALUE["rainbowBroccoli"],
                      board_value,
                      "Rainbow broccoli not added in board array")
+
+class TestDefineBroccoliPositions(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(8, 6)
+    self.small_board_object = Board(2, 2)
+
+    small_board = self.small_board_object.board
+    for row in range(small_board.shape[0]):
+      for column in range(small_board.shape[1]):
+        small_board[row, column] = 4 # Fills the board with a proximity number
+
+    self.small_board_object.change_board(small_board)
+
+  def test_broccoli_position_blank_space(self):
+    broccoli_pos = define_broccoli_positions(self.board_object.board, self.board_object)
+    row_pos = broccoli_pos[0]
+    column_pos = broccoli_pos[1]
+    total_rows = self.board_object.total_rows
+    total_columns = self.board_object.total_columns
+
+    self.assertTrue(row_pos >= 0, "Broccoli row position can't be negative")
+    self.assertTrue(column_pos >= 0, "Broccoli column position can't be negative")
+    self.assertTrue(row_pos < total_rows, "Broccoli row position can't be higher than the total amount of rows")
+    self.assertTrue(column_pos < total_columns, "Broccoli column position can't be higher than the total amount of columns")
+
+  def test_broccoli_position_proximity_numbers(self):
+    broccoli_pos = define_broccoli_positions(self.small_board_object.board, self.small_board_object)
+    row_pos = broccoli_pos[0]
+    column_pos = broccoli_pos[1]
+    total_rows = self.small_board_object.total_rows
+    total_columns = self.small_board_object.total_columns
+
+    self.assertTrue(row_pos >= 0, "Broccoli row position can't be negative")
+    self.assertTrue(column_pos >= 0, "Broccoli column position can't be negative")
+    self.assertTrue(row_pos < total_rows, "Broccoli row position can't be higher than the total amount of rows")
+    self.assertTrue(column_pos < total_columns, "Broccoli column position can't be higher than the total amount of columns")
