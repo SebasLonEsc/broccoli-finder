@@ -25,7 +25,7 @@ def shapes_weight_definer(board_object):
       i += 1
       continue
 
-    if ((total_rows == 2 or total_columns == 2) and
+    if ((total_rows <= 2 or total_columns <= 2) and
         (shape == "cutCorners" or shape == "randomCutcorners")):
       # No cut cornes shapes on 2x2 boards
       board_shapes_weight[i] = 0
@@ -33,7 +33,7 @@ def shapes_weight_definer(board_object):
       continue
 
     if shape == "cross":
-      if total_rows == 2 or total_columns == 2:
+      if total_rows <= 2 or total_columns <= 2:
         # A two-length side will be reduce to one unit the board length on cross-shape
         board_shapes_weight[i] = 0
         i += 1
@@ -146,7 +146,7 @@ def cut_corners_shaper(board_object, random_corners=False):
       tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
       tile["checked"] = True
 
-      if board[j, CORNER_GUIDE[i][1]] == 0:
+      if board[j, CORNER_GUIDE[i][1]] == GET_BOARD_VALUE["blankSpace"]:
         board[j, CORNER_GUIDE[i][1]] = GET_BOARD_VALUE["nullSpace"]
         tiles_board[j, CORNER_GUIDE[i][1]] = tile
         null_space_amount += 1
@@ -166,15 +166,15 @@ def cut_corners_shaper(board_object, random_corners=False):
       tile["tileValue"] = GET_BOARD_VALUE["nullSpace"]
       tile["checked"] = True
 
-      if board[CORNER_GUIDE[i][0], j] == 0:
+      if board[CORNER_GUIDE[i][0], j] == GET_BOARD_VALUE["blankSpace"]:
         board[CORNER_GUIDE[i][0], j] = GET_BOARD_VALUE["nullSpace"]
         tiles_board[CORNER_GUIDE[i][0], j] = tile
         null_space_amount += 1
-    
+
   board_object.change_board(board)
   board_object.change_tiles_board(tiles_board)
   board_object.change_null_spaces_amount(null_space_amount)
-  board_object.change_avaliable_spaces_amount(board_object.board_size() - null_space_amount)
+  board_object.change_avaliable_spaces_amount(board_object.available_space - null_space_amount)
 
   return board_object
 
@@ -237,16 +237,22 @@ def cross_shaper(board_object):
 
   return board_object
 
-def board_shaper(board_object):
+def board_shaper(board_object, shape = ""):
   """Handles the shaping of the board.
 
   Args:
     board_object (Board): The object containing all of the information about the board
+    shape (str): A shape in the BOARD_SHAPES array (default "")
   Returns:
     Board: The board object in a randomly selected shape
   """
-  board_shapes_weight = shapes_weight_definer(board_object)
-  board_shape = random.choices(BOARD_SHAPES, board_shapes_weight)[0]
+  board_shape = shape
+  valid_shape = shape in BOARD_SHAPES
+
+  if board_shape == "" or not valid_shape:
+    board_shapes_weight = shapes_weight_definer(board_object)
+    board_shape = random.choices(BOARD_SHAPES, board_shapes_weight)[0]
+
   shaped_board = board_object
 
   match board_shape:
