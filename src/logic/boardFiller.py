@@ -22,8 +22,8 @@ def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   for i in range(len(RAINBOW_BROCCOLI_PROPORTION_CHANCES)):
     if (broccoli_proportion >= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][0] and
         broccoli_proportion <= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][1]):
-      chance = random.randint(1, 100) / 100
-      return chance <= RAINBOW_BROCCOLI_CHANCE[i]
+      chance_number = random.randint(1, 100) / 100
+      return chance_number <= RAINBOW_BROCCOLI_CHANCE[i]
 
   return False
 

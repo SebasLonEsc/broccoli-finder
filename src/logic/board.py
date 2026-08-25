@@ -1,7 +1,7 @@
 import numpy as np
 
 from .boardShaper import board_shaper
-from .broccoliFiller import board_broccoli_filler
+from .boardFiller import board_broccoli_filler
 from .constants.boardValues import BOARD_TILE_VALUE
 
 def fill_tiles_board(tiles_board):
