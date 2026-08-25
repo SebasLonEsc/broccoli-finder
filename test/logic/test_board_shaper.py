@@ -135,7 +135,7 @@ class TestBoardCornerSizeDefiner(unittest.TestCase):
                        corner[1],
                        "Corner size should be 0")
 
-  def test_small_row_corner_sizes(self):
+  def test_small_column_corner_sizes(self):
     corner_sizes = define_corner_sizes(self.small_column_board_object, True)
     expected_corner_size = 0
 
@@ -226,41 +226,47 @@ class TestCrossShaper(unittest.TestCase):
   def test_small_row_board(self):
     not_shaped_board_object = cross_shaper(copy(self.small_row_board_object))
     not_shaped_board = not_shaped_board_object.board
-    null_space_amount = 0
+    blank_space_amount = 0
+        
+    for row in range(not_shaped_board.shape[0]):
+      for column in range(not_shaped_board.shape[1]):
+        if not_shaped_board[row, column] == GET_BOARD_VALUE["blankSpace"]:
+          blank_space_amount += 1
 
-    for column in range(not_shaped_board.shape[1]):
-      if not_shaped_board[0, column] == GET_BOARD_VALUE["nullSpace"]:
-        null_space_amount += 1
-
-    self.assertEqual(0,
-                     null_space_amount,
-                     "Nullspace amount should be 0")
+    available_space = self.small_row_board_object.available_space
+    self.assertEqual(available_space,
+                      blank_space_amount,
+                      "Available space amount should be " + str(available_space))
 
   def test_small_column_board(self):
     not_shaped_board_object = cross_shaper(copy(self.small_column_board_object))
     not_shaped_board = not_shaped_board_object.board
-    null_space_amount = 0
+    blank_space_amount = 0
+    
+    for row in range(not_shaped_board.shape[0]):
+      for column in range(not_shaped_board.shape[1]):
+        if not_shaped_board[row, column] == GET_BOARD_VALUE["blankSpace"]:
+          blank_space_amount += 1
 
-    for column in range(not_shaped_board.shape[1]):
-      if not_shaped_board[0, column] == GET_BOARD_VALUE["nullSpace"]:
-        null_space_amount += 1
-
-    self.assertEqual(0,
-                     null_space_amount,
-                     "Nullspace amount should be 0")
+    available_space = self.small_column_board_object.available_space
+    self.assertEqual(available_space,
+                     blank_space_amount,
+                     "Available space amount should be " + str(available_space))
 
   def test_small_size_board(self):
     not_shaped_board_object = cross_shaper(copy(self.small_size_board_object))
     not_shaped_board = not_shaped_board_object.board
-    null_space_amount = 0
+    blank_space_amount = 0
 
-    for column in range(not_shaped_board.shape[1]):
-      if not_shaped_board[0, column] == GET_BOARD_VALUE["nullSpace"]:
-        null_space_amount += 1
+    for row in range(not_shaped_board.shape[0]):
+      for column in range(not_shaped_board.shape[1]):
+        if not_shaped_board[row, column] == GET_BOARD_VALUE["blankSpace"]:
+          blank_space_amount += 1
 
-    self.assertEqual(0,
-                     null_space_amount,
-                     "Nullspace amount should be 0")
+    available_space = self.small_size_board_object.available_space
+    self.assertEqual(available_space,
+                     blank_space_amount,
+                     "Available space amount should be " + str(available_space))
 
   def test_cross_shaped_board(self):
     shaped_board_object = cross_shaper(copy(self.board_object))

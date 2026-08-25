@@ -122,6 +122,3 @@ class TestBoardGeneration(unittest.TestCase):
   def test_broccoli_filled_board(self):
     self.assertNotEqual(0, self.board_object.broccoli_amount, "Broccoli amount should not be 0")
     self.assertNotEqual(0, len(self.board_object.broccoli_positions), "Broccoli positions array should have at least 1 element")
-
-if __name__ == '__main__':
-  unittest.main()
