@@ -1,23 +1,23 @@
 from src.logic.constants.boardValues import BOARD_VALUES_GUIDE, GET_BOARD_VALUE
 
-def out_of_bounds_validation(current_pos, pos, limit = 0):
+def out_of_bounds_validation(new_coordinate, current_coordinate, limit = 0):
   """Validates if the current position is out of bounds.
 
   Args:
-    current_pos (array[int]): The new position that is being evaluated
-    pos (array[int]): The previous position
-    limit (int): The limit value that the position can have (default 0)
+    new_coordinate (int): The new position coordinate that is being evaluated
+    current_coordinate (int): The current position coordinate
+    limit (int): The limit value that the coordinate can have (default 0)
   Returns:
-    array[int]: Returns the current_pos if the position is not out of bounds.
-      Returns pos argument otherwise
+    int: Returns the new_coordinate if the coordinate is not out of bounds.
+      Returns current_coordinate argument otherwise
   """
-  if limit == 0 and current_pos < limit:
-    return pos
+  if limit == 0 and new_coordinate < limit:
+    return current_coordinate
   
-  if limit != 0 and current_pos >= limit:
-    return pos
+  if limit != 0 and new_coordinate >= limit:
+    return current_coordinate
   
-  return current_pos
+  return new_coordinate
 
 def check_null_spaces(board, pos, r_increment, c_increment, r_limit=0, c_limit=0):
   """Verifies if there are null spaces on the current position.
