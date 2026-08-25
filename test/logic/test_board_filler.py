@@ -5,7 +5,8 @@ from unittest.mock import patch, Mock
 from src.logic.board import Board
 from src.logic.boardFiller import (validate_rainbow_broccoli_chance,
                                    add_rainbow_broccoli,
-                                   define_broccoli_positions)
+                                   define_broccoli_positions,
+                                   board_broccoli_filler)
 from src.logic.constants.gameValues import (RAINBOW_BROCCOLI_PROPORTION_CHANCES,
                                             RAINBOW_BROCCOLI_CHANCE,
                                             MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI
@@ -104,3 +105,22 @@ class TestDefineBroccoliPositions(unittest.TestCase):
     self.assertTrue(column_pos >= 0, "Broccoli column position can't be negative")
     self.assertTrue(row_pos < total_rows, "Broccoli row position can't be higher than the total amount of rows")
     self.assertTrue(column_pos < total_columns, "Broccoli column position can't be higher than the total amount of columns")
+
+class TestBoardBroccoliFiller(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(4, 4)
+
+  def test_board_broccoli_filler(self):
+    total_broccolis = self.board_object.available_space + 5
+    filled_board = board_broccoli_filler(self.board_object, total_broccolis)
+
+    self.assertTrue(filled_board.broccoli_amount > 0, "No broccolis after board fill")
+
+    counted_broccolis = 0
+    for row in range(filled_board.total_rows):
+      for columns in range(filled_board.total_columns):
+        if (filled_board.board[row, columns] == GET_BOARD_VALUE["broccoli"] or
+            filled_board.board[row, columns] == GET_BOARD_VALUE["rainbowBroccoli"]):
+          counted_broccolis += 1
+
+    self.assertTrue(counted_broccolis > 0, "Board must change after fill")
