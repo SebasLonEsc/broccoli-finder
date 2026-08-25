@@ -21,6 +21,13 @@ class TestRainbowBroccoliChanceValidator(unittest.TestCase):
 
     self.assertFalse(add_rainbow_broccoli, "Rainbow broccoli not valid on small amount of broccolis")
 
+  def test_big_amount_of_broccolis(self):
+    broccoli_amount = MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI + 1
+    broccoli_proportion = 0.99 # 99% of the board
+    add_rainbow_broccoli = validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount)
+
+    self.assertTrue(add_rainbow_broccoli, "Rainbow broccoli should be added")
+
   def test_add_rainbow_broccoli_chance(self):
     broccoli_amount = MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI
     broccoli_proportion = RAINBOW_BROCCOLI_PROPORTION_CHANCES[0][0]

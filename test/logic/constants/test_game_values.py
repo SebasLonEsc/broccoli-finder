@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 import src.lang.language as Lg
 from src.logic.constants.gameValues import get_random_text, get_end_game_text

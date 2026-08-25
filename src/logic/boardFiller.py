@@ -19,6 +19,9 @@ def validate_rainbow_broccoli_chance(broccoli_proportion, broccoli_amount):
   if broccoli_amount < MINIMUN_BROCCOLI_AMOUNT_FOR_RAINBOW_BROCCOLI:
     return False
 
+  if broccoli_proportion > RAINBOW_BROCCOLI_PROPORTION_CHANCES[-1][1]:
+    return True
+
   for i in range(len(RAINBOW_BROCCOLI_PROPORTION_CHANCES)):
     if (broccoli_proportion >= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][0] and
         broccoli_proportion <= RAINBOW_BROCCOLI_PROPORTION_CHANCES[i][1]):
