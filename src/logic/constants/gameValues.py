@@ -2,7 +2,7 @@ import random
 
 import src.lang.language as Lg
 
-def get_endgame_text(texts):
+def get_random_text(texts):
   """ Returns a random text from a list of strings
 
   Args:
@@ -17,27 +17,24 @@ def get_endgame_text(texts):
   text_position = random.randrange(0, len(texts))
   return texts[text_position]
 
-def get_winning_text():
+def get_end_game_text(lang_code):
   """Returns the text upon winning the game
 
+  Args:
+    lang_code (str): The language code for the endgame text
   Returns:
     str: The congratulations text
   """
-  if len(Lg.lang["Winning_Texts"]) == 1:
-    return Lg.lang["Winning_Texts"][0]
+  if len(Lg.lang[lang_code]) == 1:
+    return Lg.lang[lang_code][0]
 
-  return get_endgame_text(Lg.lang["Winning_Texts"])
+  return get_random_text(Lg.lang[lang_code])
 
-def get_game_over_text():
-  """Returns the text upon losing the game
+# The winning texts language code
+WINNING_LANG_CODE = "Winning_Texts"
 
-  Returns:
-    str: The game over text
-  """
-  if len(Lg.lang["Game_Over_Text"]) == 1:
-    return Lg.lang["Game_Over_Text"][0]
-
-  return get_endgame_text(Lg.lang["Game_Over_Text"])
+# The game over texts language code
+GAME_OVER_LANG_CODE = "Game_Over_Texts"
 
 # Game types represented as numbers
 GAME_TYPES = {

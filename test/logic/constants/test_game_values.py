@@ -1,19 +1,19 @@
 import unittest
 
-from src.logic.constants.gameValues import get_endgame_text
+from src.logic.constants.gameValues import get_random_text
 
-class TestEndGameText(unittest.TestCase):
-  def test_single_end_game_text(self):
+class TestRandomText(unittest.TestCase):
+  def test_single_text_random(self):
     text_array = ["Hello World"]
-    returned_text = get_endgame_text(text_array)
+    returned_text = get_random_text(text_array)
 
     self.assertEqual(returned_text,
                      text_array[0],
                      "Returned text should be equal to the one in array sample")
 
-  def test_multiple_end_game_text(self):
+  def test_multiple_texts_random(self):
     text_array = ["Hello", "World", "Happy", "Coding"]
-    returned_text = get_endgame_text(text_array)
+    returned_text = get_random_text(text_array)
 
     valid_text = False
 

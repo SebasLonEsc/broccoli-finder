@@ -6,7 +6,7 @@ from pathlib import Path
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import close_interface, go_back, open_pillow_image, create_menu
-from src.logic.constants.gameValues import get_winning_text, get_game_over_text, GAME_STATUS
+from src.logic.constants.gameValues import get_end_game_text, GAME_STATUS, WINNING_LANG_CODE, GAME_OVER_LANG_CODE
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE, BOARD_VALUES_GUIDE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
@@ -303,11 +303,11 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
       handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccoli_counter)
 
     if game_status != 0:
-      game_status_text = get_winning_text()
+      game_status_text = get_end_game_text(WINNING_LANG_CODE)
 
       game_over = GAME_STATUS[game_status] == "Game Over"
       if game_over:
-        game_status_text = get_game_over_text()
+        game_status_text = get_end_game_text(GAME_OVER_LANG_CODE)
 
       win_label.config(text=game_status_text)
       handle_game_status(board_object, buttons, move_position, game_over)

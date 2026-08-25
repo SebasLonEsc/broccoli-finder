@@ -22,7 +22,7 @@ english = {
                     "You did it!!!",
                     "That was awesome!",
                     "Impresive skills"],
-  "Game_Over_Text": ["Sorry you lost",
+  "Game_Over_Texts": ["Sorry you lost",
                    "Please try again :(",
                    "Next time for sure",
                    "You did your best",
