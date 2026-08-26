@@ -4,7 +4,8 @@ import numpy as np
 from src.logic.board import Board
 from src.logic.broccoliProximity import (out_of_bounds_validation,
                                          check_null_spaces,
-                                         broccoli_proximity)
+                                         broccoli_proximity,
+                                         validate_new_coordinate_value)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 class TestOutOfBoundsValidation(unittest.TestCase):
@@ -184,5 +185,44 @@ class TestBroccoliProximity(unittest.TestCase):
           proximity_numbers_count += 1
 
     self.assertEqual(proximity_numbers_count,
-                      expected_proximity_number_count,
-                      "Total count of proximity numbers should be " + str(expected_proximity_number_count))
+                     expected_proximity_number_count,
+                     "Total count of proximity numbers should be " + str(expected_proximity_number_count))
+
+class TestNewCoordinateValueValidator(unittest.TestCase):
+  def test_valid_new_coordinate(self):
+    new_coordinate_value = 1
+    limit = 0
+    comparator = 1
+    valid_new_coordinate = validate_new_coordinate_value(new_coordinate_value,
+                                                  limit,
+                                                  comparator)
+
+    self.assertTrue(valid_new_coordinate, "The new coordinate should be valid")
+
+    new_coordinate_value = 5
+    limit = 6
+    comparator = -1
+    valid_new_coordinate = validate_new_coordinate_value(new_coordinate_value,
+                                                         limit,
+                                                         comparator)
+
+    self.assertTrue(valid_new_coordinate, "The new coordinate should be valid")
+
+  def test_invalid_new_coordinate(self):
+    new_coordinate_value = -1
+    limit = 0
+    comparator = 1
+    valid_new_coordinate = validate_new_coordinate_value(new_coordinate_value,
+                                                         limit,
+                                                         comparator)
+
+    self.assertFalse(valid_new_coordinate, "The new coordinate should be invalid")
+
+    new_coordinate_value = 7
+    limit = 6
+    comparator = -1
+    valid_new_coordinate = validate_new_coordinate_value(new_coordinate_value,
+                                                         limit,
+                                                         comparator)
+
+    self.assertFalse(valid_new_coordinate, "The new coordinate should be invalid")
