@@ -2,7 +2,9 @@ import unittest
 import numpy as np
 
 from src.logic.board import Board
-from src.logic.broccoliProximity import out_of_bounds_validation, check_null_spaces
+from src.logic.broccoliProximity import (out_of_bounds_validation,
+                                         check_null_spaces,
+                                         broccoli_proximity)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 class TestOutOfBoundsValidation(unittest.TestCase):
@@ -129,3 +131,58 @@ class TestCheckNullSpaces(unittest.TestCase):
     self.assertEqual(new_pos[1],
                      expected_pos[1],
                      "Column coordinate should not change")
+
+class TestBroccoliProximity(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(3,3)
+    self.cross_board_object = Board(3,3)
+    broccoli = GET_BOARD_VALUE["broccoli"]
+    null_space = GET_BOARD_VALUE["nullSpace"]
+    
+    new_board = [[0, 0, 0],
+                 [0, broccoli, 0],
+                 [0, 0, 0]]
+    self.board_object.change_board(np.array(new_board))
+    self.broccoli_pos = [1,1]
+
+    new_cross_board = [[0, null_space, 0],
+                       [null_space, null_space, null_space],
+                       [0, null_space, broccoli]]
+    self.cross_board_object.change_board(np.array(new_cross_board))
+    self.cross_broccoli_pos = [2,2]
+
+  def test_broccoli_proximity(self):
+    filled_board = broccoli_proximity(self.board_object.board,
+                                      self.broccoli_pos,
+                                      self.board_object.total_rows,
+                                      self.board_object.total_columns)
+    proximity_numbers_count = 0
+    expected_proximity_number_count = 8 # On a 3x3 board with 1 broccoli
+
+    for row in range(filled_board.shape[0]):
+      for column in range(filled_board.shape[1]):
+        if filled_board[row, column] > 0:
+          proximity_numbers_count += 1
+
+    self.assertEqual(proximity_numbers_count,
+                     expected_proximity_number_count,
+                     "Total count of proximity numbers should be " + str(expected_proximity_number_count))
+
+  def test_broccoli_proximity_cross_board(self):
+    filled_board = broccoli_proximity(self.cross_board_object.board,
+                                      self.cross_broccoli_pos,
+                                      self.cross_board_object.total_rows,
+                                      self.cross_board_object.total_columns)
+    proximity_numbers_count = 0
+    # On a 3x3 cross-shaped board
+    # There are only 4 free tiles -1 for the broccoli
+    expected_proximity_number_count = 3
+
+    for row in range(filled_board.shape[0]):
+      for column in range(filled_board.shape[1]):
+        if filled_board[row, column] > 0:
+          proximity_numbers_count += 1
+
+    self.assertEqual(proximity_numbers_count,
+                      expected_proximity_number_count,
+                      "Total count of proximity numbers should be " + str(expected_proximity_number_count))
