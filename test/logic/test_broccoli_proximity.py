@@ -5,7 +5,8 @@ from src.logic.board import Board
 from src.logic.broccoliProximity import (out_of_bounds_validation,
                                          check_null_spaces,
                                          broccoli_proximity,
-                                         validate_new_coordinate_value)
+                                         validate_new_coordinate_value,
+                                         validate_nullspaces_for_rainbow_broccoli)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 class TestOutOfBoundsValidation(unittest.TestCase):
@@ -226,3 +227,121 @@ class TestNewCoordinateValueValidator(unittest.TestCase):
                                                          comparator)
 
     self.assertFalse(valid_new_coordinate, "The new coordinate should be invalid")
+
+class TestNullSpaceValidatorForRainbowBroccoli(unittest.TestCase):
+  def setUp(self):
+    self.empty_board_object = Board(3,3)
+    self.cornered_board_object = Board(3,3)
+    self.cross_board_object = Board(3,3)
+    null_space = GET_BOARD_VALUE["nullSpace"]
+
+    cornered_new_board = [[null_space, null_space, null_space],
+                         [null_space, 0, null_space],
+                         [null_space, null_space, null_space]]
+    self.cornered_board_object.change_board(np.array(cornered_new_board))
+    self.cornered_valid_pos = [1,1] # Board center
+
+    cross_new_board = [[0, null_space, 0],
+                       [null_space, null_space, null_space],
+                       [0, null_space, 0]]
+    self.cross_board_object.change_board(np.array(cross_new_board))
+
+  def test_null_space_validation_decrement(self):
+    board_lower_limit = 0
+    increment = -1
+    pos = [self.cornered_valid_pos[0]+increment, self.cornered_valid_pos[1]+increment]
+    new_pos = validate_nullspaces_for_rainbow_broccoli(self.cornered_board_object.board,
+                                                       pos,
+                                                       self.cornered_valid_pos,
+                                                       increment,
+                                                       board_lower_limit,
+                                                       board_lower_limit)
+
+    self.assertEqual(new_pos[0],
+                     pos[0], # Stops at first pos with increment for the current board
+                     "New row coordinate should be " + str(pos[0]))
+
+    self.assertEqual(new_pos[1],
+                     pos[1], # Stops at first pos with increment for the current board
+                     "New column coordinate should be " + str(pos[1]))
+
+  def test_null_space_validation_increment(self):
+    board_lower_limit = self.cornered_board_object.total_rows # Square board, same number of columns
+    increment = 1
+    pos = [self.cornered_valid_pos[0]+increment, self.cornered_valid_pos[1]+increment]
+    new_pos = validate_nullspaces_for_rainbow_broccoli(self.cornered_board_object.board,
+                                                        pos,
+                                                        self.cornered_valid_pos,
+                                                        increment,
+                                                        board_lower_limit,
+                                                        board_lower_limit)
+
+    self.assertEqual(new_pos[0],
+                     pos[0], # Stops at first pos with increment for the current board
+                     "New row coordinate should be " + str(pos[0]))
+
+    self.assertEqual(new_pos[1],
+                     pos[1], # Stops at first pos with increment for the current board
+                     "New column coordinate should be " + str(pos[1]))
+
+  def test_null_space_validation_empty_board(self):
+    board_lower_limit = 0
+    increment = -1
+    current_pos = [2, 2] # Last row and column of a 3x3 board
+    pos = [current_pos[0]+increment, current_pos[1]+increment]
+    new_pos = validate_nullspaces_for_rainbow_broccoli(self.empty_board_object.board,
+                                                        pos,
+                                                        current_pos,
+                                                        increment,
+                                                        board_lower_limit,
+                                                        board_lower_limit)
+
+    self.assertEqual(new_pos[0],
+                     pos[0], # Stops at first pos with increment for the current board
+                     "New row coordinate should be " + str(pos[0]))
+    
+    self.assertEqual(new_pos[1],
+                     pos[1], # Stops at pos due to be a empty tile
+                     "New column coordinate should be " + str(pos[1]))
+
+  def test_null_space_validation_cross_board_decrement(self):
+    board_lower_limit = 0
+    increment = -1
+    current_pos = [2, 2] # Last row and column of a 3x3 board
+    pos = [current_pos[0]+increment, current_pos[1]+increment]
+    new_pos = validate_nullspaces_for_rainbow_broccoli(self.cross_board_object.board,
+                                                       pos,
+                                                       current_pos,
+                                                       increment,
+                                                       board_lower_limit,
+                                                       board_lower_limit)
+
+    expected_pos = [0,0] # Other side of the cross
+    self.assertEqual(new_pos[0],
+                     expected_pos[0],
+                     "New row coordinate should be " + str(expected_pos[0]))
+    
+    self.assertEqual(new_pos[1],
+                     expected_pos[0],
+                     "New column coordinate should be " + str(expected_pos[1]))
+
+  def test_null_space_validation_cross_board_increment(self):
+    board_lower_limit = self.cross_board_object.total_rows # Square board, same number of columns
+    increment = 1
+    current_pos = [0, 0] # First row and column of a 3x3 board
+    pos = [current_pos[0]+increment, current_pos[1]+increment]
+    new_pos = validate_nullspaces_for_rainbow_broccoli(self.cross_board_object.board,
+                                                        pos,
+                                                        current_pos,
+                                                        increment,
+                                                        board_lower_limit,
+                                                        board_lower_limit)
+
+    expected_pos = [2,2] # Other side of the cross
+    self.assertEqual(new_pos[0],
+                     expected_pos[0],
+                     "New row coordinate should be " + str(expected_pos[0]))
+    
+    self.assertEqual(new_pos[1],
+                     expected_pos[0],
+                     "New column coordinate should be " + str(expected_pos[1]))
