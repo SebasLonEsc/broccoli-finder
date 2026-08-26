@@ -6,7 +6,8 @@ from src.logic.broccoliProximity import (out_of_bounds_validation,
                                          check_null_spaces,
                                          broccoli_proximity,
                                          validate_new_coordinate_value,
-                                         validate_nullspaces_for_rainbow_broccoli)
+                                         validate_nullspaces_for_rainbow_broccoli,
+                                         update_proximity_numbers_for_rainbow_broccoli)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 
 class TestOutOfBoundsValidation(unittest.TestCase):
@@ -345,3 +346,57 @@ class TestNullSpaceValidatorForRainbowBroccoli(unittest.TestCase):
     self.assertEqual(new_pos[1],
                      expected_pos[0],
                      "New column coordinate should be " + str(expected_pos[1]))
+
+class TestUpdateProximityForRainbowBroccoli(unittest.TestCase):
+  def setUp(self):
+    self.top_corner_board_object = Board(3,3)
+    self.bottom_corner_board_object = Board(3,3)
+    rainbow_broccoli = GET_BOARD_VALUE["rainbowBroccoli"]
+    
+    top_corner_new_board = [[rainbow_broccoli, 1, 0],
+                            [1, 1, 0],
+                            [0, 0, 0]]
+    self.top_corner_board_object.change_board(np.array(top_corner_new_board))
+
+    bottom_corner_new_board = [[0, 0, 0],
+                               [0, 1, 1],
+                               [0, 1, rainbow_broccoli]]
+    self.bottom_corner_board_object.change_board(np.array(bottom_corner_new_board))
+
+  def test_rainbow_on_top_corner(self):
+    top_corner_pos = [0,0]
+    changed_board = update_proximity_numbers_for_rainbow_broccoli(self.top_corner_board_object.board,
+                                                                  top_corner_pos,
+                                                                  self.top_corner_board_object.total_rows,
+                                                                  self.top_corner_board_object.total_columns)
+
+    expected_proximity_numbers_count = 3 # For a rainbow broccoli on a corner only 3 tiles around
+    proximity_numbers_count = 0
+
+    for row in range(changed_board.shape[0]):
+      for column in range(changed_board.shape[1]):
+        if changed_board[row, column] > 10:
+          proximity_numbers_count += 1
+
+    self.assertEqual(proximity_numbers_count,
+                     expected_proximity_numbers_count,
+                     "Total proximity number count should be " + str(expected_proximity_numbers_count))
+
+  def test_rainbow_on_bottom_corner(self):
+    bottom_corner_pos = [2,2] # Last row and column for a 3x3 board
+    changed_board = update_proximity_numbers_for_rainbow_broccoli(self.bottom_corner_board_object.board,
+                                                                  bottom_corner_pos,
+                                                                  self.bottom_corner_board_object.total_rows,
+                                                                  self.bottom_corner_board_object.total_columns)
+
+    expected_proximity_numbers_count = 3 # For a rainbow broccoli on a corner only 3 tiles around
+    proximity_numbers_count = 0
+
+    for row in range(changed_board.shape[0]):
+      for column in range(changed_board.shape[1]):
+        if changed_board[row, column] > 10:
+          proximity_numbers_count += 1
+
+    self.assertEqual(proximity_numbers_count,
+                      expected_proximity_numbers_count,
+                      "Total proximity number count should be " + str(expected_proximity_numbers_count))
