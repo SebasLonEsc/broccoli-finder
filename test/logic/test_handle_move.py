@@ -446,6 +446,15 @@ class TestHandleMove(unittest.TestCase):
     new_board = [[null_space, broccoli],
                  [blank_space, proximity_number]]
     self.board_object.change_board(np.array(new_board))
+    self.board_object.change_broccoli_amount(1)
+    self.board_object.add_broccoli_positions(self.broccoli_pos)
+
+    tiles_board = self.board_object.tiles_board
+    tiles_board[self.null_space_tile_pos[0],
+                self.null_space_tile_pos[1]]["checked"] = True
+    tiles_board[self.null_space_tile_pos[0],
+                self.null_space_tile_pos[1]]["tileValue"] = null_space
+    self.board_object.change_tiles_board(tiles_board)
 
   def test_null_space_handle_move(self):
     _, game_status = handle_move(copy(self.board_object),
@@ -462,3 +471,11 @@ class TestHandleMove(unittest.TestCase):
     self.assertEqual(game_status,
                      GET_GAME_STATUS["Game Over"],
                      "The game status should be Game Over")
+
+  def test_win_handle_move(self):
+    _, game_status = handle_move(copy(self.board_object),
+                                 self.valid_tile_pos)
+
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Win"],
+                     "The game status should be Win")

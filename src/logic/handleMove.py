@@ -237,5 +237,5 @@ def handle_move(board_object, move_position):
     broccoli_positions = board_object.broccoli_positions
     tiles_board = reveal_all_broccolis(board, tiles_board, broccoli_positions)
     board_object.change_tiles_board(tiles_board)
-  
+
   return board_object, game_status
