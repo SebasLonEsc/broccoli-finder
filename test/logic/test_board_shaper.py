@@ -1,6 +1,6 @@
 import unittest
 import math
-from copy import copy, deepcopy
+from copy import copy
 
 from src.logic.board import Board
 from src.logic.boardShaper import (shapes_weight_definer,
@@ -153,8 +153,8 @@ class TestCutCornersShaper(unittest.TestCase):
     self.rows = 8
     self.columns = 6
     self.board_object = Board(self.rows, self.columns)
-    self.not_random_corners_board_object = cut_corners_shaper(deepcopy(self.board_object), False)
-    self.random_corners_board_object = cut_corners_shaper(deepcopy(self.board_object), True)
+    self.not_random_corners_board_object = cut_corners_shaper(copy(self.board_object), False)
+    self.random_corners_board_object = cut_corners_shaper(copy(self.board_object), True)
 
   def test_not_random_cut_corners_board(self):
     shaped_board = self.not_random_corners_board_object.board
@@ -184,12 +184,9 @@ class TestCutCornersShaper(unittest.TestCase):
       self.assertTrue(is_null_space)
 
   def test_random_cut_corners_board(self):
-    board_object = Board(self.rows, self.columns)
-    random_corners_board_object = cut_corners_shaper(board_object, True)
-
-    shaped_board = random_corners_board_object.board
-    null_spaces_amount = random_corners_board_object.null_space_amount
-    available_space_amount = random_corners_board_object.available_space
+    shaped_board = self.random_corners_board_object.board
+    null_spaces_amount = self.random_corners_board_object.null_space_amount
+    available_space_amount = self.random_corners_board_object.available_space
     previous_available_space = self.board_object.available_space
 
     self.assertNotEqual(0,
