@@ -1,12 +1,14 @@
 import unittest
 import numpy as np
+from copy import copy
 
 from src.logic.board import board_generator, Board
 from src.logic.handleMove import (reveal_all_broccolis,
                                   check_game_status,
                                   handle_rainbow_broccoli,
                                   check_valid_move,
-                                  make_move)
+                                  make_move,
+                                  handle_move)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.gameValues import GET_GAME_STATUS
 
@@ -389,7 +391,7 @@ class TestMakeMove(unittest.TestCase):
     self.assertTrue(flowering_broccoli_on_board,
                     "There should be a flowering broccoli on the board")
 
-  def test_make_move(self):
+  def test_make_valid_move(self):
     move_pos = self.valid_tile_pos
     new_tiles_board, _ = make_move(self.board_object.board,
                                     self.board_object.tiles_board,
@@ -429,4 +431,26 @@ class TestMakeMove(unittest.TestCase):
                                   row_decrease_move[1]]["tileValue"] == GET_BOARD_VALUE["broccoli"]
     self.assertTrue(is_broccoli,
                     "The tile should be a broccoli")
-    
+
+class TestHandleMove(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(2,2)
+    self.null_space_tile_pos = [0,0]
+    self.broccoli_pos = [0,1]
+    self.valid_tile_pos = [1,0]
+
+    null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
+    broccoli = GET_BOARD_VALUE["broccoli"]
+    proximity_number = 1
+    new_board = [[null_space, broccoli],
+                 [blank_space, proximity_number]]
+    self.board_object.change_board(np.array(new_board))
+
+  def test_null_space_handle_move(self):
+    _, game_status = handle_move(copy(self.board_object),
+                                 self.null_space_tile_pos)
+
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Play"],
+                     "The game status should be Play")
