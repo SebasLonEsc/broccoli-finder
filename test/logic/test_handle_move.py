@@ -1,7 +1,9 @@
 import unittest
 
 from src.logic.board import board_generator
-from src.logic.handleMove import reveal_all_broccolis, check_game_status
+from src.logic.handleMove import (reveal_all_broccolis,
+                                  check_game_status,
+                                  handle_rainbow_broccoli)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.gameValues import GET_GAME_STATUS
 
@@ -61,7 +63,6 @@ class TestCheckGameStatus(unittest.TestCase):
         broccoli_count += 1
 
     self.board_object.change_tiles_board(tiles_board)
-
 
   def test_game_over(self):
     broccoli_position = self.board_object.broccoli_positions[0]
@@ -125,3 +126,68 @@ class TestCheckGameStatus(unittest.TestCase):
     self.assertEqual(game_status,
                      GET_GAME_STATUS["Win"],
                      "The game status should be Win")
+
+class TestHandleRainbowBroccoli(unittest.TestCase):
+  def setUp(self):
+    self.board_object = board_generator(4,4,3)
+
+    tiles_board = self.board_object.tiles_board
+    board = self.board_object.board
+    broccoli_count = 0
+    for pos in self.board_object.broccoli_positions:
+      if broccoli_count == 1:
+        break
+
+      if broccoli_count == 0:
+        tiles_board[pos[0], pos[1]]["checked"] = True
+        tiles_board[pos[0], pos[1]]["tileValue"] = GET_BOARD_VALUE["rainbowBroccoli"]
+        board[pos[0], pos[1]] = GET_BOARD_VALUE["rainbowBroccoli"]
+        broccoli_count += 1
+
+    self.board_object.change_tiles_board(tiles_board)
+    self.board_object.change_board(board)
+
+  def test_handle_rainbow_broccoli(self):
+    total_tiles = self.board_object.board_size()
+    board = self.board_object.board
+    non_flowering_broccoli_count = 0
+
+    for row in range(board.shape[0]):      
+      for column in range(board.shape[1]):
+        if board[row, column] != GET_BOARD_VALUE["floweringBroccoli"]:
+          non_flowering_broccoli_count += 1
+
+    self.assertEqual(total_tiles,
+                     non_flowering_broccoli_count,
+                     "There should be zero flowering broccolis on the board")
+
+    tiles_board, board = handle_rainbow_broccoli(board,
+                                                 self.board_object.tiles_board,
+                                                 self.board_object.broccoli_positions)
+
+    flowering_broccoli_on_board = False
+    for row in range(board.shape[0]):
+      if flowering_broccoli_on_board:
+        break
+ 
+      for column in range(board.shape[1]):
+        if board[row, column] == GET_BOARD_VALUE["floweringBroccoli"]:
+          flowering_broccoli_on_board = True
+          break
+
+    flowering_broccoli_on_tiles_board = False
+    for row in range(tiles_board.shape[0]):
+      if flowering_broccoli_on_tiles_board:
+        break
+  
+      for column in range(tiles_board.shape[1]):
+        if tiles_board[row, column]["tileValue"] == GET_BOARD_VALUE["floweringBroccoli"]:
+          flowering_broccoli_on_tiles_board = True
+          break
+
+    self.assertTrue(flowering_broccoli_on_board,
+                    "There should be a flowering broccoli on the board")
+
+    self.assertTrue(flowering_broccoli_on_tiles_board,
+                    "There should be a flowering broccoli on the tiles board")
+

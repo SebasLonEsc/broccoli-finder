@@ -68,10 +68,8 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     tiles_board (np.ndarray): Matrix containing each tiles of the board
     broccoli_positions (array[array[int,int]]): The positions of the broccolis
   Returns:
-    np.array: Updated tileBoard matrix after the player move if valid.
-      Returns the unchanged matrix otherwise
-    (np.ndarray): The board matrix containg the information about
-      nullspaces, broccoli position and proximity
+    np.array: Updated tileBoard matrix with the flowering broccoli
+    np.ndarray: The updated board matrix with the flowering broccoli
   """
   invalid_position = True
   pos = []
@@ -137,7 +135,7 @@ def make_move(board, tiles_board, move_position, board_row_limit, board_column_l
   Returns:
     np.array: Updated tileBoard matrix after the player move if valid.
       Returns the unchanged matrix otherwise
-    (np.ndarray): The board matrix containg the information about
+    np.ndarray: The board matrix containg the information about
       nullspaces, broccoli position and proximity
   """
   valid_move = check_valid_move(board,
