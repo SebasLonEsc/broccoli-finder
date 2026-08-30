@@ -304,6 +304,9 @@ class TestMakeMove(unittest.TestCase):
                  [blank_space, self.proximity_number, rainbow_broccoli]]
     self.board_object.change_board(np.array(new_board))
 
+    self.board_object.add_broccoli_positions(self.rainbow_broccoli_pos)
+    self.board_object.add_broccoli_positions(self.broccoli_pos)
+
   def test_make_invalid_move(self):
     tiles_board = self.board_object.tiles_board
     move_pos = self.null_space_tile_pos
@@ -336,7 +339,7 @@ class TestMakeMove(unittest.TestCase):
     self.assertTrue(is_broccoli,
                     "The tile should be a broccoli")
 
-  def test_make_move_on_broccoli(self):
+  def test_make_move_on_proximity_number(self):
     move_pos = self.proximity_number_pos
     new_tiles_board, _ = make_move(self.board_object.board,
                                    self.board_object.tiles_board,
@@ -351,3 +354,37 @@ class TestMakeMove(unittest.TestCase):
     is_proximity_number = new_tiles_board[move_pos[0], move_pos[1]]["tileValue"] == self.proximity_number
     self.assertTrue(is_proximity_number,
                     "The tile should be a proximity number " + str(self.proximity_number))
+
+  def test_make_move_on_raibow_broccoli(self):
+    move_pos = self.rainbow_broccoli_pos
+    new_tiles_board, new_board = make_move(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    move_pos,
+                                    self.board_object.total_rows,
+                                    self.board_object.total_columns,
+                                    self.board_object.broccoli_positions)
+
+    self.assertTrue(new_tiles_board[move_pos[0], move_pos[1]]["checked"],
+                    "The tile should be checked after move")
+
+    is_rainbow_broccoli = new_tiles_board[move_pos[0], move_pos[1]]["tileValue"] == GET_BOARD_VALUE["rainbowBroccoli"]
+    self.assertTrue(is_rainbow_broccoli,
+                    "The tile should be a rainbow broccoli")
+
+    flowering_broccoli_on_tiles_board = False
+    for row in range(new_tiles_board.shape[0]):
+      for column in range(new_tiles_board.shape[1]):
+        if new_tiles_board[row, column]["tileValue"] == GET_BOARD_VALUE["floweringBroccoli"]:
+          flowering_broccoli_on_tiles_board = True
+
+    flowering_broccoli_on_board = False
+    for row in range(new_board.shape[0]):
+      for column in range(new_board.shape[1]):
+        if new_board[row, column] == GET_BOARD_VALUE["floweringBroccoli"]:
+          flowering_broccoli_on_board = True
+
+    self.assertTrue(flowering_broccoli_on_tiles_board,
+                    "There should be a flowering broccoli on the tiles board")
+
+    self.assertTrue(flowering_broccoli_on_board,
+                    "There should be a flowering broccoli on the board")
