@@ -1,8 +1,9 @@
 import unittest
 
 from src.logic.board import board_generator
-from src.logic.handleMove import reveal_all_broccolis
+from src.logic.handleMove import reveal_all_broccolis, check_game_status
 from src.logic.constants.boardValues import GET_BOARD_VALUE
+from src.logic.constants.gameValues import GET_GAME_STATUS
 
 class TestRevealAllBroccolis(unittest.TestCase):
   def setUp(self):
@@ -38,3 +39,89 @@ class TestRevealAllBroccolis(unittest.TestCase):
     self.assertEqual(expected_broccoli_amount,
                      revealed_broccoli_count,
                      "All broccoli should be revealed")
+
+class TestCheckGameStatus(unittest.TestCase):
+  def setUp(self):
+    self.board_object = board_generator(4,4,3)
+
+    tiles_board = self.board_object.tiles_board
+    broccoli_count = 0
+    for pos in self.board_object.broccoli_positions:
+      if broccoli_count == 2:
+        break
+
+      if broccoli_count == 0:
+        tiles_board[pos[0], pos[1]]["checked"] = True
+        tiles_board[pos[0], pos[1]]["tileValue"] = GET_BOARD_VALUE["rainbowBroccoli"]
+        broccoli_count += 1
+
+      if broccoli_count == 1:
+        tiles_board[pos[0], pos[1]]["checked"] = True
+        tiles_board[pos[0], pos[1]]["tileValue"] = GET_BOARD_VALUE["floweringBroccoli"]
+        broccoli_count += 1
+
+    self.board_object.change_tiles_board(tiles_board)
+
+
+  def test_game_over(self):
+    broccoli_position = self.board_object.broccoli_positions[0]
+    game_status = check_game_status(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    broccoli_position,
+                                    self.board_object.broccoli_amount)
+
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Game Over"],
+                     "The game status should be Game Over")
+
+  def test_keep_playing(self):
+    tiles_board = self.board_object.tiles_board
+    board = self.board_object.board
+    move_position = [0,0]
+    found_position = False
+
+    for row in range(tiles_board.shape[0]):
+      if found_position:
+        break
+
+      for column in range(tiles_board.shape[1]):
+        if board[row, column] != GET_BOARD_VALUE["broccoli"]:
+          tiles_board[row, column]["checked"] = True
+          tiles_board[row, column]["tileValue"] = board[row, column]
+          move_position = [row, column]
+          found_position = True
+          break
+
+    self.board_object.change_tiles_board(tiles_board)
+
+    game_status = check_game_status(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    move_position,
+                                    self.board_object.broccoli_amount)
+    
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Play"],
+                     "The game status should be Play")
+
+  def test_win_status(self):
+    tiles_board = self.board_object.tiles_board
+    board = self.board_object.board
+    move_position = [0,0]
+
+    for row in range(tiles_board.shape[0]):      
+      for column in range(tiles_board.shape[1]):
+        if board[row, column] != GET_BOARD_VALUE["broccoli"]:
+          tiles_board[row, column]["checked"] = True
+          tiles_board[row, column]["tileValue"] = board[row, column]
+          move_position = [row, column]
+
+    self.board_object.change_tiles_board(tiles_board)
+
+    game_status = check_game_status(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    move_position,
+                                    self.board_object.broccoli_amount)
+    
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Win"],
+                     "The game status should be Win")
