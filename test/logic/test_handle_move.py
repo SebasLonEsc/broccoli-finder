@@ -1,9 +1,11 @@
 import unittest
+import numpy as np
 
-from src.logic.board import board_generator
+from src.logic.board import board_generator, Board
 from src.logic.handleMove import (reveal_all_broccolis,
                                   check_game_status,
-                                  handle_rainbow_broccoli)
+                                  handle_rainbow_broccoli,
+                                  check_valid_move)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.gameValues import GET_GAME_STATUS
 
@@ -166,20 +168,14 @@ class TestHandleRainbowBroccoli(unittest.TestCase):
                                                  self.board_object.broccoli_positions)
 
     flowering_broccoli_on_board = False
-    for row in range(board.shape[0]):
-      if flowering_broccoli_on_board:
-        break
- 
+    for row in range(board.shape[0]): 
       for column in range(board.shape[1]):
         if board[row, column] == GET_BOARD_VALUE["floweringBroccoli"]:
           flowering_broccoli_on_board = True
           break
 
     flowering_broccoli_on_tiles_board = False
-    for row in range(tiles_board.shape[0]):
-      if flowering_broccoli_on_tiles_board:
-        break
-  
+    for row in range(tiles_board.shape[0]):  
       for column in range(tiles_board.shape[1]):
         if tiles_board[row, column]["tileValue"] == GET_BOARD_VALUE["floweringBroccoli"]:
           flowering_broccoli_on_tiles_board = True
@@ -191,3 +187,99 @@ class TestHandleRainbowBroccoli(unittest.TestCase):
     self.assertTrue(flowering_broccoli_on_tiles_board,
                     "There should be a flowering broccoli on the tiles board")
 
+class TestCheckValidMove(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(2,2)
+    self.null_space_tile_pos = [0,0]
+    self.flagged_tile_pos = [0,1]
+    self.checked_tile_pos = [1,0]
+    self.valid_tile_pos = [1,1]
+
+    null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
+    broccoli = GET_BOARD_VALUE["broccoli"]
+    new_board = [[null_space, broccoli],
+                 [blank_space, blank_space]]
+    self.board_object.change_board(np.array(new_board))
+
+    tiles_board = self.board_object.tiles_board
+    tiles_board[self.flagged_tile_pos[0], self.flagged_tile_pos[1]]["flagged"] = True
+    tiles_board[self.checked_tile_pos[0], self.checked_tile_pos[1]]["checked"] = True
+    self.board_object.change_tiles_board(tiles_board)
+
+  def test_invalid_move(self):
+    total_rows = self.board_object.total_rows
+    total_columns = self.board_object.total_columns
+
+    low_row_move = [-1, 0]
+    low_column_move = [0, -1]
+    high_row_move = [total_rows, 0]
+    high_column_move = [0, total_columns]
+
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  low_row_move,
+                                  total_rows,
+                                  total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid for row coordinates below 0")
+
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  low_column_move,
+                                  total_rows,
+                                  total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid for column coordinates below 0")
+
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  high_row_move,
+                                  total_rows,
+                                  total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid for row coordinates higher than total rows")
+
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  high_column_move,
+                                  total_rows,
+                                  total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid for column coordinates higher than total column")
+
+  def test_null_space_move(self):
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  self.null_space_tile_pos,
+                                  self.board_object.total_rows,
+                                  self.board_object.total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid on null space tiles")
+
+  def test_checked_tile_move(self):
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  self.checked_tile_pos,
+                                  self.board_object.total_rows,
+                                  self.board_object.total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid on checked tiles")
+
+  def test_flagged_tile_move(self):
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  self.flagged_tile_pos,
+                                  self.board_object.total_rows,
+                                  self.board_object.total_columns)
+    self.assertFalse(valid_move,
+                     "Move should be invalid on flagged tiles")
+
+  def test_valid_move(self):
+    valid_move = check_valid_move(self.board_object.board,
+                                  self.board_object.tiles_board,
+                                  self.valid_tile_pos,
+                                  self.board_object.total_rows,
+                                  self.board_object.total_columns)
+    self.assertTrue(valid_move,
+                    "Move should be valid")

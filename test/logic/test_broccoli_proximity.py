@@ -55,14 +55,15 @@ class TestCheckNullSpaces(unittest.TestCase):
     self.cross_board_object = Board(3,3)
     self.corner_board_object = Board(2,2)
     null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
 
-    new_cross_board = [[0, null_space, 0],
+    new_cross_board = [[blank_space, null_space, blank_space],
                        [null_space, null_space, null_space],
-                       [0, null_space, 0]]
+                       [blank_space, null_space, blank_space]]
     self.cross_board_object.change_board(np.array(new_cross_board))
 
     new_corner_board = [[null_space, null_space],
-                        [null_space, 0]]
+                        [null_space, blank_space]]
     self.corner_board_object.change_board(np.array(new_corner_board))
     self.current_corner_pos = [1,1] # Last row last column, 1 nullSpace tile up and outside board beyond
 
@@ -141,16 +142,17 @@ class TestBroccoliProximity(unittest.TestCase):
     self.cross_board_object = Board(3,3)
     broccoli = GET_BOARD_VALUE["broccoli"]
     null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
     
-    new_board = [[0, 0, 0],
-                 [0, broccoli, 0],
-                 [0, 0, 0]]
+    new_board = [[blank_space, blank_space, blank_space],
+                 [blank_space, broccoli, blank_space],
+                 [blank_space, blank_space, blank_space]]
     self.board_object.change_board(np.array(new_board))
     self.broccoli_pos = [1,1]
 
-    new_cross_board = [[0, null_space, 0],
+    new_cross_board = [[blank_space, null_space, blank_space],
                        [null_space, null_space, null_space],
-                       [0, null_space, broccoli]]
+                       [blank_space, null_space, broccoli]]
     self.cross_board_object.change_board(np.array(new_cross_board))
     self.cross_broccoli_pos = [2,2]
 
@@ -235,16 +237,17 @@ class TestNullSpaceValidatorForRainbowBroccoli(unittest.TestCase):
     self.cornered_board_object = Board(3,3)
     self.cross_board_object = Board(3,3)
     null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
 
     cornered_new_board = [[null_space, null_space, null_space],
-                         [null_space, 0, null_space],
-                         [null_space, null_space, null_space]]
+                          [null_space, blank_space, null_space],
+                          [null_space, null_space, null_space]]
     self.cornered_board_object.change_board(np.array(cornered_new_board))
     self.cornered_valid_pos = [1,1] # Board center
 
-    cross_new_board = [[0, null_space, 0],
+    cross_new_board = [[blank_space, null_space, blank_space],
                        [null_space, null_space, null_space],
-                       [0, null_space, 0]]
+                       [blank_space, null_space, blank_space]]
     self.cross_board_object.change_board(np.array(cross_new_board))
 
   def test_null_space_validation_decrement(self):
@@ -352,15 +355,17 @@ class TestUpdateProximityForRainbowBroccoli(unittest.TestCase):
     self.top_corner_board_object = Board(3,3)
     self.bottom_corner_board_object = Board(3,3)
     rainbow_broccoli = GET_BOARD_VALUE["rainbowBroccoli"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
+    proximity_number = 1
     
-    top_corner_new_board = [[rainbow_broccoli, 1, 0],
-                            [1, 1, 0],
-                            [0, 0, 0]]
+    top_corner_new_board = [[rainbow_broccoli, proximity_number, blank_space],
+                            [proximity_number, proximity_number, blank_space],
+                            [blank_space, blank_space, blank_space]]
     self.top_corner_board_object.change_board(np.array(top_corner_new_board))
 
-    bottom_corner_new_board = [[0, 0, 0],
-                               [0, 1, 1],
-                               [0, 1, rainbow_broccoli]]
+    bottom_corner_new_board = [[blank_space, blank_space, blank_space],
+                               [blank_space, proximity_number, proximity_number],
+                               [blank_space, proximity_number, rainbow_broccoli]]
     self.bottom_corner_board_object.change_board(np.array(bottom_corner_new_board))
 
   def test_rainbow_on_top_corner(self):

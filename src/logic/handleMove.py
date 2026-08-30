@@ -78,10 +78,8 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     pos_index = random.randrange(0, len(broccoli_positions))
     pos = broccoli_positions[pos_index]
 
-    if board[pos[0], pos[1]] == GET_BOARD_VALUE["rainbowBroccoli"]:
-      continue
-
-    invalid_position = False
+    if board[pos[0], pos[1]] != GET_BOARD_VALUE["rainbowBroccoli"]:
+      invalid_position = False
 
   tiles_board[pos[0], pos[1]]["checked"] = True
   tiles_board[pos[0], pos[1]]["tileValue"] = GET_BOARD_VALUE["floweringBroccoli"]
@@ -110,7 +108,7 @@ def check_valid_move(board, tiles_board, move_position, board_row_limit, board_c
       column < 0 or
       column >= board_column_limit):
     return False
-  
+
   if (board[row, column] in BOARD_VALUES_GUIDE and
       BOARD_VALUES_GUIDE[board[row, column]] == "nullSpace"):
     return False
