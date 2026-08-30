@@ -5,7 +5,8 @@ from src.logic.board import board_generator, Board
 from src.logic.handleMove import (reveal_all_broccolis,
                                   check_game_status,
                                   handle_rainbow_broccoli,
-                                  check_valid_move)
+                                  check_valid_move,
+                                  make_move)
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.gameValues import GET_GAME_STATUS
 
@@ -283,3 +284,54 @@ class TestCheckValidMove(unittest.TestCase):
                                   self.board_object.total_columns)
     self.assertTrue(valid_move,
                     "Move should be valid")
+
+class TestMakeMove(unittest.TestCase):
+  def setUp(self):
+    self.board_object = Board(3,3)
+    self.null_space_tile_pos = [0,0]
+    self.valid_tile_pos = [1,1]
+    self.broccoli_pos = [0,1]
+    self.rainbow_broccoli_pos = [2,2]
+    self.proximity_number_pos = [1,2]
+
+    null_space = GET_BOARD_VALUE["nullSpace"]
+    blank_space = GET_BOARD_VALUE["blankSpace"]
+    broccoli = GET_BOARD_VALUE["broccoli"]
+    rainbow_broccoli = GET_BOARD_VALUE["rainbowBroccoli"]
+    self.proximity_number = 1
+    new_board = [[null_space, broccoli, blank_space],
+                 [blank_space, blank_space, self.proximity_number],
+                 [blank_space, self.proximity_number, rainbow_broccoli]]
+    self.board_object.change_board(np.array(new_board))
+
+  def test_make_invalid_move(self):
+    tiles_board = self.board_object.tiles_board
+    move_pos = self.null_space_tile_pos
+    new_tiles_board, _ = make_move(self.board_object.board,
+                                   self.board_object.tiles_board,
+                                   move_pos,
+                                   self.board_object.total_rows,
+                                   self.board_object.total_columns,
+                                   self.board_object.broccoli_positions)
+
+    # Both should be false since board was custom made
+    tiles_comparison = tiles_board[move_pos[0], move_pos[1]]["checked"] == new_tiles_board[move_pos[0], move_pos[1]]["checked"]
+
+    self.assertTrue(tiles_comparison,
+                    "Both tiles board must be the same due to move being invalid")
+
+  def test_make_move_on_broccoli(self):
+    move_pos = self.broccoli_pos
+    new_tiles_board, _ = make_move(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    move_pos,
+                                    self.board_object.total_rows,
+                                    self.board_object.total_columns,
+                                    self.board_object.broccoli_positions)
+
+    self.assertTrue(new_tiles_board[move_pos[0], move_pos[1]]["checked"],
+                    "The tile should be checked after move")
+
+    is_broccoli = new_tiles_board[move_pos[0], move_pos[1]]["tileValue"] == GET_BOARD_VALUE["broccoli"]
+    self.assertTrue(is_broccoli,
+                    "The tile should be a broccoli")
