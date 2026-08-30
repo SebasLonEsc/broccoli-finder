@@ -388,3 +388,45 @@ class TestMakeMove(unittest.TestCase):
 
     self.assertTrue(flowering_broccoli_on_board,
                     "There should be a flowering broccoli on the board")
+
+  def test_make_move(self):
+    move_pos = self.valid_tile_pos
+    new_tiles_board, _ = make_move(self.board_object.board,
+                                    self.board_object.tiles_board,
+                                    move_pos,
+                                    self.board_object.total_rows,
+                                    self.board_object.total_columns,
+                                    self.board_object.broccoli_positions)
+
+    self.assertTrue(new_tiles_board[move_pos[0], move_pos[1]]["checked"],
+                    "The tile should be checked after move")
+
+    # move_pos is in the middle of the board
+    column_increment_move = [move_pos[0],
+                             move_pos[1]+1] # Is a proximity number
+    is_proximity_number = new_tiles_board[column_increment_move[0],
+                                          column_increment_move[1]]["tileValue"] > 0
+    self.assertTrue(is_proximity_number,
+                    "The tile should be a proximity number")
+
+    column_decrease_move = [move_pos[0],
+                            move_pos[1]-1] # Is a blank space
+    is_blank_space = new_tiles_board[column_decrease_move[0],
+                                     column_decrease_move[1]]["tileValue"] == GET_BOARD_VALUE["blankSpace"]
+    self.assertTrue(is_blank_space,
+                    "The tile should be a blank space")
+
+    row_increment_move = [move_pos[0]+1, # Is a proximity number
+                          move_pos[1]]
+    is_proximity_number = new_tiles_board[row_increment_move[0],
+                                          row_increment_move[1]]["tileValue"] > 0
+    self.assertTrue(is_proximity_number,
+                    "The tile should be a proximity number")
+    
+    row_decrease_move = [move_pos[0]-1, # Is a broccoli
+                         move_pos[1]]
+    is_broccoli = new_tiles_board[row_decrease_move[0],
+                                  row_decrease_move[1]]["tileValue"] == GET_BOARD_VALUE["broccoli"]
+    self.assertTrue(is_broccoli,
+                    "The tile should be a broccoli")
+    
