@@ -323,11 +323,11 @@ class TestMakeMove(unittest.TestCase):
   def test_make_move_on_broccoli(self):
     move_pos = self.broccoli_pos
     new_tiles_board, _ = make_move(self.board_object.board,
-                                    self.board_object.tiles_board,
-                                    move_pos,
-                                    self.board_object.total_rows,
-                                    self.board_object.total_columns,
-                                    self.board_object.broccoli_positions)
+                                   self.board_object.tiles_board,
+                                   move_pos,
+                                   self.board_object.total_rows,
+                                   self.board_object.total_columns,
+                                   self.board_object.broccoli_positions)
 
     self.assertTrue(new_tiles_board[move_pos[0], move_pos[1]]["checked"],
                     "The tile should be checked after move")
@@ -335,3 +335,19 @@ class TestMakeMove(unittest.TestCase):
     is_broccoli = new_tiles_board[move_pos[0], move_pos[1]]["tileValue"] == GET_BOARD_VALUE["broccoli"]
     self.assertTrue(is_broccoli,
                     "The tile should be a broccoli")
+
+  def test_make_move_on_broccoli(self):
+    move_pos = self.proximity_number_pos
+    new_tiles_board, _ = make_move(self.board_object.board,
+                                   self.board_object.tiles_board,
+                                   move_pos,
+                                   self.board_object.total_rows,
+                                   self.board_object.total_columns,
+                                   self.board_object.broccoli_positions)
+
+    self.assertTrue(new_tiles_board[move_pos[0], move_pos[1]]["checked"],
+                    "The tile should be checked after move")
+
+    is_proximity_number = new_tiles_board[move_pos[0], move_pos[1]]["tileValue"] == self.proximity_number
+    self.assertTrue(is_proximity_number,
+                    "The tile should be a proximity number " + str(self.proximity_number))
