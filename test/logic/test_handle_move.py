@@ -454,3 +454,11 @@ class TestHandleMove(unittest.TestCase):
     self.assertEqual(game_status,
                      GET_GAME_STATUS["Play"],
                      "The game status should be Play")
+
+  def test_broccoli_handle_move(self):
+    _, game_status = handle_move(copy(self.board_object),
+                                  self.broccoli_pos)
+
+    self.assertEqual(game_status,
+                     GET_GAME_STATUS["Game Over"],
+                     "The game status should be Game Over")
