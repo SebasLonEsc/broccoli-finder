@@ -2,7 +2,10 @@ import unittest
 from pathlib import Path
 import tkinter as tk
 
-from src.logic.interfaceTools import open_pillow_image, center_window, close_interface
+from src.logic.interfaceTools import (open_pillow_image,
+                                      center_window,
+                                      close_interface,
+                                      go_back)
 from src.logic.constants.imagesPaths import IMAGES_FOLDER, GREEN_BROCCOLI_TILE_IMAGE
 
 class TestOpenPillowImage(unittest.TestCase):
@@ -93,3 +96,40 @@ class TestCloseInterface(unittest.TestCase):
     close_interface(self.root)
 
     self.assertRaises(tk.TclError, self.root.winfo_name)
+
+class TestGoBack(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+    self.root_previous_go_back = tk.Tk()
+    self.test_number = 0
+
+  def basic_go_back(self, number):
+    self.test_number += number
+
+  def complete_go_back(self, number, previous_go_back_func):
+    self.test_number += number
+    previous_go_back_func()
+
+  def test_basic_go_back_function(self):
+    expected_value = 5
+    go_back_func = lambda: self.basic_go_back(expected_value)
+    go_back(self.root, go_back_func)
+
+    self.assertRaises(tk.TclError, self.root.winfo_name)
+    self.assertEqual(expected_value,
+                     self.test_number,
+                     "The new value after go back function should be " + str(expected_value))
+
+  def test_complete_go_back_function(self):
+    number = 5
+    expected_value = number + number # Functions sum number and then sum number by number
+    self.test_number = 0
+
+    go_back_func = lambda prev_go_back: self.complete_go_back(number, prev_go_back)
+    prev_go_back_func = lambda: self.basic_go_back(number)
+    go_back(self.root_previous_go_back, go_back_func, prev_go_back_func)
+
+    self.assertRaises(tk.TclError, self.root_previous_go_back.winfo_name)
+    self.assertEqual(expected_value,
+                     self.test_number,
+                     "The new value after go back function should be " + str(expected_value))
