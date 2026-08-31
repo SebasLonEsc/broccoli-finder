@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 import tkinter as tk
 
-from src.logic.interfaceTools import open_pillow_image, center_window
+from src.logic.interfaceTools import open_pillow_image, center_window, close_interface
 from src.logic.constants.imagesPaths import IMAGES_FOLDER, GREEN_BROCCOLI_TILE_IMAGE
 
 class TestOpenPillowImage(unittest.TestCase):
@@ -65,17 +65,31 @@ class TestCenterWindow(unittest.TestCase):
     center_window(self.root, self.root_width, self.root_height)
     self.root.update()
 
-    new_geometry = self.root.geometry()
-    separator_position = new_geometry.find("+") # In the geometry, the first + separates size to coordinates
-    new_coordinates = new_geometry[separator_position+1:len(new_geometry)].split("+") # Gets the width and height
+    new_x_coords = self.root.winfo_x()
+    new_y_coords = self.root.winfo_y()
 
-    self.assertEqual(int(new_coordinates[0]),
+    self.assertEqual(new_x_coords,
                      expected_x_coords,
                      "Screen should be horizontally centered")
 
-    self.assertEqual(int(new_coordinates[1]),
+    self.assertEqual(new_y_coords,
                      expected_y_coords,
                      "Screen should be vertically centered")
 
   def tearDown(self):
     self.root.destroy()
+
+class TestCloseInterface(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+
+  def test_close_interface(self):
+    widget_name = self.root.winfo_name() # tk widget
+
+    self.assertEqual("tk",
+                     widget_name,
+                     "The widget hasn't been destroyed yet")
+
+    close_interface(self.root)
+
+    self.assertRaises(tk.TclError, self.root.winfo_name)
