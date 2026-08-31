@@ -63,7 +63,9 @@ def create_top_level(message, title, width, height):
 
   Args:
     message (str): The message to be displayed on the toplevel
-    title (str): The title of the toplevel
+    title (str): The title of the top level
+    width (int): The width of the top level
+    height (int): The height of the top level
   """
   top_level = tk.Toplevel()
   top_level.title(title)

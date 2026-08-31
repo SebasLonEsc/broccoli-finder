@@ -1,12 +1,16 @@
 import unittest
-from pathlib import Path
+from unittest.mock import patch
 import tkinter as tk
+from pathlib import Path
 
 from src.logic.interfaceTools import (open_pillow_image,
                                       center_window,
                                       close_interface,
-                                      go_back)
+                                      go_back,
+                                      create_top_level,
+                                      create_info_menu)
 from src.logic.constants.imagesPaths import IMAGES_FOLDER, GREEN_BROCCOLI_TILE_IMAGE
+import src.lang.language as Lg
 
 class TestOpenPillowImage(unittest.TestCase):
   def setUp(self):
@@ -133,3 +137,34 @@ class TestGoBack(unittest.TestCase):
     self.assertEqual(expected_value,
                      self.test_number,
                      "The new value after go back function should be " + str(expected_value))
+
+class TestCreateInfoMenu(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+    self.menu = tk.Menu(self.root)
+    self.root.config(menu=self.menu)
+
+  def test_create_info_menu(self):
+    with patch.dict(Lg.lang, Lg.english):
+      create_info_menu(self.menu)
+      info_menu_label = Lg.lang["InfoTabMenu"]
+      info_menu = None
+      
+      info_menu_name = self.menu.entrycget(info_menu_label, "menu")
+      info_menu = self.root.nametowidget(info_menu_name)
+
+      self.assertNotEqual(info_menu,
+                          None,
+                          "Info menu should exist on the menu")
+
+      about_message_label = Lg.lang["AboutMenuLabel"]
+      about_message_command_label = info_menu.entrycget(about_message_label, "label")
+      self.assertEqual(about_message_command_label,
+                       about_message_label,
+                       "The about message label in the info menu should be the same as language equivalent")
+      
+      credits_message_label = Lg.lang["CreditsMenuLabel"]
+      credits_message_command_label = info_menu.entrycget(credits_message_label, "label")
+      self.assertEqual(credits_message_label,
+                       credits_message_command_label,
+                       "The credits message label in the info menu should be the same as language equivalent")
