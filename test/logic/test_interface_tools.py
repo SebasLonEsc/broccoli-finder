@@ -2,14 +2,14 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 import tkinter as tk
-from tkinter import Toplevel
 
 from src.logic.interfaceTools import (open_pillow_image,
                                       center_window,
                                       close_interface,
                                       go_back,
                                       create_top_level,
-                                      create_info_menu)
+                                      create_info_menu,
+                                      create_help_menu)
 from src.logic.constants.imagesPaths import IMAGES_FOLDER, GREEN_BROCCOLI_TILE_IMAGE
 import src.lang.language as Lg
 
@@ -169,17 +169,51 @@ class TestCreateInfoMenu(unittest.TestCase):
                           None,
                           "Info menu should exist on the menu")
 
-      about_message_label = Lg.lang["AboutMenuLabel"]
-      about_message_command_label = info_menu.entrycget(about_message_label, "label")
-      self.assertEqual(about_message_command_label,
-                       about_message_label,
+      about_menu_label = Lg.lang["AboutMenuLabel"]
+      about_menu_command_label = info_menu.entrycget(about_menu_label, "label")
+      self.assertEqual(about_menu_command_label,
+                       about_menu_label,
                        "The about message label in the info menu should be the same as language equivalent")
       
-      credits_message_label = Lg.lang["CreditsMenuLabel"]
-      credits_message_command_label = info_menu.entrycget(credits_message_label, "label")
-      self.assertEqual(credits_message_label,
-                       credits_message_command_label,
+      credits_menu_label = Lg.lang["CreditsMenuLabel"]
+      credits_menu_command_label = info_menu.entrycget(credits_menu_label, "label")
+      self.assertEqual(credits_menu_label,
+                       credits_menu_command_label,
                        "The credits message label in the info menu should be the same as language equivalent")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestCreateHelpMenu(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+    self.menu = tk.Menu(self.root)
+    self.root.config(menu=self.menu)
+
+  def test_create_help_menu(self):
+    with patch.dict(Lg.lang, Lg.english):
+      create_help_menu(self.menu)
+      help_menu_label = Lg.lang["HelpTabMenu"]
+      help_menu = None
+      
+      help_menu_name = self.menu.entrycget(help_menu_label, "menu")
+      help_menu = self.root.nametowidget(help_menu_name)
+
+      self.assertNotEqual(help_menu,
+                          None,
+                          "Help menu should exist on the menu")
+
+      how_to_play_menu_label = Lg.lang["HowToPlayMenuLabel"]
+      how_to_play_menu_command_label = help_menu.entrycget(how_to_play_menu_label, "label")
+      self.assertEqual(how_to_play_menu_command_label,
+                       how_to_play_menu_label,
+                       "The hor to play menu label in the help menu should be the same as language equivalent")
+      
+      special_broccolis_menu_label = Lg.lang["SpecialBroccolisMenuLabel"]
+      special_broccolis_menu_command_label = help_menu.entrycget(special_broccolis_menu_label, "label")
+      self.assertEqual(special_broccolis_menu_label,
+                       special_broccolis_menu_command_label,
+                       "The special broccoli menu label in the help menu should be the same as language equivalent")
 
   def tearDown(self):
     self.root.destroy()

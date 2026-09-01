@@ -114,9 +114,9 @@ def create_help_menu(menu_widget):
                         command=lambda: create_top_level(how_to_play_message, Lg.lang["HowToPlayMenuLabel"], 620, 440).mainloop()
                         )
 
-  rainbow_broccoli_message = "".join(Lg.lang["SpecialBroccolisMessage"])
+  special_broccolis_message = "".join(Lg.lang["SpecialBroccolisMessage"])
   help_menu.add_command(label=Lg.lang["SpecialBroccolisMenuLabel"],
-                        command=lambda: create_top_level(rainbow_broccoli_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350).mainloop()
+                        command=lambda: create_top_level(special_broccolis_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350).mainloop()
                         )
 
 def create_menu(root,
