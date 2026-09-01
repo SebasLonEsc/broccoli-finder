@@ -79,7 +79,7 @@ def create_top_level(message, title, width, height):
 
   message_widget.pack()
   close_button.pack(pady=[2,0])
-  top_level.mainloop()
+  return top_level
 
 def create_info_menu(menu_widget):
   """Creates the info menu.
@@ -92,12 +92,12 @@ def create_info_menu(menu_widget):
 
   about_message = "".join(Lg.lang["AboutMessage"])
   info_menu.add_command(label=Lg.lang["AboutMenuLabel"],
-                        command=lambda: create_top_level(about_message, Lg.lang["AboutMenuLabel"], 420, 270)
+                        command=lambda: create_top_level(about_message, Lg.lang["AboutMenuLabel"], 420, 270).mainloop()
                         )
 
   credits_message = "".join(Lg.lang["CreditsMessage"])
   info_menu.add_command(label=Lg.lang["CreditsMenuLabel"],
-                        command=lambda: create_top_level(credits_message, Lg.lang["CreditsMenuLabel"], 400, 280)
+                        command=lambda: create_top_level(credits_message, Lg.lang["CreditsMenuLabel"], 400, 280).mainloop()
                         )
 
 def create_help_menu(menu_widget):
@@ -111,12 +111,12 @@ def create_help_menu(menu_widget):
 
   how_to_play_message = "".join(Lg.lang["HowToPlayMessage"])
   help_menu.add_command(label=Lg.lang["HowToPlayMenuLabel"],
-                        command=lambda: create_top_level(how_to_play_message, Lg.lang["HowToPlayMenuLabel"], 620, 440)
+                        command=lambda: create_top_level(how_to_play_message, Lg.lang["HowToPlayMenuLabel"], 620, 440).mainloop()
                         )
 
   rainbow_broccoli_message = "".join(Lg.lang["SpecialBroccolisMessage"])
   help_menu.add_command(label=Lg.lang["SpecialBroccolisMenuLabel"],
-                        command=lambda: create_top_level(rainbow_broccoli_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350)
+                        command=lambda: create_top_level(rainbow_broccoli_message, Lg.lang["SpecialBroccolisMenuLabel"], 500, 350).mainloop()
                         )
 
 def create_menu(root,

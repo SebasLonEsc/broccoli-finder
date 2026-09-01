@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import patch
-import tkinter as tk
 from pathlib import Path
+import tkinter as tk
+from tkinter import Toplevel
 
 from src.logic.interfaceTools import (open_pillow_image,
                                       center_window,
@@ -138,6 +139,17 @@ class TestGoBack(unittest.TestCase):
                      self.test_number,
                      "The new value after go back function should be " + str(expected_value))
 
+class TestCreateTopLevel(unittest.TestCase):
+  def test_top_level_creation(self):
+    top_level = create_top_level("Hello", "top_level", 10, 10)
+    self.assertTrue(top_level.winfo_exists(),
+                    "Toplevel should exists after creation")
+
+    top_level.destroy()
+
+    self.assertFalse(top_level.winfo_exists(),
+                     "Toplevel should not exists after deletion")
+
 class TestCreateInfoMenu(unittest.TestCase):
   def setUp(self):
     self.root = tk.Tk()
@@ -168,3 +180,6 @@ class TestCreateInfoMenu(unittest.TestCase):
       self.assertEqual(credits_message_label,
                        credits_message_command_label,
                        "The credits message label in the info menu should be the same as language equivalent")
+
+  def tearDown(self):
+    self.root.destroy()
