@@ -9,7 +9,8 @@ from src.logic.interfaceTools import (open_pillow_image,
                                       go_back,
                                       create_top_level,
                                       create_info_menu,
-                                      create_help_menu)
+                                      create_help_menu,
+                                      create_menu)
 from src.logic.constants.imagesPaths import IMAGES_FOLDER, GREEN_BROCCOLI_TILE_IMAGE
 import src.lang.language as Lg
 
@@ -207,13 +208,52 @@ class TestCreateHelpMenu(unittest.TestCase):
       how_to_play_menu_command_label = help_menu.entrycget(how_to_play_menu_label, "label")
       self.assertEqual(how_to_play_menu_command_label,
                        how_to_play_menu_label,
-                       "The hor to play menu label in the help menu should be the same as language equivalent")
+                       "The how to play menu label in the help menu should be the same as language equivalent")
       
       special_broccolis_menu_label = Lg.lang["SpecialBroccolisMenuLabel"]
       special_broccolis_menu_command_label = help_menu.entrycget(special_broccolis_menu_label, "label")
       self.assertEqual(special_broccolis_menu_label,
                        special_broccolis_menu_command_label,
                        "The special broccoli menu label in the help menu should be the same as language equivalent")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestCreateMenu(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+
+  def test_create_menu_game_menu(self):
+    with patch.dict(Lg.lang, Lg.english):
+      mock_shortcut_function = lambda: None
+      menu = create_menu(self.root,
+                         True,
+                         True,
+                         mock_shortcut_function,
+                         True,
+                         mock_shortcut_function)
+      
+      game_menu_label = Lg.lang["GameTabMenu"]
+      game_menu = None
+      
+      game_menu_name = menu.entrycget(game_menu_label, "menu")
+      game_menu = self.root.nametowidget(game_menu_name)
+
+      self.assertNotEqual(game_menu,
+                          None,
+                          "Game menu should exist on the menu")
+
+      new_game_menu_label = Lg.lang["NewGameLabel"]
+      new_game_menu_command_label = game_menu.entrycget(new_game_menu_label, "label")
+      self.assertEqual(new_game_menu_command_label,
+                       new_game_menu_label,
+                       "The new game menu label in the help menu should be the same as language equivalent")
+      
+      main_menu_label = Lg.lang["MainMenuLabel"]
+      main_menu_command_label = game_menu.entrycget(main_menu_label, "label")
+      self.assertEqual(main_menu_label,
+                       main_menu_command_label,
+                       "The main menu label in the help menu should be the same as language equivalent")
 
   def tearDown(self):
     self.root.destroy()
