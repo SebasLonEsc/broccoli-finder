@@ -255,5 +255,31 @@ class TestCreateMenu(unittest.TestCase):
                        main_menu_command_label,
                        "The main menu label in the help menu should be the same as language equivalent")
 
+  def test_create_menu_info_menu(self):
+    with patch.dict(Lg.lang, Lg.english):
+      menu = create_menu(self.root, add_info_menu=True)
+      info_menu_label = Lg.lang["InfoTabMenu"]
+      info_menu = None
+      
+      info_menu_name = menu.entrycget(info_menu_label, "menu")
+      info_menu = self.root.nametowidget(info_menu_name)
+
+      self.assertNotEqual(info_menu,
+                          None,
+                          "Info menu should exist on the menu")
+
+  def test_create_menu_help_menu(self):
+    with patch.dict(Lg.lang, Lg.english):
+      menu = create_menu(self.root, add_help_menu=True)
+      help_menu_label = Lg.lang["HelpTabMenu"]
+      help_menu = None
+      
+      help_menu_name = menu.entrycget(help_menu_label, "menu")
+      help_menu = self.root.nametowidget(help_menu_name)
+
+      self.assertNotEqual(help_menu,
+                          None,
+                          "Help menu should exist on the menu")
+
   def tearDown(self):
     self.root.destroy()
