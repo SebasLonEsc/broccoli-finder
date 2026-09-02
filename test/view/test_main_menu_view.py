@@ -2,11 +2,13 @@ import unittest
 import tkinter as tk
 
 import src.lang.language as Lg
+from src.lang.language import LANGUAGES
+from src.lang.spa import spanish
 from src.view.mainMenuView import change_selected_language
 
 class TestChangeSelectedLanguage(unittest.TestCase):
   def setUp(self):
-    self.main_language = Lg.selected_language
+    self.main_language = LANGUAGES["English"]
     self.root = tk.Tk()
     self.lang_button = tk.Label(self.root, text=Lg.selected_language)
     self.game_title_label = tk.Label(self.root, text=Lg.lang["GameTitle"])
@@ -18,8 +20,8 @@ class TestChangeSelectedLanguage(unittest.TestCase):
     self.new_game_button.pack()
     self.exit_button.pack()
 
-  def reset_language(self):
-    while Lg.selected_language != self.main_language:
+  def reset_language(self, expected_language):
+    while Lg.selected_language != expected_language:
       change_selected_language(self.lang_button,
                                self.game_title_label,
                                self.new_game_button,
@@ -27,8 +29,6 @@ class TestChangeSelectedLanguage(unittest.TestCase):
                                self.root)
 
   def test_change_selected_language(self):
-    current_language = Lg.selected_language
-
     change_selected_language(self.lang_button,
                              self.game_title_label,
                              self.new_game_button,
@@ -37,7 +37,44 @@ class TestChangeSelectedLanguage(unittest.TestCase):
     changed_language = Lg.selected_language
 
     self.assertNotEqual(changed_language,
-                        current_language,
+                        self.main_language,
                         "Language should've change")
 
-    self.reset_language()
+    Lg.selected_language = "InvalidLang"
+    change_selected_language(self.lang_button,
+                             self.game_title_label,
+                             self.new_game_button,
+                             self.exit_button,
+                             self.root)
+    
+    self.assertEqual(Lg.selected_language,
+                     self.main_language,
+                     "Language should've change to default one")
+
+  def test_change_language_widgets(self):
+    expected_lang_button_label = LANGUAGES["Spanish"]
+    expected_game_title_label = spanish["GameTitle"]
+    expected_new_game_button_label = spanish["NewGame"]
+    expected_exit_button_label = spanish["Exit"]
+
+    self.reset_language(LANGUAGES["Spanish"])
+
+    self.assertEqual(self.lang_button.cget("text"),
+                     expected_lang_button_label,
+                     "Lang button label should've change")
+
+    self.assertEqual(self.game_title_label.cget("text"),
+                     expected_game_title_label,
+                     "Game title label should've change")
+
+    self.assertEqual(self.new_game_button.cget("text"),
+                     expected_new_game_button_label,
+                     "New game button label should've change")
+
+    self.assertEqual(self.exit_button.cget("text"),
+                    expected_exit_button_label,
+                    "Exit button label should've change")
+
+  def tearDown(self):
+    self.reset_language(self.main_language)
+    self.root.destroy()
