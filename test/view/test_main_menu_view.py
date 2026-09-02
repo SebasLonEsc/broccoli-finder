@@ -21,12 +21,16 @@ class TestChangeSelectedLanguage(unittest.TestCase):
     self.exit_button.pack()
 
   def reset_language(self, expected_language):
+    menu = None
+
     while Lg.selected_language != expected_language:
-      change_selected_language(self.lang_button,
-                               self.game_title_label,
-                               self.new_game_button,
-                               self.exit_button,
-                               self.root)
+      menu = change_selected_language(self.lang_button,
+                                      self.game_title_label,
+                                      self.new_game_button,
+                                      self.exit_button,
+                                      self.root)
+
+    return menu
 
   def test_change_selected_language(self):
     change_selected_language(self.lang_button,
@@ -74,6 +78,28 @@ class TestChangeSelectedLanguage(unittest.TestCase):
     self.assertEqual(self.exit_button.cget("text"),
                     expected_exit_button_label,
                     "Exit button label should've change")
+
+  def test_change_language_menu(self):
+    menu = self.reset_language(LANGUAGES["Spanish"])
+    info_menu_label = spanish["InfoTabMenu"]
+    info_menu = None
+    
+    info_menu_name = menu.entrycget(info_menu_label, "menu")
+    info_menu = self.root.nametowidget(info_menu_name)
+
+    self.assertNotEqual(info_menu,
+                        None,
+                        "Info menu should exist on the menu")
+
+    help_menu_label = spanish["HelpTabMenu"]
+    help_menu = None
+    
+    help_menu_name = menu.entrycget(help_menu_label, "menu")
+    help_menu = self.root.nametowidget(help_menu_name)
+
+    self.assertNotEqual(help_menu,
+                        None,
+                        "Help menu should exist on the menu")
 
   def tearDown(self):
     self.reset_language(self.main_language)

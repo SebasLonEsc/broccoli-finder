@@ -39,10 +39,12 @@ def change_selected_language(lang_button,
   game_title_label.config(text=Lg.lang["GameTitle"])
   new_game_button.config(text=Lg.lang["NewGame"])
   exit_button.config(text=Lg.lang["Exit"])
-  create_menu(root=root,
-              add_game_menu=False,
-              add_info_menu=True,
-              add_help_menu=True)
+  menu = create_menu(root=root,
+                     add_game_menu=False,
+                     add_info_menu=True,
+                     add_help_menu=True)
+
+  return menu
 
 def handle_new_game(root):
   """Closes the current window and creates the new game menu window.
