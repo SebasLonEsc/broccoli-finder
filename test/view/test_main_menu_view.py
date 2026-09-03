@@ -1,10 +1,13 @@
 import unittest
 import tkinter as tk
+from unittest.mock import patch
 
 import src.lang.language as Lg
 from src.lang.language import LANGUAGES
 from src.lang.spa import spanish
-from src.view.mainMenuView import change_selected_language
+import src.view.newGameMenu as NewGameView
+import src.view.mainMenuView
+from src.view.mainMenuView import change_selected_language, handle_new_game
 
 class TestChangeSelectedLanguage(unittest.TestCase):
   def setUp(self):
@@ -104,3 +107,15 @@ class TestChangeSelectedLanguage(unittest.TestCase):
   def tearDown(self):
     self.reset_language(self.main_language)
     self.root.destroy()
+
+class TestHandleNewGame(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+    self.label = tk.Label(self.root)
+
+  def test_handle_new_game(self):
+    with patch("src.view.mainMenuView.new_game_menu"):
+      handle_new_game(self.label) # Func closes the widget send as arg
+
+      self.assertFalse(self.label.winfo_exists(),
+                       "Label should be destroyed")
