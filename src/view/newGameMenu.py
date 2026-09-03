@@ -34,7 +34,7 @@ def create_game(root, go_back_func, previous_go_back_func, difficulty, board_siz
     root (tk.Tk): The root windget, the current window that is being displayed
     go_back_func (Func): Function to go back to the current view
     previous_go_back_func (Func): Function to go back to the previous view
-    difficulty (int): The game difficulty combobox
+    difficulty (ttk.Combobox): The game difficulty combobox
     board_size (str): The selected board size
   """
   game_difficulty = Lg.lang[difficulty.get()]
@@ -65,7 +65,7 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
     go_back_func (Func): Function to go back to the current view
     previous_go_back_func (Func): Function to go back to the previous view
     master_widget (tk.Widget): The widget where the button is being placed
-    difficulty (int): The game difficulty combobox
+    difficulty (ttk.Combobox): The game difficulty combobox
     board_size (str): The selected board size
   """
   current_dir = Path(__file__).parent

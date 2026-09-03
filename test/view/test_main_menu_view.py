@@ -129,7 +129,7 @@ class TestCreateMainView(unittest.TestCase):
           patch.object(tk, "PhotoImage") as mock_photo_image,
           patch.object(tk.Tk, "iconphoto")):
       mock_photo_image.return_value = ""
-      
+
       root = create_main_menu_view()
       title = root.title()
       expected_title = Lg.lang["GameTitle"]
@@ -137,3 +137,5 @@ class TestCreateMainView(unittest.TestCase):
       self.assertEqual(title,
                        expected_title,
                        "Root title should be " + Lg.lang["GameTitle"])
+
+      root.destroy()
