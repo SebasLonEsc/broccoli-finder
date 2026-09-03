@@ -61,7 +61,7 @@ def create_main_menu_view():
   window_height = 120
 
   root = tk.Tk()
-  root.title("Broccoli Finder")
+  root.title(Lg.lang["GameTitle"])
   root.minsize(window_width, window_height)
   root.maxsize(window_width, window_height)
   center_window(root, window_width, window_height)
@@ -135,3 +135,4 @@ def create_main_menu_view():
                                      )
   
   root.mainloop()
+  return root

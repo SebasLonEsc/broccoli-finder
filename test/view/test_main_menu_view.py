@@ -5,9 +5,9 @@ from unittest.mock import patch
 import src.lang.language as Lg
 from src.lang.language import LANGUAGES
 from src.lang.spa import spanish
-import src.view.newGameMenu as NewGameView
-import src.view.mainMenuView
-from src.view.mainMenuView import change_selected_language, handle_new_game
+from src.view.mainMenuView import (change_selected_language,
+                                   handle_new_game,
+                                   create_main_menu_view)
 
 class TestChangeSelectedLanguage(unittest.TestCase):
   def setUp(self):
@@ -119,3 +119,21 @@ class TestHandleNewGame(unittest.TestCase):
 
       self.assertFalse(self.label.winfo_exists(),
                        "Label should be destroyed")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestCreateMainView(unittest.TestCase):
+  def test_create_main_menu_view(self):
+    with (patch.object(tk.Tk, "mainloop"),
+          patch.object(tk, "PhotoImage") as mock_photo_image,
+          patch.object(tk.Tk, "iconphoto")):
+      mock_photo_image.return_value = ""
+      
+      root = create_main_menu_view()
+      title = root.title()
+      expected_title = Lg.lang["GameTitle"]
+
+      self.assertEqual(title,
+                       expected_title,
+                       "Root title should be " + Lg.lang["GameTitle"])
