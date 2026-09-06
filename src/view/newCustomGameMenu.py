@@ -14,9 +14,9 @@ def validate_inputs(rows, columns, broccoli_amount):
   """Validates if the input values are valid values.
 
   Args:
-    rows (int): Number of rows on the board
-    columns (int): Number of columns on the board
-    broccoli_amount (int): Number of broccolis on the board
+    rows (tk.Spinbox): Number of rows Spinbox
+    columns (tk.Spinbox): Number of columns Spinbox
+    broccoli_amount (tk.Spinbox): Number of broccolis Spinbox
   Returns:
     str: Message indicating if the inputs are valid.
       "The following values are invalid:" if all values are valid.
@@ -66,9 +66,9 @@ def create_new_game(root, rows, columns, broccoli_amount, error_label, create_ne
 
   Args:
     root (tk.Tk): The root windget, the current window that is being displayed
-    rows (int): Number of rows on the board
-    columns (int): Number of columns on the board
-    broccoli_amount (int): Number of broccolis on the board
+    rows (tk.Spinbox): Number of rows Spinbox
+    columns (tk.Spinbox): Number of columns Spinbox
+    broccoli_amount (tk.Spinbox): Number of broccolis Spinbox
     error_label (tk.Label): The label widget to display an error message
     create_new_game_view (Func): The function that creates the current view/window.
       Used in the next view for the go_back function
