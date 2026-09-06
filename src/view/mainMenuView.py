@@ -56,7 +56,11 @@ def handle_new_game(root):
   new_game_menu(create_main_menu_view)
 
 def create_main_menu_view():
-  """Creates the main menu window."""
+  """Creates the main menu window.
+
+  Returns:
+    tk.Tk: The main menu view root
+  """
   window_width = 220
   window_height = 120
 

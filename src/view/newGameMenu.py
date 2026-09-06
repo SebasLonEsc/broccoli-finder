@@ -108,6 +108,8 @@ def new_game_menu(go_back_func):
   Args:
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view (In this case the main menu)
+  Returns:
+    tk.Tk: The new game menu view root
   """
   window_width = 786
   window_height = 380
@@ -175,3 +177,4 @@ def new_game_menu(go_back_func):
             ).pack(pady=[0,4])
 
   root.mainloop()
+  return root

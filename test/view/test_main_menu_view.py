@@ -131,9 +131,11 @@ class TestCreateMainView(unittest.TestCase):
       mock_photo_image.return_value = ""
 
       root = create_main_menu_view()
+      self.assertTrue(root.winfo_exists(),
+                      "The window should exists")
+
       title = root.title()
       expected_title = Lg.lang["GameTitle"]
-
       self.assertEqual(title,
                        expected_title,
                        "Root title should be " + Lg.lang["GameTitle"])

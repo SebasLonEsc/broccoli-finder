@@ -8,7 +8,8 @@ import src.lang.language as Lg
 from src.logic.constants.boardValues import BOARD_SIZES
 from src.view.newGameMenu import (open_custom_game_view,
                                   create_game,
-                                  create_board_size_selector_button)
+                                  create_board_size_selector_button,
+                                  new_game_menu)
 
 class TestOpenCustomGameView(unittest.TestCase):
   def setUp(self):
@@ -92,3 +93,21 @@ class TestCreateBoardSizeSelectorButton(unittest.TestCase):
 
   def tearDown(self):
     self.root.destroy()
+
+class TestNewGameMenu(unittest.TestCase):
+  def test_new_game_manu_creation(self):
+    with (patch.object(tk.Tk, "mainloop"),
+          patch("src.view.newGameMenu.create_board_size_selector_button")):
+      mock_go_back = lambda: None
+
+      root = new_game_menu(mock_go_back)
+      self.assertTrue(root.winfo_exists(),
+                      "The window should exists")
+
+      title = root.title()
+      expected_title = Lg.lang["GameTitle"]
+      self.assertEqual(title,
+                       expected_title,
+                       "Root title should be " + Lg.lang["GameTitle"])
+
+      root.destroy()
