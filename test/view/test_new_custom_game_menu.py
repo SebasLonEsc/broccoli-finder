@@ -157,3 +157,35 @@ class TestValidateInputs(unittest.TestCase):
     self.assertEqual(self.base_error_message,
                      message,
                      "Incorrect valid input message")
+
+class TestCreateNewGame(unittest.TestCase):
+  def setUp(self):
+    board_size_lower_limit = BOARD_SIZE_VALUES["Small"][0]
+
+    self.numeric_spin_box = _MockSpinBox(str(board_size_lower_limit))
+    self.mock_go_back_func = lambda: None
+    self.base_error_message = Lg.lang["InputErrorText"]
+    self.root = tk.Tk()
+    self.error_label = tk.Label(self.root)
+    self.error_label.pack()
+
+  def test_invalid_inputs(self):
+    negative_broccoli_spin_box = _MockSpinBox("-4")
+    returned_value = create_new_game(self.root,
+                                     self.numeric_spin_box,
+                                     self.numeric_spin_box,
+                                     negative_broccoli_spin_box,
+                                     self.error_label,
+                                     self.mock_go_back_func,
+                                     self.mock_go_back_func)
+
+    self.assertFalse(returned_value)
+
+    expected_text = (self.base_error_message
+                     + "\n"
+                     + Lg.lang["ZeroBroccolisError"])
+    label_text = self.error_label.cget("text")
+
+    self.assertEqual(expected_text,
+                     label_text,
+                     "Incorrect error message")
