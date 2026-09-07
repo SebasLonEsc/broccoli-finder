@@ -6,7 +6,9 @@ from unittest.mock import patch
 import src.lang.language as Lg
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
-from src.view.newCustomGameMenu import validate_inputs, create_new_game
+from src.view.newCustomGameMenu import (validate_inputs,
+                                        create_new_game,
+                                        create_custom_game_view)
 
 class _MockSpinBox():
   def __init__(self, value):
@@ -206,3 +208,23 @@ class TestCreateNewGame(unittest.TestCase):
                        "Label should have been destroyed")
 
       mocked_board_interface_creation.assert_called_once()
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestCreateCustomGameView(unittest.TestCase):
+  def test_create_custom_game_view(self):
+    with (patch("src.view.newCustomGameMenu.create_board_interface"),
+          patch.object(tk.Tk, "mainloop")):
+      mock_go_back = lambda: None
+      root = create_custom_game_view(mock_go_back, mock_go_back)
+      self.assertTrue(root.winfo_exists(),
+                      "The window should exists")
+
+      title = root.title()
+      expected_title = Lg.lang["GameTitle"]
+      self.assertEqual(title,
+                       expected_title,
+                       "Root title should be " + Lg.lang["GameTitle"])
+
+      root.destroy()
