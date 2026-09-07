@@ -141,4 +141,17 @@ class TestValidateInputs(unittest.TestCase):
 
     self.assertEqual(expected_message,
                      message,
-                     "Incorrect too many broccolis error message")    
+                     "Incorrect too many broccolis error message")   
+
+  def test_valid_inputs(self):
+    board_size_lower_limit = BOARD_SIZE_VALUES["Small"][0]
+    numeric_value = self.MockSpinBox(str(board_size_lower_limit))
+    broccoli_value = self.MockSpinBox("1")
+
+    message = validate_inputs(numeric_value,
+                              numeric_value,
+                              broccoli_value)
+
+    self.assertEqual(self.base_error_message,
+                     message,
+                     "Incorrect valid input message")
