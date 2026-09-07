@@ -31,6 +31,9 @@ from src.logic.constants.imagesPaths import (IMAGES_FOLDER,
                                              RAINBOW_PROXIMITY_NUMBER_IMAGES
                                              )
 
+flag_command = False
+broccoli_counter_value = 0
+
 def change_flag_status(button):
   """Changes the current flag status for the game.
 
