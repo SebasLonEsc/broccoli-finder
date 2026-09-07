@@ -92,13 +92,15 @@ def create_new_game(root, rows, columns, broccoli_amount, error_label, create_ne
   board_object = board_generator(number_of_rows, number_of_columns, number_of_broccolis)
   create_board_interface(board_object, create_new_game_view, go_back_func)
 
-def create_new_game_view(go_back_func, go_to_main_menu):
+def create_custom_game_view(go_back_func, go_to_main_menu):
   """Creates the new game menu interface.
 
   Args:
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view
     go_to_main_menu (Func): Function to go back to the main menu
+  Returns:
+    tk.Tk: The custom game menu view root
   """
   window_min_width = 250
   window_min_height = 150
@@ -186,3 +188,4 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   
   error_label.pack()
   root.mainloop()
+  return root

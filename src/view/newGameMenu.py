@@ -10,7 +10,7 @@ import src.lang.language as Lg
 from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.board import board_generator
 from src.view.boardInterface import create_board_interface
-from src.view.newCustomGameMenu import create_new_game_view
+from src.view.newCustomGameMenu import create_custom_game_view
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES, BOARD_SIZES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
 from src.logic.constants.styleValues import BOARD_BUTTON_SIZES, BUTTON_COLOR, BUTTON_ACTIVE_COLOR
@@ -25,7 +25,7 @@ def open_custom_game_view(root, go_back_func, previous_go_back_func):
     previous_go_back_func (func): Function to go back to the previous view
   """
   close_interface(root)
-  create_new_game_view(go_back_func, previous_go_back_func)
+  create_custom_game_view(go_back_func, previous_go_back_func)
 
 def create_game(root, go_back_func, previous_go_back_func, difficulty, board_size):
   """Closes the current window and creates the new game window.

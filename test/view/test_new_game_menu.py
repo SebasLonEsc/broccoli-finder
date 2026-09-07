@@ -17,7 +17,7 @@ class TestOpenCustomGameView(unittest.TestCase):
     self.label = tk.Label(self.root)
 
   def test_handle_new_game(self):
-    with patch("src.view.newGameMenu.create_new_game_view"):
+    with patch("src.view.newGameMenu.create_custom_game_view"):
       mock_go_back = lambda: None
       open_custom_game_view(self.label, mock_go_back, mock_go_back) # Func closes the widget send as arg
 
