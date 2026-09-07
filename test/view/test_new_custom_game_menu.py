@@ -1,6 +1,7 @@
 import unittest
 import math
 import tkinter as tk
+from unittest.mock import patch
 
 import src.lang.language as Lg
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
@@ -189,3 +190,19 @@ class TestCreateNewGame(unittest.TestCase):
     self.assertEqual(expected_text,
                      label_text,
                      "Incorrect error message")
+
+  def test_create_new_game(self):
+    with patch("src.view.newCustomGameMenu.create_board_interface") as mocked_board_interface_creation:
+      broccoli_spin_box = _MockSpinBox("1")
+      create_new_game(self.error_label, # To test destroy widget
+                      self.numeric_spin_box,
+                      self.numeric_spin_box,
+                      broccoli_spin_box,
+                      self.error_label,
+                      self.mock_go_back_func,
+                      self.mock_go_back_func)
+
+      self.assertFalse(self.error_label.winfo_exists(),
+                       "Label should have been destroyed")
+
+      mocked_board_interface_creation.assert_called_once()
