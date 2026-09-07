@@ -1,9 +1,9 @@
 import unittest
-import tkinter as tk
-from unittest.mock import patch
+import math
 
 import src.lang.language as Lg
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES
+from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
 from src.view.newCustomGameMenu import validate_inputs
 
 class TestValidateInputs(unittest.TestCase):
@@ -58,7 +58,7 @@ class TestValidateInputs(unittest.TestCase):
                               numeric_value)
     self.assertEqual(expected_lower_row_value_message,
                      message,
-                     "Invalid lower row limit value error message")
+                     "Incorrect lower row limit value error message")
 
     invalid_upper_limit_value = self.MockSpinBox(str(board_size_upper_limit + 1))
     expected_upper_row_value_message = (self.base_error_message
@@ -71,7 +71,7 @@ class TestValidateInputs(unittest.TestCase):
                               numeric_value)
     self.assertEqual(expected_upper_row_value_message,
                      message,
-                     "Invalid upper row limit value error message")
+                     "Incorrect upper row limit value error message")
 
   def test_invalid_column_input(self):
     board_size_lower_limit = BOARD_SIZE_VALUES["Small"][0]
@@ -89,7 +89,7 @@ class TestValidateInputs(unittest.TestCase):
                               numeric_value)
     self.assertEqual(expected_lower_column_value_message,
                      message,
-                     "Invalid lower column limit value error message")
+                     "Incorrect lower column limit value error message")
 
     invalid_upper_limit_value = self.MockSpinBox(str(board_size_upper_limit + 1))
     expected_upper_column_value_message = (self.base_error_message
@@ -102,7 +102,7 @@ class TestValidateInputs(unittest.TestCase):
                               numeric_value)
     self.assertEqual(expected_upper_column_value_message,
                      message,
-                     "Invalid upper column limit value error message")
+                     "Incorrect upper column limit value error message")
 
   def test_negative_broccoli_amount(self):
     board_size_lower_limit = BOARD_SIZE_VALUES["Small"][0]
@@ -119,4 +119,26 @@ class TestValidateInputs(unittest.TestCase):
 
     self.assertEqual(expected_message,
                      message,
-                     "Invalid negative broccoli value error message")
+                     "Incorrect negative broccoli value error message")
+
+  def test_too_many_broccolis(self):
+    board_size_value = 5
+    broccoli_percent_limit = GAME_BROCCOLI_PERCENTS["Big"]["Hard"][1]
+    broccoli_limit = math.ceil(board_size_value
+                               * board_size_value
+                               * broccoli_percent_limit)
+
+    numeric_value = self.MockSpinBox(board_size_value)
+    too_many_broccoli_value = self.MockSpinBox(broccoli_limit + 5)
+
+    expected_message = (Lg.lang["BroccoliErrorLimit1"]
+                        + str(broccoli_limit)
+                        + "\n"
+                        + Lg.lang["BroccoliErrorLimit2"])
+    message = validate_inputs(numeric_value,
+                              numeric_value,
+                              too_many_broccoli_value)
+
+    self.assertEqual(expected_message,
+                     message,
+                     "Incorrect too many broccolis error message")    
