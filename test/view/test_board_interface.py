@@ -29,6 +29,7 @@ class TestChangeFlagStatus(unittest.TestCase):
 
 class TestHandleFlagTile(unittest.TestCase):
   def setUp(self):
+    boardInterface.broccoli_counter_value = 1
     self.root = tk.Tk()
     self.broccoli_counter = tk.Label(self.root)
     self.broccoli_counter.pack()
@@ -57,7 +58,38 @@ class TestHandleFlagTile(unittest.TestCase):
                                                    self.checked_position,
                                                    self.broccoli_counter)
 
-    self.assertFalse(return_value, "Returned value should be False")
+    self.assertEqual(None,
+                     return_value,
+                     "Returned value should be None")
+
+  def test_handle_flag_tile(self):
+    with (patch.object(tk, "PhotoImage") as image,
+          patch.object(tk.Button, "config"),
+          patch.object(tk.Label, "config")):
+      image.return_value = None
+      move_position = [0,0]
+
+      expected_counter = boardInterface.broccoli_counter_value - 1
+      return_value = boardInterface.handle_flag_tile(self.board_object,
+                                                     self.buttons,
+                                                     move_position,
+                                                     self.broccoli_counter)
+
+      self.assertTrue(return_value, "New flag status should be True")
+      self.assertEqual(expected_counter,
+                       boardInterface.broccoli_counter_value,
+                       "Broccoli counter value should have been reduced by 1")
+
+      expected_counter = boardInterface.broccoli_counter_value + 1
+      return_value = boardInterface.handle_flag_tile(self.board_object,
+                                                      self.buttons,
+                                                      move_position,
+                                                      self.broccoli_counter)
+
+      self.assertFalse(return_value, "New flag status should be False")
+      self.assertEqual(expected_counter,
+                       boardInterface.broccoli_counter_value,
+                       "Broccoli counter value should have been increase by 1")
 
   def tearDown(self):
     self.root.destroy()
