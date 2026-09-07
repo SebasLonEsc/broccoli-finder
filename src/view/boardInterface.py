@@ -65,6 +65,9 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     move_position (array): An array [row, column] of the current move made by the player
     broccoli_counter (tk.Label): Broccoli counter widget
+  Returns:
+    False: If the tile is a checked tile
+    None: Otherwise
   """
   global broccoli_counter_value
 
@@ -74,7 +77,7 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   clicked_tile = tiles_board[row, column]
 
   if clicked_tile["checked"]:
-    return
+    return False
 
   new_flagged_status = not clicked_tile["flagged"]
   board_object.flag_tile(new_flagged_status, row, column)
@@ -84,7 +87,6 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   if new_flagged_status:
     image_name = FLAGGED_TILE_IMAGE
     broccoli_counter_value -= 1
-
   else:
     broccoli_counter_value += 1
 
