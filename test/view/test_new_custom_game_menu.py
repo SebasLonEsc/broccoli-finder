@@ -103,3 +103,20 @@ class TestValidateInputs(unittest.TestCase):
     self.assertEqual(expected_upper_column_value_message,
                      message,
                      "Invalid upper column limit value error message")
+
+  def test_negative_broccoli_amount(self):
+    board_size_lower_limit = BOARD_SIZE_VALUES["Small"][0]
+    numeric_value = self.MockSpinBox(str(board_size_lower_limit))
+    negative_broccoli_value = self.MockSpinBox("-4")
+
+    expected_message = (self.base_error_message
+                        + "\n"
+                        + Lg.lang["ZeroBroccolisError"])
+    
+    message = validate_inputs(numeric_value,
+                              numeric_value,
+                              negative_broccoli_value)
+
+    self.assertEqual(expected_message,
+                     message,
+                     "Invalid negative broccoli value error message")
