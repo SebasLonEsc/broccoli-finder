@@ -258,7 +258,7 @@ class TestHandleRevealedTiles(unittest.TestCase):
   def tearDown(self):
     self.root.destroy()
 
-class TestHanldeRainbowBroccoliReveal(unittest.TestCase):
+class TestHandleRainbowBroccoliReveal(unittest.TestCase):
   def setUp(self):
     boardInterface.broccoli_counter_value = 3
     self.root = tk.Tk()
@@ -345,6 +345,49 @@ class TestHanldeRainbowBroccoliReveal(unittest.TestCase):
                                                                    self.broccoli_counter)
 
       self.assertFalse(return_value, "Returned value should be False")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestHandleClick(unittest.TestCase):
+  def setUp(self):
+    boardInterface.flag_command = True
+    self.root = tk.Tk()
+    self.broccoli_counter = tk.Label(self.root)
+    self.broccoli_counter.pack()
+    self.win_label = tk.Label(self.root)
+    self.win_label.pack()
+
+    size = 3
+    self.buttons = np.empty(shape=[size, size], dtype="object")
+    for row in range(0, size):
+      for column in range(0, size):
+        button = tk.Button(self.root)
+        button.pack()
+        self.buttons[row, column] = button
+
+    broccoli_value = GET_BOARD_VALUE["broccoli"]
+    rainbow_broccoli = GET_BOARD_VALUE["rainbowBroccoli"]
+    empty_tile = 0
+    proximity_tile = 1
+    self.board_object = Board(size, size)
+    board = [[empty_tile, proximity_tile, broccoli_value],
+             [empty_tile, proximity_tile, rainbow_broccoli],
+             [empty_tile, proximity_tile, broccoli_value]]
+    self.board_object.change_board(np.array(board))
+    self.board_object.add_broccoli_positions([0,2])
+    self.board_object.add_broccoli_positions([1,2])
+    self.board_object.add_broccoli_positions([2,2])
+
+  def test_handle_click_flag_command(self):
+    with patch("src.view.boardInterface.handle_flag_tile") as mocked_handle_flag:
+      boardInterface.handle_click(self.board_object,
+                                  self.buttons,
+                                  [0,0],
+                                  self.win_label,
+                                  self.broccoli_counter)
+
+      mocked_handle_flag.assert_called_once()
 
   def tearDown(self):
     self.root.destroy()
