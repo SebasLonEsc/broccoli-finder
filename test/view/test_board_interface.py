@@ -203,6 +203,7 @@ class TestHandleRevealedTiles(unittest.TestCase):
     for row in range(0, self.size):
       for column in range(0, self.size):
         button = tk.Button(self.root,
+                           text=self.button_text,
                            command=self.button_func,
                            bg=TILE_BACKGROUND_COLOR)
         if(row == 0 and column == 0):
@@ -253,6 +254,86 @@ class TestHandleRevealedTiles(unittest.TestCase):
       self.assertNotEqual(rainbow_proximity_button.invoke(),
                           self.button_func(),
                           "Button command should've changed")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestHanldeRainbowBroccoliReveal(unittest.TestCase):
+  def setUp(self):
+    boardInterface.broccoli_counter_value = 3
+    self.root = tk.Tk()
+    self.broccoli_counter = tk.Label(self.root)
+    self.broccoli_counter.pack()
+
+    size = 3
+    self.empty_board_object = Board(size, size)
+    self.board_object = board_generator(size, size, 3)
+    self.buttons = np.empty(shape=[size, size], dtype="object")
+    self.button_func = lambda: False
+    self.button_text = "Tile"
+
+    for row in range(0, size):
+      for column in range(0, size):
+        button = tk.Button(self.root,
+                           text=self.button_text,
+                           command=self.button_func)
+        button.pack()
+        self.buttons[row, column] = button
+    checked_flowering_button_pos = self.board_object.broccoli_positions[1]
+    checked_flowering_button = self.buttons[checked_flowering_button_pos[0],
+                                            checked_flowering_button_pos[1]]
+    checked_flowering_button.config(bg=PROXIMITY_COLORS[0])
+    self.buttons[checked_flowering_button_pos[0],
+                 checked_flowering_button_pos[1]] = checked_flowering_button
+
+    self.flowering_broccoli_pos = self.board_object.broccoli_positions[2]
+    board = self.board_object.board
+    board[checked_flowering_button_pos[0],
+          checked_flowering_button_pos[1]] = GET_BOARD_VALUE["floweringBroccoli"]
+    board[self.flowering_broccoli_pos[0],
+          self.flowering_broccoli_pos[1]] = GET_BOARD_VALUE["floweringBroccoli"]
+    self.board_object.change_board(board)
+
+    tiles_board = self.board_object.tiles_board    
+    flowering_broccoli_tile = tiles_board[self.flowering_broccoli_pos[0],
+                                        self.flowering_broccoli_pos[1]]
+    flowering_broccoli_tile["tileValue"] = GET_BOARD_VALUE["rainbowBroccoli"]
+    flowering_broccoli_tile["flagged"] = True
+    tiles_board[self.flowering_broccoli_pos[0],
+                self.flowering_broccoli_pos[1]] = flowering_broccoli_tile
+    self.board_object.change_tiles_board(tiles_board)
+
+  def test_handle_rainbow_broccoli_reveal(self):
+    with patch.object(tk, "PhotoImage") as image:
+      image.return_value = None
+      expected_counter_value = boardInterface.broccoli_counter_value - 1
+      move_position = self.board_object.broccoli_positions[0]
+      boardInterface.handle_rainbow_broccoli_reveal(self.board_object,
+                                                    self.buttons,
+                                                    move_position,
+                                                    self.broccoli_counter)
+
+      rainbow_broccoli_button = self.buttons[move_position[0],
+                                             move_position[1]]
+      self.assertNotEqual(rainbow_broccoli_button["text"],
+                          self.button_text,
+                          "Button text should've changed")
+      self.assertNotEqual(rainbow_broccoli_button.invoke(),
+                          self.button_func(),
+                          "Button command should've changed")
+
+      flowering_broccoli_button = self.buttons[self.flowering_broccoli_pos[0],
+                                               self.flowering_broccoli_pos[1]]
+      self.assertNotEqual(flowering_broccoli_button["text"],
+                          self.button_text,
+                          "Button text should've changed")
+      self.assertNotEqual(flowering_broccoli_button.invoke(),
+                          self.button_func(),
+                          "Button command should've changed")
+
+      self.assertEqual(expected_counter_value,
+                       boardInterface.broccoli_counter_value,
+                       "Broccoli counter should've changed")
 
   def tearDown(self):
     self.root.destroy()
