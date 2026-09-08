@@ -171,3 +171,21 @@ class TestHandleGameStatus(unittest.TestCase):
           self.assertNotEqual(button_func,
                               self.button_func(),
                               "Button command should have changed")
+
+  def tearDown(self):
+    self.root.destroy()
+
+class TestCreateProximityTileImages(unittest.TestCase):
+  def mocked_func(_, path, __, ___):
+    return path
+
+  def test_create_proximity_tile_images(self):
+    with patch.object(boardInterface, "open_pillow_image", new_callable=lambda: self.mocked_func):
+      images_array = ["first", "second", "third"]
+      tile_images = boardInterface.create_proximity_tile_images(images_array)
+
+      for i in range(len(images_array)):
+        path = images_array[i]
+        returned_value = str(tile_images[i])
+        self.assertTrue(path in returned_value,
+                        "Incorrect tile images array")
