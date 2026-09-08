@@ -239,6 +239,8 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     move_position (array): An array [row, column] of the current move made by the player
     broccoli_counter (tk.Label): Broccoli counter widget
+  Returns:
+    False: If there are no flowering broccolis
   """
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / IMAGES_FOLDER / RAINBOW_BROCCOLI_TILE_IMAGE
@@ -258,26 +260,34 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
   for pos in broccoli_positions:
     if (board[pos[0], pos[1]] in BOARD_VALUES_GUIDE and
         BOARD_VALUES_GUIDE[board[pos[0], pos[1]]] == "floweringBroccoli"):
+      different_flowering_broccoli = buttons[pos[0], pos[1]]["bg"] == PROXIMITY_COLORS[0]
+
+      if different_flowering_broccoli:
+        continue
+
       flowering_broccoli_pos = pos
       break
 
   if len(flowering_broccoli_pos) != 2:
-    return
+    return False
 
   image_path = current_dir.parent / IMAGES_FOLDER / FLOWERING_BROCCOLI_TILE_IMAGE
   flowering_broccoli_image = tk.PhotoImage(file=str(image_path))
 
-  buttons[pos[0], pos[1]].config(bg=PROXIMITY_COLORS[0],
-                                 text="",
-                                 command=lambda: None,
-                                 image=flowering_broccoli_image,
-                                 )
-  buttons[pos[0], pos[1]].image = flowering_broccoli_image
+  buttons[flowering_broccoli_pos[0],
+          flowering_broccoli_pos[1]].config(bg=PROXIMITY_COLORS[0],
+                                            text="",
+                                            command=lambda: None,
+                                            image=flowering_broccoli_image,
+                                            )
+  buttons[flowering_broccoli_pos[0],
+          flowering_broccoli_pos[1]].image = flowering_broccoli_image
 
   global broccoli_counter_value
   broccoli_counter_value -= 2
 
-  if board_object.tiles_board[pos[0], pos[1]]["flagged"] == True:
+  if board_object.tiles_board[flowering_broccoli_pos[0],
+                              flowering_broccoli_pos[1]]["flagged"] == True:
     broccoli_counter_value +=1
 
   broccoli_counter.config(text=broccoli_counter_value)
