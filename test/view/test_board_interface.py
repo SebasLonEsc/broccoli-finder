@@ -3,9 +3,11 @@ import numpy as np
 import tkinter as tk
 from unittest.mock import patch
 
-from src.logic.constants.boardValues import GET_BOARD_VALUE
-from src.logic.board import Board, board_generator
+import src.lang.language as Lg
 import src.view.boardInterface as boardInterface
+from src.logic.board import Board, board_generator
+from src.logic.constants.boardValues import GET_BOARD_VALUE
+from src.logic.constants.gameValues import GAME_OVER_LANG_CODE
 from src.logic.constants.styleValues import TILE_BACKGROUND_COLOR, PROXIMITY_COLORS
 
 class TestChangeFlagStatus(unittest.TestCase):
@@ -402,6 +404,32 @@ class TestHandleClick(unittest.TestCase):
 
       mocked_handle_rainbow_broccoli_reveal.assert_called_once()
       mocked_handle_revealed_tiles.assert_called_once()
+
+  def test_handle_click_game_over(self):
+    boardInterface.flag_command = False
+    with (patch("src.view.boardInterface.handle_revealed_tiles") as mocked_handle_revealed_tiles,
+          patch("src.view.boardInterface.handle_game_status") as mocked_handle_game_status):
+      broccoli_positions = self.board_object.broccoli_positions
+      broccoli_pos = broccoli_positions[0]
+      for pos in broccoli_positions:
+        if self.board_object.board[pos[0], pos[1]] == GET_BOARD_VALUE["broccoli"]:
+          broccoli_pos = pos
+          break
+
+      boardInterface.handle_click(self.board_object,
+                                  self.buttons,
+                                  broccoli_pos,
+                                  self.win_label,
+                                  self.broccoli_counter)
+      
+      mocked_handle_revealed_tiles.assert_called_once()
+      mocked_handle_game_status.assert_called_once()
+
+      game_over_texts = Lg.lang[GAME_OVER_LANG_CODE]
+      win_label_text = self.win_label["text"]
+      is_game_over_text = win_label_text in game_over_texts
+      self.assertTrue(is_game_over_text,
+                      "Label should've change to a game over text")
 
   def tearDown(self):
     self.root.destroy()
