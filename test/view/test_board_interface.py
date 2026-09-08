@@ -376,7 +376,8 @@ class TestHandleClick(unittest.TestCase):
              [empty_tile, proximity_tile, broccoli_value]]
     self.board_object.change_board(np.array(board))
     self.board_object.add_broccoli_positions([0,2])
-    self.board_object.add_broccoli_positions([1,2])
+    self.rainbow_broccoli_pos = [1,2]
+    self.board_object.add_broccoli_positions(self.rainbow_broccoli_pos)
     self.board_object.add_broccoli_positions([2,2])
 
   def test_handle_click_flag_command(self):
@@ -388,6 +389,19 @@ class TestHandleClick(unittest.TestCase):
                                   self.broccoli_counter)
 
       mocked_handle_flag.assert_called_once()
+
+  def test_handle_click_rainbow_broccoli(self):
+    boardInterface.flag_command = False
+    with (patch("src.view.boardInterface.handle_revealed_tiles") as mocked_handle_revealed_tiles,
+          patch("src.view.boardInterface.handle_rainbow_broccoli_reveal") as mocked_handle_rainbow_broccoli_reveal):
+      boardInterface.handle_click(self.board_object,
+                                  self.buttons,
+                                  self.rainbow_broccoli_pos,
+                                  self.win_label,
+                                  self.broccoli_counter)
+
+      mocked_handle_rainbow_broccoli_reveal.assert_called_once()
+      mocked_handle_revealed_tiles.assert_called_once()
 
   def tearDown(self):
     self.root.destroy()
