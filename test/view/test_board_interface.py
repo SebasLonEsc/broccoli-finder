@@ -6,8 +6,8 @@ from unittest.mock import patch
 import src.lang.language as Lg
 import src.view.boardInterface as boardInterface
 from src.logic.board import Board, board_generator
-from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.gameValues import GAME_OVER_LANG_CODE
+from src.logic.constants.boardValues import GET_BOARD_VALUE, BOARD_SIZE_VALUES
 from src.logic.constants.styleValues import TILE_BACKGROUND_COLOR, PROXIMITY_COLORS
 
 class TestChangeFlagStatus(unittest.TestCase):
@@ -450,3 +450,46 @@ class TestCreateBoardCanvas(unittest.TestCase):
 
   def tearDown(self):
       self.root.destroy()
+
+class TestCreateBoardInterface(unittest.TestCase):
+  def setUp(self):
+    self.board_object = board_generator(3,3,3)
+    big_size = BOARD_SIZE_VALUES["Big"][1]
+    self.canvas_board_object = board_generator(big_size, big_size, 2)
+    self.go_back_func = lambda: None
+
+  def test_create_board_interface(self):
+    with (patch("src.view.boardInterface.create_menu") as create_menu_mock,
+          patch.object(tk, "PhotoImage") as photo_image_mock,
+          patch.object(tk.Tk, "mainloop") as main_loop_mock):
+      photo_image_mock.return_value = None
+
+      root = boardInterface.create_board_interface(self.board_object,
+                                                   self.go_back_func,
+                                                   self.go_back_func)
+
+      create_menu_mock.assert_called_once()
+      main_loop_mock.assert_called_once()
+
+      self.assertTrue(root.winfo_exists(), "Root should exists")
+      root.destroy()
+
+  def create_board_canvas_mock(_, root):
+    return tk.Frame(root)
+
+  def test_create_board_interface_canvas_board(self):
+    with (patch("src.view.boardInterface.create_menu") as create_menu_mock,
+          patch.object(boardInterface, "create_board_canvas", new_callable=lambda: self.create_board_canvas_mock),
+          patch.object(tk, "PhotoImage") as photo_image_mock,
+          patch.object(tk.Tk, "mainloop") as main_loop_mock):
+      photo_image_mock.return_value = None
+
+      root = boardInterface.create_board_interface(self.canvas_board_object,
+                                                   self.go_back_func,
+                                                   self.go_back_func)
+
+      create_menu_mock.assert_called_once()
+      main_loop_mock.assert_called_once()
+
+      self.assertTrue(root.winfo_exists(), "Root should exists")
+      root.destroy()

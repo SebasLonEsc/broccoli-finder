@@ -365,6 +365,8 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
     board_object (Board): Rhe object containing all of the information about the board
     go_back_func (Func): Function to go back to the previous view
     go_to_main_menu (Func): Function to go back to the main menu view
+  Returns:
+    tk.Tk: The board interface view root
   """
   rows = board_object.total_rows
   columns = board_object.total_columns
@@ -540,3 +542,4 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
             ).pack(side="left", padx=[4,2])
   
   root.mainloop()
+  return root
