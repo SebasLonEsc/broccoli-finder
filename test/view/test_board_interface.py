@@ -139,3 +139,35 @@ class TestHandleRevealBroccolis(unittest.TestCase):
 
   def tearDown(self):
     self.root.destroy()
+
+class TestHandleGameStatus(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+    
+    self.size = 3
+    self.board_object = board_generator(self.size, self.size, 3)
+    self.buttons = np.empty(shape=[self.size, self.size], dtype="object")
+    self.button_func = lambda: True
+    for row in range(0, self.size):
+      for column in range(0, self.size):
+        button = tk.Button(self.root, command=self.button_func)
+        button.pack()
+        self.buttons[row, column] = button
+
+  def test_handle_game_status(self):
+    with patch("src.view.boardInterface.handle_reveal_broccolis") as mocked_func:
+      move_pos = [0,0]
+      boardInterface.handle_game_status(self.board_object,
+                                        self.buttons,
+                                        move_pos,
+                                        True)
+
+      mocked_func.assert_called_once()
+
+      for row in range(0, self.size):
+        for column in range(0, self.size):
+          button_func = self.buttons[row, column]["command"]
+
+          self.assertNotEqual(button_func,
+                              self.button_func(),
+                              "Button command should have changed")
