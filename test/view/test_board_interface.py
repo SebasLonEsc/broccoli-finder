@@ -433,3 +433,20 @@ class TestHandleClick(unittest.TestCase):
 
   def tearDown(self):
     self.root.destroy()
+
+class TestCreateBoardCanvas(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+
+  def test_create_board_canvas(self):
+    with (patch.object(tk, "Canvas") as mocked_canvas,
+          patch.object(tk, "Scrollbar") as mocked_scroll_bar):
+      frame = boardInterface.create_board_canvas(self.root)
+
+      self.assertTrue(frame.winfo_exists(),
+                      "The canvas frame should exists")
+      mocked_canvas.assert_called_once()
+      mocked_scroll_bar.assert_called_once()
+
+  def tearDown(self):
+      self.root.destroy()
