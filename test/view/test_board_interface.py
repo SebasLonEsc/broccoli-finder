@@ -6,6 +6,7 @@ from unittest.mock import patch
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.board import Board, board_generator
 import src.view.boardInterface as boardInterface
+from src.logic.constants.styleValues import TILE_BACKGROUND_COLOR, PROXIMITY_COLORS
 
 class TestChangeFlagStatus(unittest.TestCase):
   def setUp(self):
@@ -166,9 +167,9 @@ class TestHandleGameStatus(unittest.TestCase):
 
       for row in range(0, self.size):
         for column in range(0, self.size):
-          button_func = self.buttons[row, column]["command"]
+          button = self.buttons[row, column]
 
-          self.assertNotEqual(button_func,
+          self.assertNotEqual(button.invoke(),
                               self.button_func(),
                               "Button command should have changed")
 
@@ -189,3 +190,69 @@ class TestCreateProximityTileImages(unittest.TestCase):
         returned_value = str(tile_images[i])
         self.assertTrue(path in returned_value,
                         "Incorrect tile images array")
+
+class TestHandleRevealedTiles(unittest.TestCase):
+  def setUp(self):
+    self.root = tk.Tk()
+        
+    self.size = 3
+    self.board_object = board_generator(self.size, self.size, 3)
+    self.buttons = np.empty(shape=[self.size, self.size], dtype="object")
+    self.button_func = lambda: False
+    self.button_text = "Tile"
+    for row in range(0, self.size):
+      for column in range(0, self.size):
+        button = tk.Button(self.root,
+                           command=self.button_func,
+                           bg=TILE_BACKGROUND_COLOR)
+        if(row == 0 and column == 0):
+          button.config(bg=PROXIMITY_COLORS[0])
+
+        button.pack()
+        self.buttons[row, column] = button
+
+    tiles_board = self.board_object.tiles_board
+    self.normal_proximity_tile_pos = [0,1]
+    normal_proximity_tile = tiles_board[self.normal_proximity_tile_pos[0],
+                                        self.normal_proximity_tile_pos[1]]
+    normal_proximity_tile["tileValue"] = 5 # Normal proximity number
+    normal_proximity_tile["checked"] = True
+    tiles_board[self.normal_proximity_tile_pos[0],
+                self.normal_proximity_tile_pos[1]] = normal_proximity_tile
+
+    self.rainbow_proximity_tile_pos = [0,2]
+    rainbow_proximity_tile = tiles_board[self.rainbow_proximity_tile_pos[0],
+                                         self.rainbow_proximity_tile_pos[1]]
+    rainbow_proximity_tile["tileValue"] = 15 # Rainbow proximity number
+    rainbow_proximity_tile["checked"] = True
+    tiles_board[self.rainbow_proximity_tile_pos[0],
+                self.rainbow_proximity_tile_pos[1]] = rainbow_proximity_tile
+
+    self.board_object.change_tiles_board(tiles_board)
+
+  def test_handle_revealed_tiles(self):
+    with patch("src.view.boardInterface.create_proximity_tile_images") as mocked_func:
+      mocked_func.return_value = [None] * 9 # 9 proximity numbers including 0
+      boardInterface.handle_revealed_tiles(self.board_object, self.buttons)
+
+      normal_proximity_button = self.buttons[self.normal_proximity_tile_pos[0],
+                                             self.normal_proximity_tile_pos[1]]
+      rainbow_proximity_button = self.buttons[self.rainbow_proximity_tile_pos[0],
+                                              self.rainbow_proximity_tile_pos[1]]
+
+      self.assertNotEqual(normal_proximity_button["text"],
+                          self.button_text,
+                          "Button text should've changed")
+      self.assertNotEqual(rainbow_proximity_button["text"],
+                          self.button_text,
+                          "Button text should've changed")
+
+      self.assertNotEqual(normal_proximity_button.invoke(),
+                          self.button_func(),
+                          "Button command should've changed")
+      self.assertNotEqual(rainbow_proximity_button.invoke(),
+                          self.button_func(),
+                          "Button command should've changed")
+
+  def tearDown(self):
+    self.root.destroy()
