@@ -335,5 +335,16 @@ class TestHanldeRainbowBroccoliReveal(unittest.TestCase):
                        boardInterface.broccoli_counter_value,
                        "Broccoli counter should've changed")
 
+  def test_handle_rainbow_broccoli_reveal_no_flowering(self):
+    with patch.object(tk, "PhotoImage") as image:
+      image.return_value = None
+      move_position = self.board_object.broccoli_positions[0]
+      return_value = boardInterface.handle_rainbow_broccoli_reveal(self.empty_board_object,
+                                                                   self.buttons,
+                                                                   move_position,
+                                                                   self.broccoli_counter)
+
+      self.assertFalse(return_value, "Returned value should be False")
+
   def tearDown(self):
     self.root.destroy()
