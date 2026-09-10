@@ -22,7 +22,7 @@ spanish = {
                     "Lo lograste!!!",
                     "Eso fue increible!",
                     "Pero que habilidos@!!"],
-  "Game_Over_Text": ["Lo siento perdiste",
+  "Game_Over_Texts": ["Lo siento perdiste",
                    "Intentalo nuevamente :(",
                    "Yo se que para la próxima\nlo lograrás!!",
                    "Hiciste lo que pudiste"],

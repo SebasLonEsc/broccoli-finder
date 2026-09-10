@@ -14,9 +14,9 @@ def validate_inputs(rows, columns, broccoli_amount):
   """Validates if the input values are valid values.
 
   Args:
-    rows (int): Number of rows on the board
-    columns (int): Number of columns on the board
-    broccoli_amount (int): Number of broccolis on the board
+    rows (tk.Spinbox): Number of rows Spinbox
+    columns (tk.Spinbox): Number of columns Spinbox
+    broccoli_amount (tk.Spinbox): Number of broccolis Spinbox
   Returns:
     str: Message indicating if the inputs are valid.
       "The following values are invalid:" if all values are valid.
@@ -66,47 +66,41 @@ def create_new_game(root, rows, columns, broccoli_amount, error_label, create_ne
 
   Args:
     root (tk.Tk): The root windget, the current window that is being displayed
-    rows (int): Number of rows on the board
-    columns (int): Number of columns on the board
-    broccoli_amount (int): Number of broccolis on the board
+    rows (tk.Spinbox): Number of rows Spinbox
+    columns (tk.Spinbox): Number of columns Spinbox
+    broccoli_amount (tk.Spinbox): Number of broccolis Spinbox
     error_label (tk.Label): The label widget to display an error message
     create_new_game_view (Func): The function that creates the current view/window.
       Used in the next view for the go_back function
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view (In this case the main menu)
+  Returns:
+    bool (False): If invalid inputs
+    None: If valid inputs
   """
   error_text = validate_inputs(rows, columns, broccoli_amount)
 
   if error_text != Lg.lang["InputErrorText"]:
     error_label.config(text=error_text)
-    return
+    return False
   
   number_of_rows = int(rows.get())
   number_of_columns = int(columns.get())
   number_of_broccolis = int(broccoli_amount.get())
 
-  broccoli_percent_limit = GAME_BROCCOLI_PERCENTS["Big"]["Hard"][1]
-  broccoli_amount_proportion = math.ceil(number_of_rows
-                                         * number_of_columns
-                                         * broccoli_percent_limit)
-
-  if number_of_broccolis > broccoli_amount_proportion:
-    error_text = (Lg.lang["TooManyBroccolisError"]
-                 + str(broccoli_amount_proportion))
-    error_label.config(text=error_text)
-    return
-
   close_interface(root)
   board_object = board_generator(number_of_rows, number_of_columns, number_of_broccolis)
   create_board_interface(board_object, create_new_game_view, go_back_func)
 
-def create_new_game_view(go_back_func, go_to_main_menu):
+def create_custom_game_view(go_back_func, go_to_main_menu):
   """Creates the new game menu interface.
 
   Args:
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view
     go_to_main_menu (Func): Function to go back to the main menu
+  Returns:
+    tk.Tk: The custom game menu view root
   """
   window_min_width = 250
   window_min_height = 150
@@ -194,3 +188,4 @@ def create_new_game_view(go_back_func, go_to_main_menu):
   
   error_label.pack()
   root.mainloop()
+  return root

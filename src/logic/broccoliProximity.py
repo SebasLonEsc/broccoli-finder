@@ -1,23 +1,23 @@
 from src.logic.constants.boardValues import BOARD_VALUES_GUIDE, GET_BOARD_VALUE
 
-def out_of_bounds_validation(current_pos, pos, limit = 0):
+def out_of_bounds_validation(new_coordinate, current_coordinate, limit = 0):
   """Validates if the current position is out of bounds.
 
   Args:
-    current_pos (array[int]): The new position that is being evaluated
-    pos (array[int]): The previous position
-    limit (int): The limit value that the position can have (default 0)
+    new_coordinate (int): The new position coordinate that is being evaluated
+    current_coordinate (int): The current position coordinate
+    limit (int): The limit value that the coordinate can have (default 0)
   Returns:
-    array[int]: Returns the current_pos if the position is not out of bounds.
-      Returns pos argument otherwise
+    int: Returns the new_coordinate if the coordinate is not out of bounds.
+      Returns current_coordinate argument otherwise
   """
-  if limit == 0 and current_pos < limit:
-    return pos
+  if limit == 0 and new_coordinate < limit:
+    return current_coordinate
   
-  if limit != 0 and current_pos >= limit:
-    return pos
+  if limit != 0 and new_coordinate >= limit:
+    return current_coordinate
   
-  return current_pos
+  return new_coordinate
 
 def check_null_spaces(board, pos, r_increment, c_increment, r_limit=0, c_limit=0):
   """Verifies if there are null spaces on the current position.
@@ -82,11 +82,11 @@ def broccoli_proximity(board, pos, total_rows, total_columns):
 
   return board
 
-def validate_new_position_values(new_pos_value, limit, comparator):
+def validate_new_coordinate_value(new_coordinate_value, limit, comparator):
   """Validates if the new pos coordinate is within the board limits
 
   Args:
-    new_pos_value (int): Position coordinate
+    new_coordinate_value (int): The new position coordinate
     limit (int): The limit value that the new_pos_value is within the limits
     compartor (int): Used to validate the row/column limits using the lesser than in both cases
       For limits equal 0 the step is negative so the comparison is done with positive numbers (step * -1)
@@ -97,7 +97,7 @@ def validate_new_position_values(new_pos_value, limit, comparator):
   Returns:
     bool: True if the new position is valid, False otherwise
   """
-  if new_pos_value*comparator > limit*comparator:
+  if new_coordinate_value*comparator > limit*comparator:
     return True
 
   return False
@@ -121,25 +121,25 @@ def validate_nullspaces_for_rainbow_broccoli(board, pos, previous_pos, step, row
   if board[pos[0], pos[1]] != null_space_value:
     return pos
 
-  # Check validate_new_position_values function docstring on comparator arg
+  # Check validate_new_coordinate_value function docstring on comparator arg
   limit_comparator = step * -1
 
   # Checks if nullspace is in a row direction   
-  if (validate_new_position_values(previous_pos[0]+step, row_limit, limit_comparator) and
+  if (validate_new_coordinate_value(previous_pos[0]+step, row_limit, limit_comparator) and
       board[previous_pos[0]+step, previous_pos[1]] == null_space_value):
     pos = [pos[0]+step, pos[1]]
 
   # Checks if nullspace is in a column direction
-  if (validate_new_position_values(previous_pos[1]+step, column_limit, limit_comparator) and 
+  if (validate_new_coordinate_value(previous_pos[1]+step, column_limit, limit_comparator) and 
       board[previous_pos[0], previous_pos[1]+step] == null_space_value):
     pos = [pos[0], pos[1]+step]
 
   # Validates if the new row position (after nullspace validation or not) is valid
-  if not validate_new_position_values(pos[0], row_limit, limit_comparator):
+  if not validate_new_coordinate_value(pos[0], row_limit, limit_comparator):
     pos[0] = row_limit - 1 if row_limit != 0 else 0
 
   # Validates if the new column position (after nullspace validation or not) is valid
-  if not validate_new_position_values(pos[1], column_limit, limit_comparator):
+  if not validate_new_coordinate_value(pos[1], column_limit, limit_comparator):
     pos[1] = column_limit - 1 if column_limit != 0 else 0
 
   # Recalculates a new position one more time if the current position is a nullspace

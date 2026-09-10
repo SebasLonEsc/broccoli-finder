@@ -10,7 +10,7 @@ import src.lang.language as Lg
 from src.logic.interfaceTools import center_window, close_interface, create_menu
 from src.logic.board import board_generator
 from src.view.boardInterface import create_board_interface
-from src.view.newCustomGameMenu import create_new_game_view
+from src.view.newCustomGameMenu import create_custom_game_view
 from src.logic.constants.boardValues import BOARD_SIZE_VALUES, BOARD_SIZES
 from src.logic.constants.gameValues import GAME_BROCCOLI_PERCENTS
 from src.logic.constants.styleValues import BOARD_BUTTON_SIZES, BUTTON_COLOR, BUTTON_ACTIVE_COLOR
@@ -25,7 +25,7 @@ def open_custom_game_view(root, go_back_func, previous_go_back_func):
     previous_go_back_func (func): Function to go back to the previous view
   """
   close_interface(root)
-  create_new_game_view(go_back_func, previous_go_back_func)
+  create_custom_game_view(go_back_func, previous_go_back_func)
 
 def create_game(root, go_back_func, previous_go_back_func, difficulty, board_size):
   """Closes the current window and creates the new game window.
@@ -34,7 +34,7 @@ def create_game(root, go_back_func, previous_go_back_func, difficulty, board_siz
     root (tk.Tk): The root windget, the current window that is being displayed
     go_back_func (Func): Function to go back to the current view
     previous_go_back_func (Func): Function to go back to the previous view
-    difficulty (int): The game difficulty combobox
+    difficulty (ttk.Combobox): The game difficulty combobox
     board_size (str): The selected board size
   """
   game_difficulty = Lg.lang[difficulty.get()]
@@ -65,7 +65,7 @@ def create_board_size_selector_button(root, go_back_func, previous_go_back_func,
     go_back_func (Func): Function to go back to the current view
     previous_go_back_func (Func): Function to go back to the previous view
     master_widget (tk.Widget): The widget where the button is being placed
-    difficulty (int): The game difficulty combobox
+    difficulty (ttk.Combobox): The game difficulty combobox
     board_size (str): The selected board size
   """
   current_dir = Path(__file__).parent
@@ -108,6 +108,8 @@ def new_game_menu(go_back_func):
   Args:
     go_back_func (Func): The current go_back function.
       Used to go back to the previous view (In this case the main menu)
+  Returns:
+    tk.Tk: The new game menu view root
   """
   window_width = 786
   window_height = 380
@@ -175,3 +177,4 @@ def new_game_menu(go_back_func):
             ).pack(pady=[0,4])
 
   root.mainloop()
+  return root

@@ -68,10 +68,8 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     tiles_board (np.ndarray): Matrix containing each tiles of the board
     broccoli_positions (array[array[int,int]]): The positions of the broccolis
   Returns:
-    np.array: Updated tileBoard matrix after the player move if valid.
-      Returns the unchanged matrix otherwise
-    (np.ndarray): The board matrix containg the information about
-      nullspaces, broccoli position and proximity
+    np.array: Updated tileBoard matrix with the flowering broccoli
+    np.ndarray: The updated board matrix with the flowering broccoli
   """
   invalid_position = True
   pos = []
@@ -80,10 +78,8 @@ def handle_rainbow_broccoli(board, tiles_board, broccoli_positions):
     pos_index = random.randrange(0, len(broccoli_positions))
     pos = broccoli_positions[pos_index]
 
-    if board[pos[0], pos[1]] == GET_BOARD_VALUE["rainbowBroccoli"]:
-      continue
-
-    invalid_position = False
+    if board[pos[0], pos[1]] != GET_BOARD_VALUE["rainbowBroccoli"]:
+      invalid_position = False
 
   tiles_board[pos[0], pos[1]]["checked"] = True
   tiles_board[pos[0], pos[1]]["tileValue"] = GET_BOARD_VALUE["floweringBroccoli"]
@@ -112,7 +108,7 @@ def check_valid_move(board, tiles_board, move_position, board_row_limit, board_c
       column < 0 or
       column >= board_column_limit):
     return False
-  
+
   if (board[row, column] in BOARD_VALUES_GUIDE and
       BOARD_VALUES_GUIDE[board[row, column]] == "nullSpace"):
     return False
@@ -137,7 +133,7 @@ def make_move(board, tiles_board, move_position, board_row_limit, board_column_l
   Returns:
     np.array: Updated tileBoard matrix after the player move if valid.
       Returns the unchanged matrix otherwise
-    (np.ndarray): The board matrix containg the information about
+    np.ndarray: The board matrix containg the information about
       nullspaces, broccoli position and proximity
   """
   valid_move = check_valid_move(board,
@@ -241,5 +237,5 @@ def handle_move(board_object, move_position):
     broccoli_positions = board_object.broccoli_positions
     tiles_board = reveal_all_broccolis(board, tiles_board, broccoli_positions)
     board_object.change_tiles_board(tiles_board)
-  
+
   return board_object, game_status

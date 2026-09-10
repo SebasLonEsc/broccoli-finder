@@ -6,7 +6,7 @@ from pathlib import Path
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
 from src.logic.interfaceTools import close_interface, go_back, open_pillow_image, create_menu
-from src.logic.constants.gameValues import get_winning_text, get_game_over_text, GAME_STATUS
+from src.logic.constants.gameValues import get_end_game_text, GAME_STATUS, WINNING_LANG_CODE, GAME_OVER_LANG_CODE
 from src.logic.constants.boardValues import BOARD_MAXIMUN_SIZE_PERCENT, TILE_PIXEL_SIZE, BOARD_VALUES_GUIDE
 from src.logic.constants.styleValues import (BROCCOLI_COUNTER_COLOR,
                                              BROCCOLI_TILE_COLOR,
@@ -30,6 +30,9 @@ from src.logic.constants.imagesPaths import (IMAGES_FOLDER,
                                              RAINBOW_BROCCOLI_TILE_IMAGE,
                                              RAINBOW_PROXIMITY_NUMBER_IMAGES
                                              )
+
+flag_command = False
+broccoli_counter_value = 0
 
 def change_flag_status(button):
   """Changes the current flag status for the game.
@@ -62,6 +65,9 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     move_position (array): An array [row, column] of the current move made by the player
     broccoli_counter (tk.Label): Broccoli counter widget
+  Returns:
+    None: If the tile is a checked tile
+    bool: The new flagged status
   """
   global broccoli_counter_value
 
@@ -71,7 +77,7 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   clicked_tile = tiles_board[row, column]
 
   if clicked_tile["checked"]:
-    return
+    return None
 
   new_flagged_status = not clicked_tile["flagged"]
   board_object.flag_tile(new_flagged_status, row, column)
@@ -81,7 +87,6 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   if new_flagged_status:
     image_name = FLAGGED_TILE_IMAGE
     broccoli_counter_value -= 1
-
   else:
     broccoli_counter_value += 1
 
@@ -92,6 +97,7 @@ def handle_flag_tile(board_object, buttons, move_position, broccoli_counter):
   buttons[row, column].config(image=tile_image)
   buttons[row, column].image = tile_image
   broccoli_counter.config(text=broccoli_counter_value)
+  return new_flagged_status
 
 def handle_reveal_broccolis(board_object, buttons, move_position):
   """Reveal all of the broccolis on the board
@@ -233,6 +239,8 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
       Contains all of the buttons in the board, each one correspond to a tile on the board in the interface
     move_position (array): An array [row, column] of the current move made by the player
     broccoli_counter (tk.Label): Broccoli counter widget
+  Returns:
+    False: If there are no flowering broccolis
   """
   current_dir = Path(__file__).parent
   image_path = current_dir.parent / IMAGES_FOLDER / RAINBOW_BROCCOLI_TILE_IMAGE
@@ -252,26 +260,34 @@ def handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccol
   for pos in broccoli_positions:
     if (board[pos[0], pos[1]] in BOARD_VALUES_GUIDE and
         BOARD_VALUES_GUIDE[board[pos[0], pos[1]]] == "floweringBroccoli"):
+      different_flowering_broccoli = buttons[pos[0], pos[1]]["bg"] == PROXIMITY_COLORS[0]
+
+      if different_flowering_broccoli:
+        continue
+
       flowering_broccoli_pos = pos
       break
 
   if len(flowering_broccoli_pos) != 2:
-    return
+    return False
 
   image_path = current_dir.parent / IMAGES_FOLDER / FLOWERING_BROCCOLI_TILE_IMAGE
   flowering_broccoli_image = tk.PhotoImage(file=str(image_path))
 
-  buttons[pos[0], pos[1]].config(bg=PROXIMITY_COLORS[0],
-                                 text="",
-                                 command=lambda: None,
-                                 image=flowering_broccoli_image,
-                                 )
-  buttons[pos[0], pos[1]].image = flowering_broccoli_image
+  buttons[flowering_broccoli_pos[0],
+          flowering_broccoli_pos[1]].config(bg=PROXIMITY_COLORS[0],
+                                            text="",
+                                            command=lambda: None,
+                                            image=flowering_broccoli_image,
+                                            )
+  buttons[flowering_broccoli_pos[0],
+          flowering_broccoli_pos[1]].image = flowering_broccoli_image
 
   global broccoli_counter_value
   broccoli_counter_value -= 2
 
-  if board_object.tiles_board[pos[0], pos[1]]["flagged"] == True:
+  if board_object.tiles_board[flowering_broccoli_pos[0],
+                              flowering_broccoli_pos[1]]["flagged"] == True:
     broccoli_counter_value +=1
 
   broccoli_counter.config(text=broccoli_counter_value)
@@ -303,11 +319,11 @@ def handle_click(board_object, buttons, move_position, win_label, broccoli_count
       handle_rainbow_broccoli_reveal(board_object, buttons, move_position, broccoli_counter)
 
     if game_status != 0:
-      game_status_text = get_winning_text()
+      game_status_text = get_end_game_text(WINNING_LANG_CODE)
 
       game_over = GAME_STATUS[game_status] == "Game Over"
       if game_over:
-        game_status_text = get_game_over_text()
+        game_status_text = get_end_game_text(GAME_OVER_LANG_CODE)
 
       win_label.config(text=game_status_text)
       handle_game_status(board_object, buttons, move_position, game_over)
@@ -349,6 +365,8 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
     board_object (Board): Rhe object containing all of the information about the board
     go_back_func (Func): Function to go back to the previous view
     go_to_main_menu (Func): Function to go back to the main menu view
+  Returns:
+    tk.Tk: The board interface view root
   """
   rows = board_object.total_rows
   columns = board_object.total_columns
@@ -524,3 +542,4 @@ def create_board_interface(board_object, go_back_func, go_to_main_menu):
             ).pack(side="left", padx=[4,2])
   
   root.mainloop()
+  return root

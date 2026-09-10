@@ -1,6 +1,6 @@
 import src.lang.language as Lg
 from src.logic.handleMove import handle_move
-from src.logic.constants.gameValues import get_game_over_text, get_winning_text, GAME_STATUS
+from src.logic.constants.gameValues import get_end_game_text, GAME_STATUS, WINNING_LANG_CODE, GAME_OVER_LANG_CODE
 from src.logic.constants.boardValues import GET_BOARD_VALUE
 from src.logic.constants.styleValues import CONSOLE_NULLSPACE, CONSOLE_EMPTY_CHECKED_TILE, CONSOLE_EMPTY_UNCHECKED_TILE
 
@@ -80,7 +80,7 @@ def print_board_on_console(board_object):
     printing(board_object)
 
   if GAME_STATUS[game_status] == "Win":
-    print(get_winning_text())
+    print(get_end_game_text(WINNING_LANG_CODE))
   
   if GAME_STATUS[game_status] == "Game Over":
-    print(get_game_over_text())
+    print(get_end_game_text(GAME_OVER_LANG_CODE))
